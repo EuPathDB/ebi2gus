@@ -19,6 +19,7 @@ ENV PERL5LIB=${PERL5LIB}:/usr/local/src/ensembl-variation/modules
 ENV PERL5LIB=${PERL5LIB}:/usr/local/src/ensembl-funcgen/modules
 ENV PERL5LIB=${PERL5LIB}:/usr/local/src/ensembl-io/modules
 ENV PERL5LIB=${PERL5LIB}:/usr/local/src/bioperl-live
+ENV PERL5LIB=${PERL5LIB}:/usr/local/lib/ebi2gus
 
 COPY ./lib/perl /usr/local/lib/ebi2gus
 COPY ./bin/* /usr/local/bin/

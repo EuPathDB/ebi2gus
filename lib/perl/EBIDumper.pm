@@ -10,7 +10,7 @@ sub new {
 
     my $self = bless {}, $class;
 
-    $self->setTopLevelSequences($sequences);
+    $self->setSequences($sequences);
     
     return $self;
 }

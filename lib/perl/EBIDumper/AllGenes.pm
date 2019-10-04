@@ -1,11 +1,12 @@
 package EBIDumper::AllGenes;
+use base qw(EBIDumper);
 
 use strict;
 
 sub convert {
     my ($self) = @_;
 
-    my $topLevelSequences = $self->getTopLevelSequences();
+    my $topLevelSequences = $self->getSequences();
     
     foreach my $seq (@$topLevelSequences) {
     
