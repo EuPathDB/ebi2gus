@@ -31,8 +31,6 @@ sub writeRow {
 sub  writeHeader() {
     my ($self) = @_;
 
-    $self->
-    
     my $tableDefinition = $self->getTableDefinition();
 
     #TODO: $tableDefinition->getFields

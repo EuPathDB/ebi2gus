@@ -1,0 +1,4 @@
+package EBIDumper::AllGenes;
+
+use strict;
+
