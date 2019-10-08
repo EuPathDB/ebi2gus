@@ -8,6 +8,7 @@ use strict;
 sub getTables {
     return (['GUS::DoTS::GeneFeature',
 	     'GUS::DoTS::ExternalNASequence',
+	     'GUS::DoTS::NALocation',
 	    ]);
 }
 
@@ -22,6 +23,7 @@ sub parse {
     
 	foreach my $gene ( @{ $slice->get_all_Genes() } ) {
 	    GUS::DoTS::GeneFeature->new($gusTableWriters, $gene, $slice)->writeRow();
+	    GUS::DoTS::NALocation->new($gusTableWriters, $gene)->writeRow();
 
 	}
     }

@@ -12,6 +12,12 @@ sub setGUSRowAsHash { $_[0]->{_gus_row_hash} = $_[1] }
 
 sub init { }
 
+sub nextPk {
+    my ($self) = @_;
+
+    return $self->getGUSTableWriter()->getOutputFile()->nextPk();
+}
+
 sub writeRow {
     my ($self) = @_;
 

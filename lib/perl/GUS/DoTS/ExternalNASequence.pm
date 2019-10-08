@@ -2,7 +2,7 @@ package GUS::DoTS::ExternalNASequence;
 use base qw(GUSRow);
 
 use strict;
-use Bio::Tools::SeqStats;
+
 use Bio::Tools::SeqStats;
 use Bio::PrimarySeq;
 

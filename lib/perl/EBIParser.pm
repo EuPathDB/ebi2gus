@@ -3,6 +3,7 @@ package EBIParser;
 use strict;
 
 use GUSTableWriter;
+use OutputFile;
 
 sub getSlices { $_[0]->{_slices} }
 sub setSlices { $_[0]->{_slices} = $_[1] }
@@ -14,6 +15,8 @@ sub setGUSTableWriters {
     my $tables = $self->getTables();
 
     my $gusTableWriters = {};
+
+    my %outputFiles;
     
     foreach my $className (@$tables) {
 	$className =~ s/^GUS:://;
@@ -22,10 +25,19 @@ sub setGUSTableWriters {
 	$className = uc $className;
 	
 	my $gusTableDefinition = $gusTableDefinitionsParser->makeTableDefinition($className);
+	my $realTableName = $gusTableDefinition->getRealTableName();
 
-	$gusTableWriters->{$className} = GUSTableWriter->new($gusTableDefinition, $outputDirectory);
+	my $outputFile; #Only one fileName/FileHandle/Counter Per RealTableName
+	if($outputFiles{$realTableName}) {
+	    $outputFile = $outputFiles{$realTableName};
+	}
+	else {
+	    $outputFile = OutputFile->new($realTableName, $outputDirectory);
+	    $outputFiles{$realTableName} = $outputFile;
+	}
+	
+	$gusTableWriters->{$className} = GUSTableWriter->new($gusTableDefinition, $outputFile);
     }
-    
 
     $self->{_gus_table_writers} = $gusTableWriters;
 }
