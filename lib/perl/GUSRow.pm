@@ -7,8 +7,8 @@ use Data::Dumper;
 sub getGUSTableWriter { $_[0]->{_gus_table_writer} }
 sub setGUSTableWriter { $_[0]->{_gus_table_writer} = $_[1] }
 
-sub getGUSRowHash { $_[0]->{_gus_row_hash} }
-sub setGUSRowHash { $_[0]->{_gus_row_hash} = $_[1] }
+sub getGUSRowAsHash { $_[0]->{_gus_row_hash} }
+sub setGUSRowAsHash { $_[0]->{_gus_row_hash} = $_[1] }
 
 sub init { }
 
@@ -40,9 +40,7 @@ sub new {
     $self->setGUSTableWriter($gusTableWriter);
     my $row = $self->init(@_);
 
-    if($gusTableWriter->isValidRow()) {
-	$self->setGUSRow($row);
-    }
+    $self->setGUSRowAsHash($row);
 
     return $self;
 }

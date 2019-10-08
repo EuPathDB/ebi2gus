@@ -14,18 +14,19 @@ sub setTableDefinition { $_[0]->{_table_definition} = $_[1] }
 
 sub writeRow {
     my ($self, $gusRow) = @_;
-    
 
     # TODO:  what do we need to validate here as compared to when we make the row object?
+    # IF nothing... should remove this if
     if($self->isRowValid($gusRow)) {
-	my $fh = $self->getFileHandle();
+	my $fh = $self->getOutputFileHandle();
 
 	my $tableDefinition = $self->getTableDefinition();
 	my $fields = $tableDefinition->getFields();
 
+	print "TODO:  Actually write the row\n";
 	return 1;
     }
-    die "Invalid Row for table: " . $self->getTableDefinition()->getTableName();
+    die "Invalid Row for table: " . $self->getTableDefinition()->getName();
 }
 
 sub  writeHeader() {
@@ -36,10 +37,12 @@ sub  writeHeader() {
     #TODO: $tableDefinition->getFields
     
 }
-sub  isValidateRow {
+
+# rows are always valid for now
+sub  isRowValid {
     my ($self, $row) = @_;
 
-    return 0;
+    return 1;
 }
 
     

@@ -1,11 +1,11 @@
-package EBIDumper;
+package EBIParser;
 
 use strict;
 
 use GUSTableWriter;
 
-sub getSequences { $_[0]->{_sequences} }
-sub setSequences { $_[0]->{_sequences} = $_[1] }
+sub getSlices { $_[0]->{_slices} }
+sub setSlices { $_[0]->{_slices} = $_[1] }
 
 sub getGUSTableWriters { $_[0]->{_gus_table_writers} }
 sub setGUSTableWriters { 
@@ -34,11 +34,11 @@ sub getTables { $_[0]->{_tables} || [] }
 sub setTables { $_[0]->{_tables} = $_[1] }
 
 sub new {
-    my ($class, $sequences, $gusTableDefinitions, $outputDirectory) = @_;
+    my ($class, $slices, $gusTableDefinitions, $outputDirectory) = @_;
 
     my $self = bless {}, $class;
 
-    $self->setSequences($sequences);
+    $self->setSlices($slices);
     $self->setGUSTableWriters($gusTableDefinitions, $outputDirectory);
 
     $self->importTableModules();
@@ -46,7 +46,7 @@ sub new {
     return $self;
 }
 
-sub convert { }
+sub parse { }
 
 sub importTableModules {
     my ($self) = @_;

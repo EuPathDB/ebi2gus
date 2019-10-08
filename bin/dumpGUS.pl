@@ -9,7 +9,7 @@ use Bio::EnsEMBL::Registry;
 
 use GUSTableDefinitionParser;
 
-use EBIDumper::AllGenes;
+use EBIParser::AllGenes;
 
 my $REGISTRY_CONF_FILE = "/usr/local/etc/ensembl_registry.conf";
 #my $ONOTLOGY_FILE = "/usr/local/etc/ontologyMappings.xml"; #TODO
@@ -49,13 +49,18 @@ my $count = $registry->load_all($REGISTRY_CONF_FILE, 1);
 
 my $sliceAdaptor = $registry->get_adaptor('default', 'Core', 'Slice' );
 
-my $topLevelSequences = $sliceAdaptor->fetch_all('toplevel');
+my $topLevelSlices = $sliceAdaptor->fetch_all('toplevel');
 
 
-#TODO ontology ?? other global stuff?
+#TODO sres.ontology ??
+#TODO sres.externaldatabase, sres.externaldatbaserelease, apidb.datasource ?? 
+#other global stuff?
 
-my $geneDumper = EBIDumper::AllGenes->new($topLevelSequences, $gusTableDefinitions, $OUTPUT_DIRECTORY);
-$geneDumper->convert();
+
+
+
+my $geneDumper = EBIParser::AllGenes->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY);
+$geneDumper->parse();
 
 
 
