@@ -44,12 +44,29 @@ sub  isValidateRow {
 
     
 sub new {
-    my ($class, $tableDefinition) = @_;
+    my ($class, $tableDefinition, $outputDirectory) = @_;
 
     my $self = bless {}, $class;    
 
     $self->setTableDefinition($tableDefinition);
+
+    my $realTableName = $tableDefinition->getRealTableName();
+    
+    my $outputFile = $outputDirectory . "/$realTableName";
+    
+    $self->setOutputFile($outputFile);
+
+    my $fh;
+    open($fh, ">>$outputFile") or die "Could not open file $outputFile for writing: $!";
+
+    $self->setOutputFileHandle($fh);
     
     return $self;
+}
+
+sub DESTROY {
+    my ($self) = @_;
+
+    close $self->getOutputFileHandle();
 }
 1;

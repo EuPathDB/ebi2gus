@@ -1,6 +1,8 @@
 package GUSRow;
 
 use strict;
+use Data::Dumper;
+
 
 sub getGUSTableWriter { $_[0]->{_gus_table_writer} }
 sub setGUSTableWriter { $_[0]->{_gus_table_writer} = $_[1] }
@@ -20,10 +22,21 @@ sub writeRow {
 
 sub new {
     my $class = shift;
-    my $gusTableWriter = shift;
-
+    my $gusTableWriters = shift;
+    
     my $self = bless {}, $class;
 
+
+    $class =~ s/^GUS:://;
+    $class =~ s/::/./;
+    $class = uc $class;
+
+    my $gusTableWriter = $gusTableWriters->{$class};
+
+    unless($gusTableWriter) {
+	die "Error in setting GUSTableWriter object for class $class";
+    }
+    
     $self->setGUSTableWriter($gusTableWriter);
     my $row = $self->init(@_);
 

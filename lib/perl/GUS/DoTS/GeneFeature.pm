@@ -3,8 +3,17 @@ use base qw(GUSRow);
 
 use strict;
 
+use Data::Dumper;
+
 sub init {
-#TODO
+    my ($self, $ebiGene, $sequence) = @_;
+
+    print STDERR "GeneFeature init\n";
+
+    print Dumper $ebiGene;
+    
+    exit;
+    return {}
 }
 
 1;
