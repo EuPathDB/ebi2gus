@@ -4,7 +4,9 @@ use base qw(GUSRow);
 use strict;
 
 sub init {
-#TODO
+    my ($self, $transcript, $gusGeneFeature, $gusSplicedNASequence) = @_;
+
+    my $naSequenceId = $gusSplicedNASequence->getPrimaryKey();
 }
 
 1;

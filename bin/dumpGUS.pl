@@ -56,7 +56,7 @@ my $topLevelSlices = $sliceAdaptor->fetch_all('toplevel');
 #TODO sres.externaldatabase, sres.externaldatbaserelease, apidb.datasource ?? 
 #other global stuff?
 
-
+# TODO: write a row for SRes.Taxon for this strain.  Take ncbi_tax_id from organism configuration
 
 
 my $geneDumper = EBIParser::AllGenes->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY);

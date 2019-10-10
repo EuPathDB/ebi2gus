@@ -14,8 +14,8 @@ sub setFields { $_[0]->{_fields} = $_[1] }
 sub getFieldDataTypes { $_[0]->{_field_datatypes} }
 sub setFieldDataTypes { $_[0]->{_field_datatypes} = $_[1] }
 
-sub getPrimaryKey  { $_[0]->{_primary_key} }
-sub setPrimaryKey  { $_[0]->{_primary_key} = $_[1] }
+sub getPrimaryKeyField  { $_[0]->{_primary_key_field} }
+sub setPrimaryKeyField  { $_[0]->{_primary_key_field} = lc $_[1] }
 
 sub getNonNullFields { $_[0]->{_non_null_fields} }
 sub setNonNullFields { $_[0]->{_non_null_fields} = $_[1] }
@@ -39,7 +39,7 @@ sub new {
     if(my $impTable = $tableHash->{impTable}) {
 	$self->setRealTableName($impTable);
 	$self->{_is_view};
-	my %viewToImpFieldMap = map { $_ => $tableHash->{column}->{$_}->{impColumn} || $_  } keys %{$tableHash->{column}};
+	my %viewToImpFieldMap = map { lc $_ => lc $tableHash->{column}->{$_}->{impColumn} || lc $_  } keys %{$tableHash->{column}};
 	$self->setViewToImpFieldMap(\%viewToImpFieldMap);
     }
     else {
@@ -49,6 +49,7 @@ sub new {
 
     my (@fields, %fieldDataTypes);
     foreach my $field (keys %{$tableHash->{column}}) {
+	$field = lc $field;
 	push @fields, $field;
 
 	my $type = $tableHash->{column}->{$field}->{type};
@@ -57,7 +58,7 @@ sub new {
     }
     $self->setFieldDataTypes(\%fieldDataTypes);
     $self->setFields(\@fields);
-    $self->setPrimaryKey($tableHash->{primaryKey});
+    $self->setPrimaryKeyField(lc $tableHash->{primaryKey});
     
     return $self; 
 }

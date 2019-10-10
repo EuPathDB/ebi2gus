@@ -4,7 +4,8 @@ use base qw(GUSRow);
 use strict;
 
 sub init {
-#TODO
+    my ($self, $transcript) = @_;
+
 }
 
 1;

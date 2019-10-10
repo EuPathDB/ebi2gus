@@ -12,6 +12,9 @@ sub setGUSRowAsHash { $_[0]->{_gus_row_hash} = $_[1] }
 
 sub init { }
 
+sub getPrimaryKey { $_[0]->{_primary_key} }
+sub setPrimaryKey { $_[0]->{_primary_key} = $_[1] }
+
 sub nextPk {
     my ($self) = @_;
 
@@ -35,6 +38,7 @@ sub new {
 
     $class =~ s/^GUS:://;
     $class =~ s/::/./;
+    $class =~ s/::.*//;
     $class = uc $class;
 
     my $gusTableWriter = $gusTableWriters->{$class};
@@ -44,10 +48,20 @@ sub new {
     }
     
     $self->setGUSTableWriter($gusTableWriter);
+
+    my $primaryKey = $self->nextPk();
+    $self->setPrimaryKey();
+
     my $row = $self->init(@_);
 
-    $self->setGUSRowAsHash($row);
+    # overide the primarykey value here in case 
+    my $primaryKeyField = $gusTableWriter->getTableDefinition()->getPrimaryKeyField();
+    $row->{$primaryKeyField} = $primaryKey;
 
+    $self->setGUSRowAsHash($row);
+    
+    $self->writeRow();
+    
     return $self;
 }
 
