@@ -1,0 +1,18 @@
+<organism>
+  <public_abbrev>pfal3D7</public_abbrev>
+  <project_name>PlasmoDB</project_name>
+  <taxon_id>32121</taxon_id>
+  <abbrev>pfal3D7</abbrev>
+  <name_for_filenames>Pfalciparum3D7</name_for_filenames>
+  <genome_source>GeneDB</genome_source>
+  <orthomcl_abbrev>pfal</orthomcl_abbrev>
+  <strain_abbrev>3D7</strain_abbrev>
+  <ref_strain_abbrev>pfal3D7</ref_strain_abbrev>
+  <is_reference_strain>1</is_reference_strain>
+  <is_annotated_genome>1</is_annotated_genome>
+  <is_family_representative>0</is_family_representative>
+  <family_representative_abbrev>pfal3D7</family_representative_abbrev>
+  <family_ncbi_taxon_ids>5820</family_ncbi_taxon_ids>
+  <family_name_for_files>Plasmodium</family_name_for_files>
+  <has_temporary_ncbi_taxon_id>0</has_temporary_ncbi_taxon_id>
+</organism>
