@@ -20,16 +20,20 @@ sub init {
 1;
 
 package GUS::DoTS::NALocation::Transcript;
+use base qw(GUSRow);
 
 sub init {
     my ($self, $gusParentFeature, $gusSplicedNASequence) = @_;
 
+    my $gusParentFeatureAsHash = $gusParentFeature->getGUSRowAsHash();
+    my $gusSplicedNASequenceAsHash = $gusSplicedNASequence->getGUSRowAsHash();
+    
     return {na_feature_id => $gusParentFeature->getPrimaryKey(),
 	    start_min => 1,
 	    start_max => 1,
-	    end_min => $gusSplicedNASequence->{length},
-	    end_max => $gusSplicedNASequence->{length},
-	    is_reversed => $gusParentFeature->{is_reversed},
+	    end_min => $gusSplicedNASequenceAsHash->{length},
+	    end_max => $gusSplicedNASequenceAsHash->{length},
+	    is_reversed => $gusParentFeatureAsHash->{is_reversed},
     };
 }
 

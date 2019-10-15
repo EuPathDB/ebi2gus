@@ -8,40 +8,54 @@ use Getopt::Std;
 use Bio::EnsEMBL::Registry;
 
 use GUSTableDefinitionParser;
+use Organism;
 
 use EBIParser::AllGenes;
 
 my $REGISTRY_CONF_FILE = "/usr/local/etc/ensembl_registry.conf";
-#my $ONOTLOGY_FILE = "/usr/local/etc/ontologyMappings.xml"; #TODO
 my $TABLE_DEFINITIONS_XML_FILE = "/usr/local/etc/gusSchemaDefinitions.xml";
 
 #TODO
 my $OUTPUT_DIRECTORY = "$ENV{HOME}/tmp";
 
-
 sub HELP_MESSAGE {
     print STDERR <<"EOM";
-usage : $0 [-r ensemble_regisrty_file] [-o ontology_file] [-t table_definitions_xml_file] 
-        -r ensemble_registry_file
-        -o ontology_file
-        -t table_definitions_xml_file
+usage : $0 -r ensemble_registry_file \\
+        -t table_definitions_xml_file \\
+	-d genome_database_name \\
+	-v genome_database_version \\
+	-n ncbi_tax_id \\
+	-o organism_abbrev \\
+	-c chromosome_map_file 
 EOM
-    exit 0;
+    exit -1;
 }
-our ($opt_r, $opt_o, $opt_t, $opt_h);
-getopts('r:o:t:') or HELP_MESSAGE();
+our ($opt_r, $opt_o, $opt_t, $opt_h, $opt_v, $opt_n, $opt_c, $opt_d);
+getopts('r:o:t:v:n:c:h:d:') or HELP_MESSAGE();
 
 HELP_MESSAGE() if($opt_h);
 $REGISTRY_CONF_FILE = $opt_r if($opt_r);
 $TABLE_DEFINITIONS_XML_FILE = $opt_t if($opt_t);
-#$ONTOLOGY_FILE = $opt_0 if($opt_o);
+my $ncbiTaxId = $opt_n;
+my $organismAbbrev = $opt_o;
+my $genomeDatabaseName = $opt_d;
+my $genomeDatabaseVersion = $opt_v;
+my $chromosomeMapFile = $opt_c;
 
-if($opt_h || !-e $REGISTRY_CONF_FILE || !-e $TABLE_DEFINITIONS_XML_FILE) {
-#if($opt_h || !-e $REGISTRY_CONF_FILE || !-e $TABLE_DEFINITIONS_XML_FILE || !-e $ONTOLOGY_FILE) { # TODO add back ontology file
+if($opt_h || 
+   !-e $REGISTRY_CONF_FILE || !-e $TABLE_DEFINITIONS_XML_FILE || 
+   !defined($ncbiTaxId) || !$genomeDatabaseVersion || 
+   !$genomeDatabaseName || !$organismAbbrev) { 
+    HELP_MESSAGE();
+}
+
+if($chromosomeMapFile && !-e $chromosomeMapFile) {
     HELP_MESSAGE();
 }
 
 my $gusTableDefinitions = GUSTableDefinitionParser->new($TABLE_DEFINITIONS_XML_FILE);
+
+my $organism = Organism->new($ncbiTaxId, $organismAbbrev, $genomeDatabaseName, $genomeDatabaseVersion, $chromosomeMapFile);
 
 my $registry = 'Bio::EnsEMBL::Registry';
 
@@ -51,16 +65,11 @@ my $sliceAdaptor = $registry->get_adaptor('default', 'Core', 'Slice' );
 
 my $topLevelSlices = $sliceAdaptor->fetch_all('toplevel');
 
-
-#TODO sres.ontology ??
-#TODO sres.externaldatabase, sres.externaldatbaserelease, apidb.datasource ?? 
-#other global stuff?
-
-# TODO: write a row for SRes.Taxon for this strain.  Take ncbi_tax_id from organism configuration
-
-
-my $geneDumper = EBIParser::AllGenes->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY);
+my $geneDumper = EBIParser::AllGenes->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism);
 $geneDumper->parse();
+
+#TODO  sres.ontology ??
+  # keep a running list of seen so_terms.  Dump them out at the end to "SRes.OntologyTerm" file
 
 
 

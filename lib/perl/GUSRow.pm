@@ -32,17 +32,18 @@ sub writeRow {
 sub new {
     my $class = shift;
     my $gusTableWriters = shift;
-    
-    my $self = bless {}, $class;
 
+    my $self = bless {}, $class;
 
     $class =~ s/^GUS:://;
     $class =~ s/::/./;
     $class =~ s/::.*//;
     $class = uc $class;
 
+    print STDERR "CLASS=$class\n";
+    
     my $gusTableWriter = $gusTableWriters->{$class};
-
+    
     unless($gusTableWriter) {
 	die "Error in setting GUSTableWriter object for class $class";
     }
@@ -56,6 +57,7 @@ sub new {
 
     # overide the primarykey value here in case 
     my $primaryKeyField = $gusTableWriter->getTableDefinition()->getPrimaryKeyField();
+    
     $row->{$primaryKeyField} = $primaryKey;
 
     $self->setGUSRowAsHash($row);

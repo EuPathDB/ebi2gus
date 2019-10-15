@@ -9,8 +9,16 @@ use Bio::Tools::SeqStats;
 use Bio::PrimarySeq;
 
 sub init {
-    my ($self, $slice) = @_;
+    return {};
+}
 
+# TODO: put this back!!
+sub _init {
+    my ($self, $slice, $gusTaxon, $gusExternalDatabaseRelease) = @_;
+
+    my $organism = $gusTaxon->getOrganism();
+    my $chromosomeMap = $organism->getChromosomeMap();
+    
     my $seq = $slice->seq();
     my $primarySeq = Bio::PrimarySeq->new(-seq=>$seq,
 					  -alphabet=>'dna');
@@ -33,12 +41,13 @@ sub init {
 	    g_count => $monomersHash->{G},
 	    other_count => $otherCount,
 	    source_id => $slice->seq_region_name(),
-
-	    #chromosome => TODO:  if the coordsystem is chromosome, populate this witht he seq_region_name
-	    #chromosome_order_num => TODO:  if the coordsystem is chromosome, populate this witht he seq_region_name,
+	    taxon_id => $gusTaxon->getPrimaryKey(),
+	    external_database_release_id => $gusExternalDatabaseRelease->getPrimaryKey(),
+	    chromosome => $chromosomeMap->{chromosome},
+	    chromosome_order_num => $chromosomeMap->{chromosome_order_num},
+	    
 	    #sequence_ontology_id => TODO:  based on the coordsystem, populate this with new ontology term for chromosome,scaffold, contig, ...
-	    #taxon_id => TODO:  dumpGUS.pl should take organism configuration and write a row to SRes.Taxon with the ncbi_tax_id
-	    # external_database_release_id => TODO:  Same issue as GeneFeature
+
     };
 }
 

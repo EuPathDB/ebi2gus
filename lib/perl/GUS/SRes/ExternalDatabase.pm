@@ -4,7 +4,9 @@ use base qw(GUSRow);
 use strict;
 
 sub init {
-#TODO
+    my ($self, $name) = @_;
+
+    return {name => $name};
 }
 
 1;

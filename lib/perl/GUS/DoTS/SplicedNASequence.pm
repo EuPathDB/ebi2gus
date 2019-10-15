@@ -4,8 +4,10 @@ use base qw(GUSRow);
 use strict;
 
 sub init {
-    my ($self, $transcript) = @_;
+    my ($self, $transcript, $taxonId, $gusExternalDatabaseRelease) = @_;
 
+
+    return {};
 }
 
 1;

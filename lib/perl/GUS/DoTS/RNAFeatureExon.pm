@@ -4,7 +4,7 @@ use base qw(GUSRow);
 use strict;
 
 sub init {
-#TODO
+    return {};
 }
 
 1;
