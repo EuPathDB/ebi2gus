@@ -2,6 +2,7 @@
   <public_abbrev>pfal3D7</public_abbrev>
   <project_name>PlasmoDB</project_name>
   <taxon_id>32121</taxon_id>
+  <ncbi_tax_id>36329</ncbi_tax_id>
   <abbrev>pfal3D7</abbrev>
   <name_for_filenames>Pfalciparum3D7</name_for_filenames>
   <genome_source>GeneDB</genome_source>
