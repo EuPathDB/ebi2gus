@@ -3,8 +3,6 @@ use base qw(GUSRow);
 
 use strict;
 
-use Data::Dumper;
-
 use Bio::Tools::SeqStats;
 use Bio::PrimarySeq;
 
@@ -14,7 +12,7 @@ sub init {
 
 # TODO: put this back!!
 sub _init {
-    my ($self, $slice, $gusTaxon, $gusExternalDatabaseRelease) = @_;
+    my ($self, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId) = @_;
 
     my $organism = $gusTaxon->getOrganism();
     my $chromosomeMap = $organism->getChromosomeMap();
@@ -31,6 +29,7 @@ sub _init {
 	next if $m eq 'A' || $m eq 'C' || $m eq 'T' || $m eq 'G';
 	$otherCount = $otherCount + $monomersHash->{$m}
     }
+
     return {sequence_version => 1,
 	    subclass_view => 'ExternalNASequence',
 	    sequence =>  $seq,
@@ -45,9 +44,7 @@ sub _init {
 	    external_database_release_id => $gusExternalDatabaseRelease->getPrimaryKey(),
 	    chromosome => $chromosomeMap->{chromosome},
 	    chromosome_order_num => $chromosomeMap->{chromosome_order_num},
-	    
-	    #sequence_ontology_id => TODO:  based on the coordsystem, populate this with new ontology term for chromosome,scaffold, contig, ...
-
+	    sequence_ontology_id => $gusSequenceOntologyId
     };
 }
 

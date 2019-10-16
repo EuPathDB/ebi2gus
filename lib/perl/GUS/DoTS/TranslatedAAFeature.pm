@@ -3,6 +3,8 @@ use base qw(GUSRow);
 
 use strict;
 
+use Data::Dumper;
+
 sub init {
     my ($self, $transcript, $gusTranslatedAASequence, $gusTranscript) = @_;
 
@@ -10,15 +12,15 @@ sub init {
     
     my $translation = $transcript->translation();
 
+    my $translationStop = $translation->cdna_end() - $translation->cdna_start() + 1;
+
     return {aa_sequence_id => $gusTranslatedAASequence->getPrimaryKey(),
 	    na_feature_id => $gusTranscript->getPrimaryKey(),
 	    subclass_view => "TranslatedAAFeature",
 	    source_id => $gusTranslatedAASequenceAsHash->{source_id},
 	    translation_start => 1,
+	    translation_stop => $translationStop,
 	    #	    is_predicted => TODO,
-
-   	    # translation_stop => TODO (aaseqlength*3 +3 ?? or cds 
-	    
     };
 
 }

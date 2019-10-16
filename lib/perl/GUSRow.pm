@@ -3,7 +3,6 @@ package GUSRow;
 use strict;
 use Data::Dumper;
 
-
 sub getGUSTableWriter { $_[0]->{_gus_table_writer} }
 sub setGUSTableWriter { $_[0]->{_gus_table_writer} = $_[1] }
 
@@ -33,6 +32,8 @@ sub new {
     my $class = shift;
     my $gusTableWriters = shift;
 
+    print "ENTER NEW GUS ROW or class $class\n";
+    
     my $self = bless {}, $class;
 
     $class =~ s/^GUS:://;
@@ -40,8 +41,6 @@ sub new {
     $class =~ s/::.*//;
     $class = uc $class;
 
-    print STDERR "CLASS=$class\n";
-    
     my $gusTableWriter = $gusTableWriters->{$class};
     
     unless($gusTableWriter) {
@@ -51,7 +50,7 @@ sub new {
     $self->setGUSTableWriter($gusTableWriter);
 
     my $primaryKey = $self->nextPk();
-    $self->setPrimaryKey();
+    $self->setPrimaryKey($primaryKey);
 
     my $row = $self->init(@_);
 
