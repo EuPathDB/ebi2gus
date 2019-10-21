@@ -12,6 +12,7 @@ sub init {
 	    sequence_ontology_id => $geneSequenceOntologyId,
 	    external_database_release_id => $gusExternalDatabaseRelease->getPrimaryKey(),
 	    source_id => $gene->stable_id(),
+	    product => $gene->description(),
     };
 }
 

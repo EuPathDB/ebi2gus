@@ -24,6 +24,7 @@ sub getTables {
 	     'GUS::DoTS::AAFeatureExon',
 	     'GUS::SRes::Taxon',
 	     'GUS::SRes::OntologyTerm',
+	     'GUS::ApiDB::AaSequenceAttribute',
 #	     'GUS::DoTS::NAComment',
 	    ]);
 }
@@ -81,10 +82,21 @@ sub parseSlice {
     my $gusSequenceOntologyId = $self->ontologyTermForSlice($slice, $gusTableWriters);
     my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId);
     
-    foreach my $gene ( @{ $slice->get_all_Genes() } ) {
+    foreach my $gene (@{$slice->get_all_Genes()}) {
 	$self->parseGene($gene, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence);
-	exit;
     }
+
+
+    exit;
+    
+    # Repeats, Trnascan,. ...
+#    foreach my $alignFeature (@{$slice->get_all_DnaAlignFeatures()} ) {
+
+#    }
+
+
+    
+    
 }
 
 sub parseGene {
@@ -116,20 +128,54 @@ sub parseGene {
 	my $gusTranscriptNALocation = GUS::DoTS::NALocation::Transcript->new($gusTableWriters, $gusGeneFeature, $gusSplicedNASequence);
 
 	if($gene->get_Biotype()->name() eq "protein_coding") {
+
+	    my $translation = $transcript->translation();
+
+	    
+
+	    
+	    # my $pfeatures = $translation->get_all_ProteinFeatures("");
+	    # while ( my $pfeature = shift @{$pfeatures} ) {
+	    # 	print $pfeature->p_value();
+	    # 	print "\n\n";
+	    # 	print Dumper $pfeature;
+	    # 	exit;
+	    # }
+
 	    my $translatedAASequenceOntologyId = $self->ontologyTermFromName("polypeptide", $gusTableWriters);
 	    my $gusTranslatedAASequence = GUS::DoTS::TranslatedAASequence->new($gusTableWriters, $transcript, $taxonId, $gusExternalDatabaseRelease, $translatedAASequenceOntologyId);
 
+	    GUS::ApiDB::AaSequenceAttribute->new($gusTableWriters, $translation, $gusTranslatedAASequence);
+
+	    
 	    my $gusTranslatedAAFeature = GUS::DoTS::TranslatedAAFeature->new($gusTableWriters, $transcript, $gusTranslatedAASequence, $gusTranscript, $gusExternalDatabaseRelease);
+
+	    my $exonOrderNum = 1;
+	    foreach my $exonTranscript ( @{ $transcript->get_all_ExonTranscripts() } ) {
+		my $exon = $exonTranscript->exon();
+
+		my $gusExonId = $exonMap{$exon->dbID()};
+		GUS::DoTS::RNAFeatureExon->new($gusTableWriters, $gusExonId, $gusTranscript, $exonOrderNum);
+
+		my $codingRegionStart = $exon->coding_region_start($transcript);
+		my $codingRegionEnd = $exon->coding_region_end($transcript);
+		if(defined $codingRegionStart) {
+		    GUS::DoTS::AAFeatureExon->new($gusTableWriters, $gusTranslatedAAFeature, $gusExonId, $codingRegionStart, $codingRegionEnd);		    
+		}
+
+		$exonOrderNum++;
+	    }
+	}
+	else {
+	    my $exonOrderNum = 1;
+	    foreach my $exonTranscript ( @{ $transcript->get_all_ExonTranscripts() } ) {
+		my $exon = $exonTranscript->exon();
+		my $gusExonId = $exonMap{$exon->dbID()};
+		GUS::DoTS::RNAFeatureExon->new($gusTableWriters, $gusExonId, $gusTranscript, $exonOrderNum);
+		$exonOrderNum++;
+	    }
 	}
 	
-	my $exonOrderNum = 1;
-	foreach my $exon ( @{ $transcript->get_all_ExonTranscripts() } ) {
-	    my $gusExonId = $exonMap{$exon->dbID()};
-	    GUS::DoTS::RNAFeatureExon->new($gusTableWriters, $gusExonId, $gusTranscript, $exonOrderNum);
-	    GUS::DoTS::AAFeatureExon->new($gusTableWriters, $exon, $gusTranslatedAAFeature, $gusExonId);
-	    
-	    $exonOrderNum++;
-	}
     }
 }
 

@@ -4,12 +4,12 @@ use base qw(GUSRow);
 use strict;
 
 sub init {
-    my ($self, $exon, $gusTranslatedAAFeature, $gusExonId) = @_;
+    my ($self, $gusTranslatedAAFeature, $gusExonId, $codingRegionStart, $codingRegionEnd) = @_;
 
     return {exon_feature_id => $gusExonId,
 	    aa_feature_id => $gusTranslatedAAFeature->getPrimaryKey(),
-	    coding_start => $exon->coding_region_start(),
-	    coding_end => $exon->coding_region_end(),
+	    coding_start => $codingRegionStart,
+	    coding_end => $codingRegionEnd
     };
     
 }

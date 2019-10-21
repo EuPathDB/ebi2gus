@@ -23,14 +23,11 @@ sub setName { $_[0]->{_name} = $_[1] }
 sub new {
     my $class = shift;
 
-    print "NEW Ontologyterm\n";
-    print Dumper \%seenOntologyTerms;
-    
     my $self = $class->SUPER::new(@_);
 
     my $name = $self->getName();
     $seenOntologyTerms{$name} = $self->getPrimaryKey();
-        print Dumper \%seenOntologyTerms;
+
     return $self;
 }
 

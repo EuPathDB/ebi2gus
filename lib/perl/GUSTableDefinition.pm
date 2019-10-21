@@ -6,7 +6,7 @@ sub getName { $_[0]->{_name} }
 sub setName { $_[0]->{_name} = $_[1] }
 
 sub getRealTableName { $_[0]->{_real_table_name} }
-sub setRealTableName { $_[0]->{_real_table_name} = $_[1] }
+sub setRealTableName { $_[0]->{_real_table_name} = uc($_[1]) }
 
 sub getFields { $_[0]->{_fields} }
 sub setFields { $_[0]->{_fields} = $_[1] }

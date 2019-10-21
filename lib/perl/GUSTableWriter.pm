@@ -14,25 +14,17 @@ sub writeRow {
     # TODO:  what do we need to validate here as compared to when we make the row object?
     # IF nothing... should remove this if
     if($self->isRowValid($gusRow)) {
-	my $fh = $self->getOutputFile()->getFileHandle();
-	
+	my $outputFile = $self->getOutputFile();
+
 	my $tableDefinition = $self->getTableDefinition();
 	my $fields = $tableDefinition->getFields();
 
-	print "TODO:  Actually write the row\n";
+	$outputFile->writeRow($fields, $gusRow);
 	return 1;
     }
     die "Invalid Row for table: " . $self->getTableDefinition()->getName();
 }
 
-sub  writeHeader() {
-    my ($self) = @_;
-
-    my $tableDefinition = $self->getTableDefinition();
-
-    #TODO: $tableDefinition->getFields
-    
-}
 
 # rows are always valid for now
 sub  isRowValid {

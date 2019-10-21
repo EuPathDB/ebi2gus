@@ -32,8 +32,6 @@ sub new {
     my $class = shift;
     my $gusTableWriters = shift;
 
-    print "ENTER NEW GUS ROW or class $class\n";
-    
     my $self = bless {}, $class;
 
     $class =~ s/^GUS:://;

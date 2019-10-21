@@ -6,12 +6,8 @@ use strict;
 use Bio::Tools::SeqStats;
 use Bio::PrimarySeq;
 
-sub init {
-    return {};
-}
 
-# TODO: put this back!!
-sub _init {
+sub init {
     my ($self, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId) = @_;
 
     my $organism = $gusTaxon->getOrganism();

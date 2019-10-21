@@ -12,11 +12,13 @@ use Organism;
 
 use EBIParser::AllGenes;
 
+use Data::Dumper;
+
 my $REGISTRY_CONF_FILE = "/usr/local/etc/ensembl_registry.conf";
 my $TABLE_DEFINITIONS_XML_FILE = "/usr/local/etc/gusSchemaDefinitions.xml";
 
 #TODO
-my $OUTPUT_DIRECTORY = "$ENV{HOME}/tmp";
+my $OUTPUT_DIRECTORY = "$ENV{HOME}";
 
 sub HELP_MESSAGE {
     print STDERR <<"EOM";
@@ -25,19 +27,22 @@ usage : $0 -r ensemble_registry_file \\
 	-d genome_database_name \\
 	-v genome_database_version \\
 	-n ncbi_tax_id \\
-	-o organism_abbrev \\
-	-c chromosome_map_file 
+	-a organism_abbrev \\
+	-c chromosome_map_file \\
+        -o output_directory
 EOM
     exit -1;
 }
-our ($opt_r, $opt_o, $opt_t, $opt_h, $opt_v, $opt_n, $opt_c, $opt_d);
-getopts('r:o:t:v:n:c:h:d:') or HELP_MESSAGE();
+our ($opt_r, $opt_a, $opt_o, $opt_t, $opt_h, $opt_v, $opt_n, $opt_c, $opt_d);
+getopts('r:o:t:v:n:c:h:d:a:') or HELP_MESSAGE();
 
 HELP_MESSAGE() if($opt_h);
 $REGISTRY_CONF_FILE = $opt_r if($opt_r);
 $TABLE_DEFINITIONS_XML_FILE = $opt_t if($opt_t);
+$OUTPUT_DIRECTORY = $opt_o if($opt_o);
+
 my $ncbiTaxId = $opt_n;
-my $organismAbbrev = $opt_o;
+my $organismAbbrev = $opt_a;
 my $genomeDatabaseName = $opt_d;
 my $genomeDatabaseVersion = $opt_v;
 my $chromosomeMapFile = $opt_c;
@@ -67,6 +72,16 @@ my $topLevelSlices = $sliceAdaptor->fetch_all('toplevel');
 
 my $geneDumper = EBIParser::AllGenes->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism);
 $geneDumper->parse();
+exit;
+my $analysisAdaptor = $registry->get_adaptor('default', 'Core', 'DnaAlignFeature' );
+print Dumper $analysisAdaptor;
+exit;
+
+
+my $analysis = $analysisAdaptor->fetch_by_logic_name('superfamily');
+
+print Dumper $analysis;
+
 
 #TODO  sres.ontology ??
   # keep a running list of seen so_terms.  Dump them out at the end to "SRes.OntologyTerm" file

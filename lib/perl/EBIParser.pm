@@ -35,7 +35,9 @@ sub setGUSTableWriters {
 	    $outputFile = $outputFiles{$realTableName};
 	}
 	else {
-	    $outputFile = OutputFile->new($realTableName, $outputDirectory);
+	    my $headerFields = $gusTableDefinition->getFields();
+
+	    $outputFile = OutputFile->new($realTableName, $outputDirectory, $headerFields);
 	    $outputFiles{$realTableName} = $outputFile;
 	}
 	
