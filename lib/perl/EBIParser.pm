@@ -8,6 +8,9 @@ use OutputFile;
 sub getSlices { $_[0]->{_slices} }
 sub setSlices { $_[0]->{_slices} = $_[1] }
 
+sub getRegistry { $_[0]->{_registry} }
+sub setRegistry { $_[0]->{_registry} = $_[1] }
+
 sub getOrganism { $_[0]->{_organism} }
 sub setOrganism { $_[0]->{_organism} = $_[1] }
 
@@ -51,13 +54,15 @@ sub getTables { $_[0]->{_tables} || [] }
 sub setTables { $_[0]->{_tables} = $_[1] }
 
 sub new {
-    my ($class, $slices, $gusTableDefinitions, $outputDirectory, $organism) = @_;
+    my ($class, $slices, $gusTableDefinitions, $outputDirectory, $organism, $registry) = @_;
 
     my $self = bless {}, $class;
 
     $self->setSlices($slices);
     $self->setGUSTableWriters($gusTableDefinitions, $outputDirectory);
     $self->setOrganism($organism);
+
+    $self->setRegistry($registry);
     
     $self->importTableModules();
     

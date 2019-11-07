@@ -13,20 +13,14 @@ my %sequenceOntologyMap = (chromosome => 'TODO_1234',
 			   mature_transcript => 'TODO_12344',
     );
 
-
-use Data::Dumper;
-
-sub getName { $_[0]->{_name} }
-sub setName { $_[0]->{_name} = $_[1] }
-
-
 sub new {
     my $class = shift;
 
+    # this bit calls init
     my $self = $class->SUPER::new(@_);
 
-    my $name = $self->getName();
-    $seenOntologyTerms{$name} = $self->getPrimaryKey();
+    my $naturalKey = $self->getNaturalKey();
+    $seenOntologyTerms{$naturalKey} = $self->getPrimaryKey();
 
     return $self;
 }
@@ -47,7 +41,7 @@ sub init {
 
     die "Could not determine sourceId for name=$name, sourceId=$sourceId" unless($sourceId);
 
-    $self->setName($name);
+    $self->setNaturalKey($name);
     
     return {source_id => $sourceId,
 	    external_database_release_id => "TODO"};

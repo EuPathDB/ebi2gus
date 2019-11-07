@@ -70,10 +70,12 @@ my $sliceAdaptor = $registry->get_adaptor('default', 'Core', 'Slice' );
 
 my $topLevelSlices = $sliceAdaptor->fetch_all('toplevel');
 
-my $geneDumper = EBIParser::AllGenes->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism);
+my $geneDumper = EBIParser::AllGenes->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism, $registry);
 $geneDumper->parse();
 exit;
-my $analysisAdaptor = $registry->get_adaptor('default', 'Core', 'DnaAlignFeature' );
+
+
+my $analysisAdaptor = $registry->get_adaptor('default', 'Core', 'Analysis' );
 print Dumper $analysisAdaptor;
 exit;
 

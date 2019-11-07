@@ -1,14 +1,35 @@
 package GUS::SRes::ExternalDatabaseRelease;
-use base qw(GUSRow);
+use base qw(GUSRow Exporter);
 
 use strict;
 
-sub init {
-    my ($self, $version, $gusExternalDatabase) = @_;
+our @EXPORT = qw(%seenExternalDatabaseReleases);
 
-    return {external_database_id => $gusExternalDatabase->getPrimaryKey(),
+our %seenExternalDatabaseReleases;
+
+sub new {
+    my $class = shift;
+
+    # this bit calls init
+    my $self = $class->SUPER::new(@_);
+
+    my $naturalKey = $self->getNaturalKey();
+    $seenExternalDatabaseReleases{$naturalKey} = $self->getPrimaryKey();
+
+    return $self;
+}
+
+
+sub init {
+    my ($self, $version, $externalDatabaseId) = @_;
+
+    my $naturalKey = "$externalDatabaseId|$version";
+    $self->setNaturalKey($naturalKey);
+    
+    return {external_database_id => $externalDatabaseId,
 	    version => $version
     };
 }
+
 
 1;

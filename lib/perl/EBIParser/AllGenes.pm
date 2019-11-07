@@ -6,6 +6,31 @@ use strict;
 use Data::Dumper;
 
 use GUS::SRes::OntologyTerm qw(%seenOntologyTerms);
+use GUS::SRes::ExternalDatabase qw(%seenExternalDatabases);
+use GUS::SRes::ExternalDatabaseRelease qw(%seenExternalDatabaseReleases);
+use GUS::SRes::DbRef qw(%seenDBRefs);
+
+
+my %INTERPRO_LOGICS = ('pfam' => 1,
+		       'pirsf' => 1,
+		       'cdd' => 1,
+		       'hamap' => 1,
+		       'hmmpanther' => 1,
+		       'prints' => 1,
+		       'scanprosite' => 1,
+		       'sfld' => 1,
+		       'smart' => 1,
+		       'superfamily' => 1,
+		       'tigrfam' => 1,
+    );
+
+my %SKIP_LOGICS = ('mobidblite' => 1,
+		   'pfscan' => 1,
+		   'ncoils' => 1,
+		   'blastprodom' => 1,
+		   'gene3d' => 1,
+    );
+
 
 # these are required objects
 # a gus table definition object will be made for each of them
@@ -25,6 +50,17 @@ sub getTables {
 	     'GUS::SRes::Taxon',
 	     'GUS::SRes::OntologyTerm',
 	     'GUS::ApiDB::AaSequenceAttribute',
+	     'GUS::DoTS::LowComplexityNAFeature',
+	     'GUS::DoTS::TransposableElement',
+	     'GUS::DoTS::TandemRepeatFeature',
+	     'GUS::DoTS::Repeats',
+	     'GUS::DoTS::SignalPeptideFeature',
+	     'GUS::DoTS::TransMembraneAAFeature',
+	     'GUS::DoTS::LowComplexityAAFeature',
+	     'GUS::DoTS::AALocation',
+	     'GUS::SRes::DbRef',
+	     'GUS::DoTS::DbRefAAFeature',
+	     'GUS::DoTS::DomainFeature',
 #	     'GUS::DoTS::NAComment',
 	    ]);
 }
@@ -36,7 +72,7 @@ sub getExternalDatabaseRelease {
     my $genomeDatabaseVersion = $organism->getGenomeDatabaseVersion();
     
     my $gusExternalDatabase = GUS::SRes::ExternalDatabase->new($gusTableWriters, $genomeDatabaseName);
-    my $gusExternalDatabaseRelease = GUS::SRes::ExternalDatabaseRelease->new($gusTableWriters, $genomeDatabaseVersion, $gusExternalDatabase);
+    my $gusExternalDatabaseRelease = GUS::SRes::ExternalDatabaseRelease->new($gusTableWriters, $genomeDatabaseVersion, $gusExternalDatabase->getPrimaryKey());
 
     return $gusExternalDatabaseRelease;
 }
@@ -73,7 +109,6 @@ sub ontologyTermFromName {
     return GUS::SRes::OntologyTerm->new($gusTableWriters, $name)->getPrimaryKey();
 }
 
-
 sub parseSlice {
     my ($self, $slice, $gusExternalDatabaseRelease, $gusTaxon) = @_;
 
@@ -81,29 +116,55 @@ sub parseSlice {
 
     my $gusSequenceOntologyId = $self->ontologyTermForSlice($slice, $gusTableWriters);
     my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId);
-    
-    foreach my $gene (@{$slice->get_all_Genes()}) {
-	$self->parseGene($gene, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence);
+
+    # TODO:  genomic sequence synonyms / dbXRefs
+    foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
+	print "NAME=" . $sliceSynonym->name() . "\n";
     }
 
 
-    exit;
-    
-    # Repeats, Trnascan,. ...
-#    foreach my $alignFeature (@{$slice->get_all_DnaAlignFeatures()} ) {
+    foreach my $gene (@{$slice->get_all_Genes()}) {
+	$self->parseGene($gene, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence);
 
-#    }
+    }
 
+    foreach my $repeatFeature (@{$slice->get_all_RepeatFeatures()} ) {
+	$self->parseRepeatFeature($repeatFeature, $gusExternalDatabaseRelease, $gusExternalNASequence);
+    }
 
+}
+
+sub parseRepeatFeature {
+    my ($self, $repeatFeature, $gusExternalDatabaseRelease, $gusExternalNASequence) = @_;
+
+    my $gusTableWriters = $self->getGUSTableWriters();
+    my $logicName = $repeatFeature->analysis()->logic_name();
+
+    my $gusFeature;
     
-    
+    if($logicName eq "dust") {
+	$gusFeature = GUS::DoTS::LowComplexityNAFeature->new($gusTableWriters, $repeatFeature, $gusExternalNASequence, $gusExternalDatabaseRelease);
+    }
+    elsif($logicName eq "tefam") {
+	$gusFeature = GUS::DoTS::TransposableElement->new($gusTableWriters, $repeatFeature, $gusExternalNASequence, $gusExternalDatabaseRelease);
+    }
+    elsif($logicName eq "trf") {
+	$gusFeature = GUS::DoTS::TandemRepeatFeature->new($gusTableWriters, $repeatFeature, $gusExternalNASequence, $gusExternalDatabaseRelease);	
+    }
+    elsif($logicName =~ /^repeatmask_/) {
+	$gusFeature = GUS::DoTS::Repeats->new($gusTableWriters, $repeatFeature, $gusExternalNASequence, $gusExternalDatabaseRelease);		
+    }
+    else {
+	die "unknown repeat feature type:  $logicName";
+    }
+
+    GUS::DoTS::NALocation->new($gusTableWriters, $repeatFeature, $gusFeature);
 }
 
 sub parseGene {
     my ($self, $gene, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence) = @_;
 
     my $gusTableWriters = $self->getGUSTableWriters();
-    
 
     my $geneSequenceOntologyId = $self->ontologyTermFromBiotype($gene->get_Biotype(), $gusTableWriters);
     my $gusGeneFeature = GUS::DoTS::GeneFeature->new($gusTableWriters, $gene, $gusExternalNASequence, $gusExternalDatabaseRelease, $geneSequenceOntologyId);
@@ -120,65 +181,217 @@ sub parseGene {
     }
     
     foreach my $transcript ( @{ $gene->get_all_Transcripts() } ) {
-	my $splicedNASequenceOntologyId = $self->ontologyTermFromName("mature_transcript", $gusTableWriters);
-	my $gusSplicedNASequence = GUS::DoTS::SplicedNASequence->new($gusTableWriters, $transcript, $taxonId, $gusExternalDatabaseRelease, $splicedNASequenceOntologyId);
-	
-	my $transcriptSequenceOntologyId = $self->ontologyTermFromBiotype($transcript->get_Biotype(), $gusTableWriters);
-	my $gusTranscript = GUS::DoTS::Transcript->new($gusTableWriters, $transcript, $gusGeneFeature, $gusSplicedNASequence, $gusExternalDatabaseRelease, $transcriptSequenceOntologyId);
-	my $gusTranscriptNALocation = GUS::DoTS::NALocation::Transcript->new($gusTableWriters, $gusGeneFeature, $gusSplicedNASequence);
+	$self->parseTranscript($transcript, $gene, $gusGeneFeature, $taxonId, \%exonMap, $gusExternalDatabaseRelease);
+    }
 
-	if($gene->get_Biotype()->name() eq "protein_coding") {
 
-	    my $translation = $transcript->translation();
-
-	    
-
-	    
-	    # my $pfeatures = $translation->get_all_ProteinFeatures("");
-	    # while ( my $pfeature = shift @{$pfeatures} ) {
-	    # 	print $pfeature->p_value();
-	    # 	print "\n\n";
-	    # 	print Dumper $pfeature;
-	    # 	exit;
-	    # }
-
-	    my $translatedAASequenceOntologyId = $self->ontologyTermFromName("polypeptide", $gusTableWriters);
-	    my $gusTranslatedAASequence = GUS::DoTS::TranslatedAASequence->new($gusTableWriters, $transcript, $taxonId, $gusExternalDatabaseRelease, $translatedAASequenceOntologyId);
-
-	    GUS::ApiDB::AaSequenceAttribute->new($gusTableWriters, $translation, $gusTranslatedAASequence);
-
-	    
-	    my $gusTranslatedAAFeature = GUS::DoTS::TranslatedAAFeature->new($gusTableWriters, $transcript, $gusTranslatedAASequence, $gusTranscript, $gusExternalDatabaseRelease);
-
-	    my $exonOrderNum = 1;
-	    foreach my $exonTranscript ( @{ $transcript->get_all_ExonTranscripts() } ) {
-		my $exon = $exonTranscript->exon();
-
-		my $gusExonId = $exonMap{$exon->dbID()};
-		GUS::DoTS::RNAFeatureExon->new($gusTableWriters, $gusExonId, $gusTranscript, $exonOrderNum);
-
-		my $codingRegionStart = $exon->coding_region_start($transcript);
-		my $codingRegionEnd = $exon->coding_region_end($transcript);
-		if(defined $codingRegionStart) {
-		    GUS::DoTS::AAFeatureExon->new($gusTableWriters, $gusTranslatedAAFeature, $gusExonId, $codingRegionStart, $codingRegionEnd);		    
-		}
-
-		$exonOrderNum++;
-	    }
-	}
-	else {
-	    my $exonOrderNum = 1;
-	    foreach my $exonTranscript ( @{ $transcript->get_all_ExonTranscripts() } ) {
-		my $exon = $exonTranscript->exon();
-		my $gusExonId = $exonMap{$exon->dbID()};
-		GUS::DoTS::RNAFeatureExon->new($gusTableWriters, $gusExonId, $gusTranscript, $exonOrderNum);
-		$exonOrderNum++;
-	    }
-	}
-	
+    # DBRef 
+    foreach(@{$gene->get_all_object_xrefs()}) {
+#	print Dumper $_;
+#	exit;
+	print  "GENE\t" . $_->db_display_name () . "\t";
+	print  $_->primary_id () . "\n";
     }
 }
 
+
+
+sub parseTranscript {
+    my ($self, $transcript, $gene, $gusGeneFeature, $taxonId, $exonMap, $gusExternalDatabaseRelease) = @_;
+
+    my $gusTableWriters = $self->getGUSTableWriters();
+
+    my $splicedNASequenceOntologyId = $self->ontologyTermFromName("mature_transcript", $gusTableWriters);
+    my $gusSplicedNASequence = GUS::DoTS::SplicedNASequence->new($gusTableWriters, $transcript, $taxonId, $gusExternalDatabaseRelease, $splicedNASequenceOntologyId);
+    
+    my $transcriptSequenceOntologyId = $self->ontologyTermFromBiotype($transcript->get_Biotype(), $gusTableWriters);
+    my $gusTranscript = GUS::DoTS::Transcript->new($gusTableWriters, $transcript, $gusGeneFeature, $gusSplicedNASequence, $gusExternalDatabaseRelease, $transcriptSequenceOntologyId);
+    my $gusTranscriptNALocation = GUS::DoTS::NALocation::Transcript->new($gusTableWriters, $gusGeneFeature, $gusSplicedNASequence);
+
+    my $geneType = $gene->get_Biotype()->name();
+
+    my $gusTranslatedAAFeature;
+    if($geneType eq "protein_coding") {
+	my $translation = $transcript->translation();
+
+	print "NEW TRANSLATION\n";
+	$gusTranslatedAAFeature = $self->parseTranslation($translation, $transcript, $gusTranscript, $taxonId, $gusExternalDatabaseRelease);
+    }
+
+    my $exonOrderNum = 1;
+    foreach my $exonTranscript ( @{ $transcript->get_all_ExonTranscripts() } ) {
+	my $exon = $exonTranscript->exon();
+
+	my $gusExonId = $exonMap->{$exon->dbID()};
+	GUS::DoTS::RNAFeatureExon->new($gusTableWriters, $gusExonId, $gusTranscript, $exonOrderNum);
+
+	if($geneType eq "protein_coding") {
+	    my $codingRegionStart = $exon->coding_region_start($transcript);
+	    my $codingRegionEnd = $exon->coding_region_end($transcript);
+	    if(defined $codingRegionStart) {
+		GUS::DoTS::AAFeatureExon->new($gusTableWriters, $gusTranslatedAAFeature, $gusExonId, $codingRegionStart, $codingRegionEnd);		    
+	    }
+	}
+	$exonOrderNum++;
+    }
+
+    # DBRef 
+    foreach(@{$transcript->get_all_object_xrefs()}) {
+#	print Dumper $_;
+#	exit;
+	print  "TRANSCRIPT\t" . $_->db_display_name () . "\t";
+	print  $_->primary_id () . "\n";
+    }
+
+    
+}
+
+sub parseTranslation {
+    my ($self, $translation, $transcript, $gusTranscript, $taxonId, $gusExternalDatabaseRelease) = @_;
+
+    # DBRef 
+    foreach(@{$translation->get_all_object_xrefs()}) {
+	print  "TRANSLATION\t" . $_->db_display_name () . "\t";
+	print  $_->primary_id () . "\n";
+    }
+    
+    my $gusTableWriters = $self->getGUSTableWriters();
+    
+    my $translatedAASequenceOntologyId = $self->ontologyTermFromName("polypeptide", $gusTableWriters);
+    my $gusTranslatedAASequence = GUS::DoTS::TranslatedAASequence->new($gusTableWriters, $transcript, $taxonId, $gusExternalDatabaseRelease, $translatedAASequenceOntologyId);
+
+    GUS::ApiDB::AaSequenceAttribute->new($gusTableWriters, $translation, $gusTranslatedAASequence);
+
+    my $gusTranslatedAAFeature = GUS::DoTS::TranslatedAAFeature->new($gusTableWriters, $transcript, $gusTranslatedAASequence, $gusTranscript, $gusExternalDatabaseRelease);
+    
+    my %seenDomains;
+    foreach my $proteinFeature (@{$translation->get_all_ProteinFeatures()}) {
+	$self->parseProteinFeature($proteinFeature, $translation, $gusTranslatedAAFeature, $gusTranslatedAASequence, \%seenDomains);
+    }
+    
+    return $gusTranslatedAAFeature;
+}
+
+sub parseProteinFeature {
+    my ($self, $proteinFeature, $translation, $gusTranslatedAAFeature, $gusTranslatedAASequence, $seenDomains) = @_;
+
+    my $gusTableWriters = $self->getGUSTableWriters();
+    my $logicName = $proteinFeature->analysis()->logic_name();
+
+    my @gusFeatures;
+
+    if($logicName eq 'signalp') {
+	my $f = GUS::DoTS::SignalPeptideFeature->new($gusTableWriters, $gusTranslatedAASequence);
+	push @gusFeatures, $f;
+    }
+    elsif($logicName eq 'tmhmm') {
+	my $f = GUS::DoTS::TransMembraneAAFeature->new($gusTableWriters, $gusTranslatedAASequence);
+	push @gusFeatures, $f;
+    }
+    elsif($logicName eq 'seg') {
+	my $f = GUS::DoTS::LowComplexityAAFeature->new($gusTableWriters, $gusTranslatedAASequence);
+	push @gusFeatures, $f;
+    }
+    elsif($logicName =~ /^ms_/) {
+	# TODO: mass spec peptides
+    }
+    elsif($INTERPRO_LOGICS{$logicName}) {
+	my $id = $proteinFeature->display_id();
+	if($seenDomains->{$id}) {
+	    return; # seen before
+	}
+	$seenDomains->{$id} = 1;
+	my @f = $self->parseInterpro($proteinFeature, $gusTranslatedAASequence, $gusTranslatedAAFeature);
+	push @gusFeatures, @f; 
+    }
+    elsif($SKIP_LOGICS{$logicName}) { }
+    else {
+	die "unrecognized logic $logicName";
+    }
+
+    foreach my $gusFeature (@gusFeatures) {
+	GUS::DoTS::AALocation->new($gusTableWriters, $proteinFeature, $gusFeature);
+    }
+    
+}
+
+sub parseInterpro {
+    my ($self, $interproFeature, $gusTranslatedAASequence, $gusTranslatedAAFeature) = @_;
+
+    my $gusTableWriters = $self->getGUSTableWriters();
+
+    # first make the interpro rows in dbref and domainfeature
+    my $interproSecondaryId = $interproFeature->ilabel();
+    my $interproPrimaryId = $interproFeature->interpro_ac();
+
+    my $remark = $interproFeature->idesc(); #this is the interpro description used as the dbref remark for both
+
+    # next make the rows in dbref and domain feature for the domaindb
+    my $domainPrimaryId = $interproFeature->display_id();
+    my $domainSecondaryId = $interproFeature->hdescription();
+    my $evalue = $interproFeature->p_value(); # documentation says e value is gotten from p_value methohd
+
+    my $analysis = $interproFeature->analysis();
+
+    my $name =  $analysis->display_label();
+    my $version = $analysis->db_version();
+
+    my $interproName = $analysis->program();
+    my $interproVersion = $analysis->program_version();
+
+    my ($interproDbRefId, $interproExternalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($interproName, $interproVersion, $interproPrimaryId, $interproSecondaryId, $remark);
+    my ($domainDbRefId, $domainExternalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($name, $version, $domainPrimaryId, $domainSecondaryId, $remark);
+
+    GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $interproDbRefId, $gusTranslatedAAFeature->getPrimaryKey());
+    GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $domainDbRefId, $gusTranslatedAAFeature->getPrimaryKey());    
+
+    my $interproDomainFeature = GUS::DoTS::DomainFeature->new($gusTableWriters, $gusTranslatedAASequence, undef, $interproExternalDatabaseReleaseId, $interproPrimaryId, undef);
+    my $domainFeature = GUS::DoTS::DomainFeature->new($gusTableWriters, $gusTranslatedAASequence, $interproDomainFeature, $domainExternalDatabaseReleaseId, $domainPrimaryId, $evalue);
+    
+    return($interproDomainFeature, $domainFeature);
+}
+
+
+sub getDbRefAndExternalDatabaseReleaseIds {
+    my ($self, $databaseName, $databaseVersion, $primaryId, $secondaryId, $remark) = @_;
+
+    my $gusTableWriters = $self->getGUSTableWriters();
+    
+    my $externalDatabaseReleaseId = $self->getExternalDatabaseRelaseFromNameVersion($databaseName, $databaseVersion);    
+
+    my $dbRefNaturalKey = "$primaryId|$secondaryId|$externalDatabaseReleaseId";
+
+    my $dbRefId = $seenDBRefs{$dbRefNaturalKey};
+
+    unless($dbRefId) {
+	my $gusDbRef = GUS::SRes::DbRef->new($gusTableWriters, $primaryId, $secondaryId, $remark, $externalDatabaseReleaseId);
+	$dbRefId = $gusDbRef->getPrimaryKey();
+    }
+
+    return($dbRefId, $externalDatabaseReleaseId);
+}
+
+
+sub getExternalDatabaseRelaseFromNameVersion {
+    my ($self, $name, $version) = @_;
+
+    my $gusTableWriters = $self->getGUSTableWriters();
+    
+    my $externalDatabaseId = $seenExternalDatabases{$name};
+    unless($externalDatabaseId) {
+	my $externalDatabase = GUS::SRes::ExternalDatabase->new($gusTableWriters, $name);
+	$externalDatabaseId = $externalDatabase->getPrimaryKey();
+    }
+
+    my $extDbRlsSpec = "$externalDatabaseId|" . $version;
+    my $externalDatabaseReleaseId = $seenExternalDatabaseReleases{$extDbRlsSpec};
+
+    unless($externalDatabaseReleaseId) {
+	$externalDatabaseReleaseId = GUS::SRes::ExternalDatabaseRelease->new($gusTableWriters, $version, $externalDatabaseId)->getPrimaryKey();
+    }
+
+    return $externalDatabaseReleaseId;
+}
 
 
 sub parse {

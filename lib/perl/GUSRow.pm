@@ -9,6 +9,9 @@ sub setGUSTableWriter { $_[0]->{_gus_table_writer} = $_[1] }
 sub getGUSRowAsHash { $_[0]->{_gus_row_hash} }
 sub setGUSRowAsHash { $_[0]->{_gus_row_hash} = $_[1] }
 
+sub getNaturalKey { $_[0]->{_natural_key} }
+sub setNaturalKey { $_[0]->{_natural_key} = $_[1] }
+
 sub init { }
 
 sub getPrimaryKey { $_[0]->{_primary_key} }
