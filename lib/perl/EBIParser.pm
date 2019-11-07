@@ -114,9 +114,6 @@ sub setGUSTableWriters {
     $self->{_gus_table_writers} = $gusTableWriters;
 }
 
-sub getTables { $_[0]->{_tables} || [] }
-sub setTables { $_[0]->{_tables} = $_[1] }
-
 sub new {
     my ($class, $slices, $gusTableDefinitions, $outputDirectory, $organism, $registry) = @_;
 
