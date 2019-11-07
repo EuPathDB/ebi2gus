@@ -10,7 +10,7 @@ use Bio::EnsEMBL::Registry;
 use GUSTableDefinitionParser;
 use Organism;
 
-use EBIParser::AllGenes;
+use EBIParser;
 
 use Data::Dumper;
 
@@ -70,8 +70,8 @@ my $sliceAdaptor = $registry->get_adaptor('default', 'Core', 'Slice' );
 
 my $topLevelSlices = $sliceAdaptor->fetch_all('toplevel');
 
-my $geneDumper = EBIParser::AllGenes->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism, $registry);
-$geneDumper->parse();
+my $ebiParser = EBIParser->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism, $registry);
+$ebiParser->parse();
 exit;
 
 
