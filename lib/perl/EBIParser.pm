@@ -320,6 +320,8 @@ sub parseTranscript {
 #	exit;
 	print  "TRANSCRIPT\t" . $_->db_display_name () . "\t";
 	print  $_->primary_id () . "\n";
+
+	
     }
 
     
