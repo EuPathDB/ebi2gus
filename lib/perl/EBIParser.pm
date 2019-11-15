@@ -11,7 +11,9 @@ use GUS::SRes::OntologyTerm qw(%seenOntologyTerms);
 use GUS::SRes::ExternalDatabase qw(%seenExternalDatabases);
 use GUS::SRes::ExternalDatabaseRelease qw(%seenExternalDatabaseReleases);
 use GUS::SRes::DbRef qw(%seenDBRefs);
-
+use GUS::Core::DatabaseInfo qw(%seenDatabases);
+use GUS::Core::TableInfo qw(%seenTables);
+use GUS::DoTS::GOAssociationInstanceLOE qw(%seenGOEvidences);
 
 my %INTERPRO_LOGICS = ('pfam' => 1,
 		       'pirsf' => 1,
@@ -62,12 +64,17 @@ sub getTables {
 	     'GUS::DoTS::AALocation',
 	     'GUS::SRes::DbRef',
 	     'GUS::DoTS::DbRefAAFeature',
+	     'GUS::DoTS::DbRefNAFeature',
 	     'GUS::DoTS::DomainFeature',
+	     'GUS::Core::DatabaseInfo',
+	     'GUS::Core::TableInfo',
+	     'GUS::DoTS::GOAssociation',
+	     'GUS::DoTS::GOAssociationInstance',
+	     'GUS::DoTS::GOAssociationInstanceLOE',
+	     'GUS::DoTS::GOAssocInstEvidCode',
 #	     'GUS::DoTS::NAComment',
 	    ]);
 }
-
-
 
 sub getSlices { $_[0]->{_slices} }
 sub setSlices { $_[0]->{_slices} = $_[1] }
@@ -77,6 +84,7 @@ sub setRegistry { $_[0]->{_registry} = $_[1] }
 
 sub getOrganism { $_[0]->{_organism} }
 sub setOrganism { $_[0]->{_organism} = $_[1] }
+
 
 sub getGUSTableWriters { $_[0]->{_gus_table_writers} }
 sub setGUSTableWriters { 
@@ -175,7 +183,7 @@ sub ontologyTermFromBiotype {
 	return $seenOntologyTerms{$name};
     }
 
-    return GUS::SRes::OntologyTerm->new($gusTableWriters, $biotype)->getPrimaryKey();
+    return GUS::SRes::OntologyTerm->new($gusTableWriters, $biotype, undef)->getPrimaryKey();
 }
 
 sub ontologyTermFromName {
@@ -185,8 +193,34 @@ sub ontologyTermFromName {
 	return $seenOntologyTerms{$name};
     }
 
-    return GUS::SRes::OntologyTerm->new($gusTableWriters, $name)->getPrimaryKey();
+    return GUS::SRes::OntologyTerm->new($gusTableWriters, $name, undef)->getPrimaryKey();
 }
+
+
+sub ontologyTermFromSourceId {
+    my ($self, $sourceId, $gusTableWriters) = @_;
+
+    if($seenOntologyTerms{$sourceId}) {
+	return $seenOntologyTerms{$sourceId};
+    }
+
+    return GUS::SRes::OntologyTerm->new($gusTableWriters, undef, $sourceId)->getPrimaryKey();
+}
+
+
+sub ontologyTermFromGOTerm {
+    my ($self, $goTerm, $gusTableWriters) = @_;
+
+    $goTerm =~ s/:/_/;
+
+    if($seenOntologyTerms{$goTerm}) {
+	return $seenOntologyTerms{$goTerm};
+    }
+
+    return GUS::SRes::OntologyTerm->new($gusTableWriters, undef, $goTerm)->getPrimaryKey();
+}
+
+
 
 sub parseSlice {
     my ($self, $slice, $gusExternalDatabaseRelease, $gusTaxon) = @_;
@@ -201,10 +235,13 @@ sub parseSlice {
 	print "NAME=" . $sliceSynonym->name() . "\n";
     }
 
+    my %transcriptXrefsLogics;
+    my %geneXrefsLogics;
+    my %translationXrefsLogics;    
 
     foreach my $gene (@{$slice->get_all_Genes()}) {
+	next unless($gene->stable_id() eq 'AGAP004717');
 	$self->parseGene($gene, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence);
-
     }
 
     foreach my $repeatFeature (@{$slice->get_all_RepeatFeatures()} ) {
@@ -246,6 +283,7 @@ sub parseGene {
     my $gusTableWriters = $self->getGUSTableWriters();
 
     my $geneSequenceOntologyId = $self->ontologyTermFromBiotype($gene->get_Biotype(), $gusTableWriters);
+    # TODO: product name
     my $gusGeneFeature = GUS::DoTS::GeneFeature->new($gusTableWriters, $gene, $gusExternalNASequence, $gusExternalDatabaseRelease, $geneSequenceOntologyId);
     my $gusGeneNALocation = GUS::DoTS::NALocation->new($gusTableWriters, $gene, $gusGeneFeature);
 
@@ -263,13 +301,14 @@ sub parseGene {
 	$self->parseTranscript($transcript, $gene, $gusGeneFeature, $taxonId, \%exonMap, $gusExternalDatabaseRelease);
     }
 
+    foreach my $xref (@{$gene->get_all_object_xrefs()}) {
+	my $databaseName = $xref->dbname();
+	my $databaseVersion = $xref->analysis()->logic_name();
 
-    # DBRef 
-    foreach(@{$gene->get_all_object_xrefs()}) {
-#	print Dumper $_;
-#	exit;
-	print  "GENE\t" . $_->db_display_name () . "\t";
-	print  $_->primary_id () . "\n";
+	my $primaryId = $xref->primary_id();
+	
+	my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $primaryId, undef, undef);
+	GUS::DoTS::DbRefNAFeature->new($gusTableWriters, $dbRefId, $gusGeneFeature->getPrimaryKey());
     }
 }
 
@@ -284,17 +323,17 @@ sub parseTranscript {
     my $gusSplicedNASequence = GUS::DoTS::SplicedNASequence->new($gusTableWriters, $transcript, $taxonId, $gusExternalDatabaseRelease, $splicedNASequenceOntologyId);
     
     my $transcriptSequenceOntologyId = $self->ontologyTermFromBiotype($transcript->get_Biotype(), $gusTableWriters);
+
+    # add Product name
     my $gusTranscript = GUS::DoTS::Transcript->new($gusTableWriters, $transcript, $gusGeneFeature, $gusSplicedNASequence, $gusExternalDatabaseRelease, $transcriptSequenceOntologyId);
     my $gusTranscriptNALocation = GUS::DoTS::NALocation::Transcript->new($gusTableWriters, $gusGeneFeature, $gusSplicedNASequence);
 
     my $geneType = $gene->get_Biotype()->name();
 
-    my $gusTranslatedAAFeature;
+    my ($gusTranslatedAAFeature, $gusTranslatedAASequence);
     if($geneType eq "protein_coding") {
 	my $translation = $transcript->translation();
-
-	print "NEW TRANSLATION\n";
-	$gusTranslatedAAFeature = $self->parseTranslation($translation, $transcript, $gusTranscript, $taxonId, $gusExternalDatabaseRelease);
+	($gusTranslatedAAFeature, $gusTranslatedAASequence) = $self->parseTranslation($translation, $transcript, $gusTranscript, $taxonId, $gusExternalDatabaseRelease);
     }
 
     my $exonOrderNum = 1;
@@ -314,27 +353,58 @@ sub parseTranscript {
 	$exonOrderNum++;
     }
 
-    # DBRef 
-    foreach(@{$transcript->get_all_object_xrefs()}) {
-#	print Dumper $_;
-#	exit;
-	print  "TRANSCRIPT\t" . $_->db_display_name () . "\t";
-	print  $_->primary_id () . "\n";
 
-	
+    foreach my $xref(@{$transcript->get_all_object_xrefs()}) {
+	my $databaseName = $xref->dbname();
+	if($databaseName eq "GO") {
+	    $self->parseGOAssociation($gusTranslatedAASequence, $xref)
+	}
+	else {
+	    my $databaseVersion = $xref->analysis()->logic_name();
+	    my $primaryId = $xref->primary_id();
+
+	    my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $primaryId, undef, undef);
+	    GUS::DoTS::DbRefNAFeature->new($gusTableWriters, $dbRefId, $gusTranscript->getPrimaryKey());
+	}
+    }
+}
+
+sub parseGOAssociation {
+    my ($self, $gusTranslatedAASequence, $xref) = @_;
+
+    my $proteinDatabaseName = "DoTS";
+    my $proteinTableName = "TranslatedAASequence";
+    
+    my $gusTableWriters = $self->getGUSTableWriters();
+
+    my $proteinDatabaseId = $seenDatabases{$proteinDatabaseName} ? $seenDatabases{$proteinDatabaseName} : GUS::Core::DatabaseInfo->new($gusTableWriters, $proteinDatabaseName)->getPrimaryKey();
+
+    my $proteinTableKey = "$proteinTableName|$proteinDatabaseId";
+    my $proteinTableId = $seenTables{$proteinTableKey} ? $seenTables{$proteinTableKey} : GUS::Core::TableInfo->new($gusTableWriters, $proteinTableName, $proteinDatabaseId)->getPrimaryKey();
+    
+    my $goId = $xref->display_id();
+    my $gusGOTermId = $self->ontologyTermFromGOTerm($goId, $gusTableWriters);
+
+    my $gusGoAssociation = GUS::DoTS::GOAssociation->new($gusTableWriters, $proteinTableId, $gusTranslatedAASequence->getPrimaryKey(), $gusGOTermId);
+
+    my $loeName = ref($xref) eq 'Bio::EnsEMBL::OntologyXref' ? $xref->analysis()->logic_name() : $xref->db();
+    my $goEvidenceLoeId = $seenGOEvidences{$loeName};
+    unless($goEvidenceLoeId) {
+	$goEvidenceLoeId = GUS::DoTS::GOAssociationInstanceLOE->new($gusTableWriters, $loeName);
     }
 
-    
+    my $gusGoAssociationInstance = GUS::DoTS::GOAssociationInstance->new($gusTableWriters, $gusGoAssociation->getPrimaryKey(), $goEvidenceLoeId);
+
+    foreach my $linkageType (@{$xref->get_all_linkage_types()}) {
+	my $evidenceCodeId = $self->ontologyTermFromSourceId($linkageType, $gusTableWriters);
+	GUS::DoTS::GOAssocInstEvidCode->new($gusTableWriters, $evidenceCodeId, $gusGoAssociationInstance->getPrimaryKey());
+    }
 }
+
 
 sub parseTranslation {
     my ($self, $translation, $transcript, $gusTranscript, $taxonId, $gusExternalDatabaseRelease) = @_;
 
-    # DBRef 
-    foreach(@{$translation->get_all_object_xrefs()}) {
-	print  "TRANSLATION\t" . $_->db_display_name () . "\t";
-	print  $_->primary_id () . "\n";
-    }
     
     my $gusTableWriters = $self->getGUSTableWriters();
     
@@ -349,8 +419,18 @@ sub parseTranslation {
     foreach my $proteinFeature (@{$translation->get_all_ProteinFeatures()}) {
 	$self->parseProteinFeature($proteinFeature, $translation, $gusTranslatedAAFeature, $gusTranslatedAASequence, \%seenDomains);
     }
+
+    foreach my $xref (@{$translation->get_all_object_xrefs()}) {
+	my $databaseName = $xref->dbname();
+	my $databaseVersion = $xref->analysis()->logic_name();
+
+	my $primaryId = $xref->primary_id();
+	
+	my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $primaryId, undef, undef);
+	GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $dbRefId, $gusTranslatedAAFeature->getPrimaryKey());
+    }
     
-    return $gusTranslatedAAFeature;
+    return($gusTranslatedAAFeature, $gusTranslatedAASequence);
 }
 
 sub parseProteinFeature {
@@ -477,7 +557,7 @@ sub getExternalDatabaseRelaseFromNameVersion {
 
 sub parse {
     my ($self) = @_;
-
+    
     my $topLevelSlices = $self->getSlices();
     my $gusTableWriters = $self->getGUSTableWriters();
     my $organism = $self->getOrganism();

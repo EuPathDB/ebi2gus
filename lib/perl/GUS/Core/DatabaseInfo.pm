@@ -1,11 +1,11 @@
-package GUS::DoTS::GOAssociationInstanceLOE;
+package GUS::Core::DatabaseInfo;
 use base qw(GUSRow Exporter);
 
 use strict;
 
-our @EXPORT = qw(%seenGOEvidences);
+our @EXPORT = qw(%seenDatabases);
 
-our %seenGOEvidences;
+our %seenDatabases;
 
 sub new {
     my $class = shift;
@@ -14,7 +14,7 @@ sub new {
     my $self = $class->SUPER::new(@_);
 
     my $naturalKey = $self->getNaturalKey();
-    $seenGOEvidences{$naturalKey} = $self->getPrimaryKey();
+    $seenDatabases{$naturalKey} = $self->getPrimaryKey();
 
     return $self;
 }
@@ -26,7 +26,8 @@ sub init {
     $self->setNaturalKey($name);
     
     return {name => $name};
+
+    
 }
 
 1;
-
