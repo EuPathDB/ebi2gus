@@ -17,8 +17,8 @@ use Data::Dumper;
 my $REGISTRY_CONF_FILE = "/usr/local/etc/ensembl_registry.conf";
 my $TABLE_DEFINITIONS_XML_FILE = "/usr/local/etc/gusSchemaDefinitions.xml";
 
-#TODO
-my $OUTPUT_DIRECTORY = "$ENV{HOME}";
+
+my $OUTPUT_DIRECTORY = "/tmp";
 
 sub HELP_MESSAGE {
     print STDERR <<"EOM";
@@ -72,17 +72,23 @@ my $topLevelSlices = $sliceAdaptor->fetch_all('toplevel');
 
 my $ebiParser = EBIParser->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism, $registry);
 $ebiParser->parse();
-exit;
+# exit;
 
 
-my $analysisAdaptor = $registry->get_adaptor('default', 'Core', 'Analysis' );
-print Dumper $analysisAdaptor;
-exit;
+# my $goa = $registry->get_adaptor( 'default', 'Core', 'OntologyTerm' );
+# print Dumper $goa;
+# exit;
 
 
-my $analysis = $analysisAdaptor->fetch_by_logic_name('superfamily');
+# my $analysisAdaptor = $registry->get_adaptor('default', 'Core', 'Analysis' );
+# my $analysis = $analysisAdaptor->fetch_by_logic_name("interpro2go");
+# print Dumper $analysis;      
+# exit;
 
-print Dumper $analysis;
+
+# my $analysis = $analysisAdaptor->fetch_by_logic_name('superfamily');
+
+# print Dumper $analysis;
 
 
 #TODO  sres.ontology ??

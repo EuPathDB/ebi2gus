@@ -8,8 +8,8 @@ our @EXPORT = qw(%seenOntologyTerms);
 our %seenOntologyTerms;
 
 my %sequenceOntologyMap = (chromosome => 'TODO_1234',
-			   polypeptide => 'TODO_1234',
-			   exon => 'TODO_1234',
+			   polypeptide => 'TODO_1235',
+			   exon => 'TODO_1236',
 			   mature_transcript => 'TODO_12344',
     );
 
