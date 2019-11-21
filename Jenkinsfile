@@ -7,6 +7,7 @@ node ('centos8') {
     stage('build') {
         // build the container
         sh 'podman build --format=docker -t ebi2gus $WORKSPACE'
+        sh 'env'
         }
     stage('push') {
       withCredentials([usernameColonPassword(credentialsId: '0f11d4d1-6557-423c-b5ae-693cc87f7b4b', variable: 'HUB_LOGIN')]) {
