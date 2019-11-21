@@ -27,7 +27,6 @@ usage : $0 -r ensemble_registry_file \\
 	-d genome_database_name \\
 	-v genome_database_version \\
 	-n ncbi_tax_id \\
-	-a organism_abbrev \\
 	-c chromosome_map_file \\
         -o output_directory
 EOM
@@ -42,7 +41,6 @@ $TABLE_DEFINITIONS_XML_FILE = $opt_t if($opt_t);
 $OUTPUT_DIRECTORY = $opt_o if($opt_o);
 
 my $ncbiTaxId = $opt_n;
-my $organismAbbrev = $opt_a;
 my $genomeDatabaseName = $opt_d;
 my $genomeDatabaseVersion = $opt_v;
 my $chromosomeMapFile = $opt_c;
@@ -50,7 +48,7 @@ my $chromosomeMapFile = $opt_c;
 if($opt_h || 
    !-e $REGISTRY_CONF_FILE || !-e $TABLE_DEFINITIONS_XML_FILE || 
    !defined($ncbiTaxId) || !$genomeDatabaseVersion || 
-   !$genomeDatabaseName || !$organismAbbrev) { 
+   !$genomeDatabaseName) { 
     HELP_MESSAGE();
 }
 
@@ -60,7 +58,7 @@ if($chromosomeMapFile && !-e $chromosomeMapFile) {
 
 my $gusTableDefinitions = GUSTableDefinitionParser->new($TABLE_DEFINITIONS_XML_FILE);
 
-my $organism = Organism->new($ncbiTaxId, $organismAbbrev, $genomeDatabaseName, $genomeDatabaseVersion, $chromosomeMapFile);
+my $organism = Organism->new($ncbiTaxId, $genomeDatabaseName, $genomeDatabaseVersion, $chromosomeMapFile);
 
 my $registry = 'Bio::EnsEMBL::Registry';
 

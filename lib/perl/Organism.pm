@@ -9,9 +9,6 @@ use Data::Dumper;
 sub getNcbiTaxonId { $_[0]->{_ncbi_tax_id} }
 sub setNcbiTaxonId { $_[0]->{_ncbi_tax_id}  = $_[1] }
 
-sub getAbbrev { $_[0]->{_abbrev} }
-sub setAbbrev { $_[0]->{_abbrev} = $_[1] }
-
 sub getGenomeDatabaseVersion { $_[0]->{_genome_database_version} }
 sub setGenomeDatabaseVersion { $_[0]->{_genome_database_version} = $_[1] }
 
@@ -23,14 +20,10 @@ sub setChromosomeMap { $_[0]->{_chromosome_map} = $_[1] }
 
 
 sub new {
-    my ($class, $ncbiTaxId, $orgAbbrev, $genomeDatabaseName, $genomeDatabaseVersion, $chromosomeMapFile) = @_;
+    my ($class, $ncbiTaxId, $genomeDatabaseName, $genomeDatabaseVersion, $chromosomeMapFile) = @_;
 
     unless(defined $ncbiTaxId) {
 	die "Required ncbi_taxon_id missing from organism xml";
-    }
-
-    unless($orgAbbrev) {
-	die "Required abbrev missing from organism xml";
     }
 
     unless($genomeDatabaseName && $genomeDatabaseVersion) {
@@ -51,7 +44,6 @@ sub new {
     my $self = bless {}, $class;
 
     $self->setNcbiTaxonId($ncbiTaxId);
-    $self->setAbbrev($orgAbbrev);
     $self->setGenomeDatabaseName($genomeDatabaseName);
     $self->setGenomeDatabaseVersion($genomeDatabaseVersion);
     $self->setChromosomeMap(\%chromosomeMap);
