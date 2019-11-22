@@ -30,17 +30,18 @@ sub new {
 	die "GenomeDatabase requires name and version. Found [$genomeDatabaseName] and [$genomeDatabaseVersion]"
     }
 
-    open(MAP, $chromosomeMapFile) or die "Cannot open $chromosomeMapFile for reading: $!";
-
     my %chromosomeMap;
-    while(<MAP>) {
-	chomp;
+    if(-e $chromosomeMapFile) {
+	open(MAP, $chromosomeMapFile) or die "Cannot open $chromosomeMapFile for reading: $!";
 
-	my @a = split(/\t/, $_);
-	$chromosomeMap{$a[0]} = {chromosome => $a[1], chromosome_order_num => $a[2]};
+	while(<MAP>) {
+	    chomp;
+
+	    my @a = split(/\t/, $_);
+	    $chromosomeMap{$a[0]} = {chromosome => $a[1], chromosome_order_num => $a[2]};
+	}
+	close MAP;
     }
-    close MAP;
-    
     my $self = bless {}, $class;
 
     $self->setNcbiTaxonId($ncbiTaxId);
