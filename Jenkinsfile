@@ -1,5 +1,5 @@
 node ('centos8') {
-    def tag
+    def tag = "latest"
     stage('checkout') {
         checkout scm
         }
@@ -12,10 +12,7 @@ node ('centos8') {
     stage('push') {
       withCredentials([usernameColonPassword(credentialsId: '0f11d4d1-6557-423c-b5ae-693cc87f7b4b', variable: 'HUB_LOGIN')]) {
 
-        // set master to latest (may be better ways to do this)
-        if (env.BRANCH_NAME == 'master') {
-           tag = "latest"
-         } else {
+        if (env.BRANCH_NAME != 'master') {
            tag = "${env.BRANCH_NAME}"
          }
 
