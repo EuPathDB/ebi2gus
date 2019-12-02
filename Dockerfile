@@ -1,4 +1,4 @@
-FROM mariadb/server
+FROM mariadb
 
 ENV APIVER 95
 ENV BIOPERLVER release-1-6-924
@@ -28,6 +28,4 @@ COPY ./conf/ensembl_registry.conf.sample /usr/local/etc/ensembl_registry.conf
 COPY ./conf/chromosomeMap.conf.sample /usr/local/etc/chromosomeMap.conf
 COPY ./lib/xml/gusSchemaDefinitions.xml /usr/local/etc/gusSchemaDefinitions.xml
 
-ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["mysqld"]

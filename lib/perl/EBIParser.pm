@@ -240,7 +240,6 @@ sub parseSlice {
     my %translationXrefsLogics;    
 
     foreach my $gene (@{$slice->get_all_Genes()}) {
-	next unless($gene->stable_id() eq 'AGAP004717');
 	$self->parseGene($gene, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence);
     }
 
