@@ -29,6 +29,10 @@ sub isView { $_[0]->{_is_view} }
 sub getViewToImpFieldMap { $_[0]->{_view_to_imp_field_map} }
 sub setViewToImpFieldMap { $_[0]->{_view_to_imp_field_map} = $_[1] }
 
+sub getImpToViewFieldMap { $_[0]->{_imp_to_view_field_map} }
+sub setImpToViewFieldMap { $_[0]->{_imp_to_view_field_map} = $_[1] }
+
+
 sub new {
     my ($class, $tableName, $tableHash) = @_;
 
@@ -38,9 +42,13 @@ sub new {
 
     if(my $impTable = $tableHash->{impTable}) {
 	$self->setRealTableName($impTable);
-	$self->{_is_view};
+	$self->{_is_view} = 1;
 	my %viewToImpFieldMap = map { lc $_ => lc $tableHash->{column}->{$_}->{impColumn} || lc $_  } keys %{$tableHash->{column}};
+
+	my %impToViewFieldMap = map { lc $tableHash->{column}->{$_}->{impColumn} || lc $_ => lc $_  } keys %{$tableHash->{column}};
+
 	$self->setViewToImpFieldMap(\%viewToImpFieldMap);
+	$self->setImpToViewFieldMap(\%impToViewFieldMap);
     }
     else {
 	$self->setRealTableName($tableName);
@@ -59,7 +67,7 @@ sub new {
     $self->setFieldDataTypes(\%fieldDataTypes);
     $self->setFields(\@fields);
     $self->setPrimaryKeyField(lc $tableHash->{primaryKey});
-    
+
     return $self; 
 }
 

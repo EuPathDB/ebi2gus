@@ -5,8 +5,6 @@ use strict;
 use XML::Simple;
 use GUSTableDefinition;
 
-use Data::Dumper;
-
 sub getXMLAsObject { $_[0]->{_xml_as_object} }
 sub setXMLAsObject { $_[0]->{_xml_as_object} = $_[1] }
 
@@ -28,6 +26,8 @@ sub new {
 
 sub makeTableDefinition {
     my ($self, $tableName) = @_;
+
+    $tableName = uc $tableName;
     
     my $xml = $self->getXMLAsObject();
 
