@@ -18,6 +18,7 @@
   <column name="PREDICTION_ALGORITHM_ID" type="NUMBER" length="22" nullable="Y" parent="CORE.ALGORITHM.ALGORITHM_ID" />
   <column name="IS_PREDICTED" type="NUMBER" length="22" nullable="N" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AAOrthologExperiment" impTable="DoTS.AASeqGroupExperimentImp" primaryKey="AA_SEQ_GROUP_EXPERIMENT_ID">
@@ -29,6 +30,7 @@
   <column name="PVALUE_EXP" type="NUMBER" length="22" nullable="Y" />
   <column name="PERCENT_IDENTITY" type="FLOAT" length="22" nullable="Y" />
   <column name="PERCENT_MATCH" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AAOrthologGroup" impTable="DoTS.AASequenceGroupImp" primaryKey="AA_SEQUENCE_GROUP_ID">
@@ -48,6 +50,7 @@
   <column name="MAX_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="MIN_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="AA_SEQ_GROUP_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.AASEQGROUPEXPERIMENTIMP.AA_SEQ_GROUP_EXPERIMENT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AAParalogExperiment" impTable="DoTS.AASeqGroupExperimentImp" primaryKey="AA_SEQ_GROUP_EXPERIMENT_ID">
@@ -59,6 +62,7 @@
   <column name="PVALUE_EXP" type="NUMBER" length="22" nullable="Y" />
   <column name="PERCENT_IDENTITY" type="FLOAT" length="22" nullable="Y" />
   <column name="PERCENT_MATCH" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AAParalogGroup" impTable="DoTS.AASequenceGroupImp" primaryKey="AA_SEQUENCE_GROUP_ID">
@@ -78,6 +82,7 @@
   <column name="MAX_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="MIN_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="AA_SEQ_GROUP_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.AASEQGROUPEXPERIMENTIMP.AA_SEQ_GROUP_EXPERIMENT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AASeqGroupExperiment" impTable="DoTS.AASeqGroupExperimentImp" primaryKey="AA_SEQ_GROUP_EXPERIMENT_ID">
@@ -89,6 +94,7 @@
   <column name="PVALUE_EXP" type="NUMBER" length="22" nullable="Y" />
   <column name="PERCENT_IDENTITY" type="FLOAT" length="22" nullable="Y" />
   <column name="PERCENT_MATCH" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AASeqVariation" impTable="DoTS.AAFeatureImp" primaryKey="AA_FEATURE_ID">
@@ -117,6 +123,7 @@
   <column name="GENOMIC_LOCN" impColumn="NUMBER3" type="NUMBER" length="22" nullable="Y" />
   <column name="NA_ORIGINAL" impColumn="STRING5" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="NA_SUBSTITUTE" impColumn="STRING6" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AASequence" impTable="DoTS.AASequenceImp" primaryKey="AA_SEQUENCE_ID">
@@ -133,6 +140,7 @@
   <column name="SEQUENCE_TYPE_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.SEQUENCETYPE.SEQUENCE_TYPE_ID" />
   <column name="SEQUENCE_ONTOLOGY_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="TAXON_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.TAXON.TAXON_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AASequenceGroup" impTable="DoTS.AASequenceGroupImp" primaryKey="AA_SEQUENCE_GROUP_ID">
@@ -152,6 +160,7 @@
   <column name="MAX_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="MIN_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="AA_SEQ_GROUP_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.AASEQGROUPEXPERIMENTIMP.AA_SEQ_GROUP_EXPERIMENT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AlleleFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -167,6 +176,7 @@
   <column name="IS_PREDICTED" type="NUMBER" length="22" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="DESCRIPTION" impColumn="STRING1" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ArrayElementFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -184,6 +194,7 @@
   <column name="DESCRIPTION" impColumn="STRING1" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="PROBE_SET" impColumn="STRING2" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="PROBE_COUNT" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Assembly" impTable="DoTS.NASequenceImp" primaryKey="NA_SEQUENCE_ID">
@@ -212,6 +223,7 @@
   <column name="NOTES" impColumn="STRING1" type="VARCHAR2" length="255" nullable="Y" />
   <column name="GAPPED_CONSENSUS" impColumn="CLOB1" type="CLOB" length="4000" nullable="Y" />
   <column name="QUALITY_VALUES" impColumn="CLOB2" type="CLOB" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.BindingSiteFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -231,6 +243,7 @@
   <column name="PRIMARY_SCORE" impColumn="FLOAT1" type="FLOAT" length="22" nullable="Y" />
   <column name="SECONDARY_SCORE" impColumn="FLOAT2" type="FLOAT" length="22" nullable="Y" />
   <column name="SYNDROME" impColumn="STRING2" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ChromosomeElementFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -249,6 +262,7 @@
   <column name="LENGTH" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
   <column name="CHROMOSOME_END" impColumn="STRING2" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="PERCENT_AT" impColumn="FLOAT1" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.CollectionNAFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -263,6 +277,7 @@
   <column name="PREDICTION_ALGORITHM_ID" type="NUMBER" length="22" nullable="Y" parent="CORE.ALGORITHM.ALGORITHM_ID" />
   <column name="IS_PREDICTED" type="NUMBER" length="22" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.DNARegulatory" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -288,6 +303,7 @@
   <column name="STANDARD_NAME" impColumn="STRING9" type="VARCHAR2" length="1500" nullable="Y" />
   <column name="USEDIN" impColumn="STRING10" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="IS_PARTIAL" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.DNAStructure" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -314,6 +330,7 @@
   <column name="STANDARD_NAME" impColumn="STRING10" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="USEDIN" impColumn="STRING11" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="IS_PARTIAL" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.DomainFeature" impTable="DoTS.AAFeatureImp" primaryKey="AA_FEATURE_ID">
@@ -339,6 +356,7 @@
   <column name="E_VALUE" impColumn="FLOAT2" type="FLOAT" length="22" nullable="Y" />
   <column name="PROBABILITY" impColumn="FLOAT3" type="FLOAT" length="22" nullable="Y" />
   <column name="NUMBER_OF_DOMAINS" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.EpitopeFeature" impTable="DoTS.AAFeatureImp" primaryKey="AA_FEATURE_ID">
@@ -363,6 +381,7 @@
   <column name="SCORE" impColumn="FLOAT1" type="FLOAT" length="22" nullable="Y" />
   <column name="MAX_SCORE" impColumn="FLOAT2" type="FLOAT" length="22" nullable="Y" />
   <column name="WIDTH" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ExonFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -389,6 +408,7 @@
   <column name="CODING_END" impColumn="NUMBER9" type="NUMBER" length="22" nullable="Y" />
   <column name="READING_FRAME" impColumn="NUMBER10" type="NUMBER" length="22" nullable="Y" />
   <column name="SCORE" impColumn="FLOAT1" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ExternalAASequence" impTable="DoTS.AASequenceImp" primaryKey="AA_SEQUENCE_ID">
@@ -409,6 +429,7 @@
   <column name="NAME" impColumn="STRING2" type="VARCHAR2" length="255" nullable="Y" />
   <column name="MOLECULE_TYPE" impColumn="STRING3" type="VARCHAR2" length="255" nullable="Y" />
   <column name="CRC32_VALUE" impColumn="STRING4" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ExternalNASequence" impTable="DoTS.NASequenceImp" primaryKey="NA_SEQUENCE_ID">
@@ -434,6 +455,7 @@
   <column name="NAME" impColumn="STRING2" type="VARCHAR2" length="255" nullable="Y" />
   <column name="CHROMOSOME" impColumn="STRING3" type="VARCHAR2" length="255" nullable="Y" />
   <column name="CHROMOSOME_ORDER_NUM" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.GeneFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -469,6 +491,7 @@
   <column name="PRODUCT" impColumn="STRING10" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="STANDARD_NAME" impColumn="STRING11" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="USEDIN" impColumn="STRING12" type="VARCHAR2" length="1500" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.HexamerFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -484,6 +507,7 @@
   <column name="IS_PREDICTED" type="NUMBER" length="22" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="SCORE" impColumn="FLOAT1" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Immunoglobulin" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -515,6 +539,7 @@
   <column name="USEDIN" impColumn="STRING12" type="VARCHAR2" length="1500" nullable="Y" />
   <column name="IS_PARTIAL" impColumn="NUMBER3" type="NUMBER" length="22" nullable="Y" />
   <column name="IS_PSEUDO" impColumn="NUMBER4" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.InParalogExperiment" impTable="DoTS.SeqGroupExperimentImp" primaryKey="SEQ_GROUP_EXPERIMENT_ID">
@@ -526,6 +551,7 @@
   <column name="PVALUE_EXP" type="NUMBER" length="22" nullable="Y" />
   <column name="PERCENT_IDENTITY" type="FLOAT" length="22" nullable="Y" />
   <column name="PERCENT_MATCH" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.InParalogGroup" impTable="DoTS.SequenceGroupImp" primaryKey="SEQUENCE_GROUP_ID">
@@ -546,6 +572,7 @@
   <column name="MAX_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="MIN_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="SEQUENCE_GROUP_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.SEQGROUPEXPERIMENTIMP.SEQ_GROUP_EXPERIMENT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.InflectionPointFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -561,6 +588,7 @@
   <column name="IS_PREDICTED" type="NUMBER" length="22" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="DESCRIPTION" impColumn="STRING1" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.IntronFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -577,6 +605,7 @@
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="IS_ONE_OF" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
   <column name="ORDER_NUMBER" impColumn="NUMBER2" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.IsolateFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -613,6 +642,7 @@
   <column name="STANDARD_NAME" impColumn="STRING11" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="USEDIN" impColumn="STRING12" type="VARCHAR2" length="1500" nullable="Y" />
   <column name="PRODUCT_ALIAS" impColumn="STRING13" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.IsolateSource" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -658,6 +688,7 @@
   <column name="MOL_TYPE" impColumn="STRING29" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="ORGANISM" impColumn="STRING30" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="IS_REFERENCE" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.LowComplexityAAFeature" impTable="DoTS.AAFeatureImp" primaryKey="AA_FEATURE_ID">
@@ -677,6 +708,7 @@
   <column name="PREDICTION_ALGORITHM_ID" type="NUMBER" length="22" nullable="Y" parent="CORE.ALGORITHM.ALGORITHM_ID" />
   <column name="IS_PREDICTED" type="NUMBER" length="22" nullable="N" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.LowComplexityNAFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -692,6 +724,7 @@
   <column name="IS_PREDICTED" type="NUMBER" length="22" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="LENGTH" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.MassSpecFeature" impTable="DoTS.AAFeatureImp" primaryKey="AA_FEATURE_ID">
@@ -713,6 +746,7 @@
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="DEVELOPMENTAL_STAGE" impColumn="STRING1" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="SPECTRUM_COUNT" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Miscellaneous" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -744,6 +778,7 @@
   <column name="IS_PARTIAL" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
   <column name="IS_PSEUDO" impColumn="NUMBER2" type="NUMBER" length="22" nullable="Y" />
   <column name="NUM" impColumn="NUMBER3" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.MotifAASequence" impTable="DoTS.AASequenceImp" primaryKey="AA_SEQUENCE_ID">
@@ -765,6 +800,7 @@
   <column name="NAME" impColumn="STRING2" type="VARCHAR2" length="255" nullable="Y" />
   <column name="MOLECULE_TYPE" impColumn="STRING3" type="VARCHAR2" length="255" nullable="Y" />
   <column name="CRC32_VALUE" impColumn="STRING4" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NAFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -779,6 +815,7 @@
   <column name="PREDICTION_ALGORITHM_ID" type="NUMBER" length="22" nullable="Y" parent="CORE.ALGORITHM.ALGORITHM_ID" />
   <column name="IS_PREDICTED" type="NUMBER" length="22" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NASequence" impTable="DoTS.NASequenceImp" primaryKey="NA_SEQUENCE_ID">
@@ -800,6 +837,7 @@
   <column name="SEQUENCING_CENTER_CONTACT_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.CONTACT.CONTACT_ID" />
   <column name="SOURCE_ID" type="VARCHAR2" length="80" nullable="Y" />
   <column name="SOURCE_NA_SEQUENCE_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.NASEQUENCEIMP.NA_SEQUENCE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.OrthologExperiment" impTable="DoTS.SeqGroupExperimentImp" primaryKey="SEQ_GROUP_EXPERIMENT_ID">
@@ -811,6 +849,7 @@
   <column name="PVALUE_EXP" type="NUMBER" length="22" nullable="Y" />
   <column name="PERCENT_IDENTITY" type="FLOAT" length="22" nullable="Y" />
   <column name="PERCENT_MATCH" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.OrthologGroup" impTable="DoTS.SequenceGroupImp" primaryKey="SEQUENCE_GROUP_ID">
@@ -831,6 +870,7 @@
   <column name="MAX_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="MIN_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="SEQUENCE_GROUP_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.SEQGROUPEXPERIMENTIMP.SEQ_GROUP_EXPERIMENT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.OutParalogExperiment" impTable="DoTS.SeqGroupExperimentImp" primaryKey="SEQ_GROUP_EXPERIMENT_ID">
@@ -842,6 +882,7 @@
   <column name="PVALUE_EXP" type="NUMBER" length="22" nullable="Y" />
   <column name="PERCENT_IDENTITY" type="FLOAT" length="22" nullable="Y" />
   <column name="PERCENT_MATCH" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.OutParalogGroup" impTable="DoTS.SequenceGroupImp" primaryKey="SEQUENCE_GROUP_ID">
@@ -862,6 +903,7 @@
   <column name="MAX_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="MIN_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="SEQUENCE_GROUP_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.SEQGROUPEXPERIMENTIMP.SEQ_GROUP_EXPERIMENT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.PlasmoAPFeature" impTable="DoTS.AAFeatureImp" primaryKey="AA_FEATURE_ID">
@@ -881,6 +923,7 @@
   <column name="PREDICTION_ALGORITHM_ID" type="NUMBER" length="22" nullable="Y" parent="CORE.ALGORITHM.ALGORITHM_ID" />
   <column name="IS_PREDICTED" type="NUMBER" length="22" nullable="N" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.PolyAFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -896,6 +939,7 @@
   <column name="IS_PREDICTED" type="NUMBER" length="22" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="SCORE" impColumn="FLOAT1" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.PostTranslationalModFeature" impTable="DoTS.AAFeatureImp" primaryKey="AA_FEATURE_ID">
@@ -916,6 +960,7 @@
   <column name="IS_PREDICTED" type="NUMBER" length="22" nullable="N" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="NAME" impColumn="STRING1" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.PredictedAAFeature" impTable="DoTS.AAFeatureImp" primaryKey="AA_FEATURE_ID">
@@ -938,6 +983,7 @@
   <column name="NAME" impColumn="STRING1" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="ALGORITHM_NAME" impColumn="STRING2" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="SCORE" impColumn="FLOAT1" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.PromoterFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -953,6 +999,7 @@
   <column name="IS_PREDICTED" type="NUMBER" length="22" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="SCORE" impColumn="FLOAT1" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ProteinFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -983,6 +1030,7 @@
   <column name="TRANSL_EXCEPT" impColumn="STRING13" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="USEDIN" impColumn="STRING14" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="IS_PARTIAL" impColumn="NUMBER2" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RNAFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1000,6 +1048,7 @@
   <column name="NUMBER_OF_EXONS" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
   <column name="TRANSLATION_START" impColumn="NUMBER2" type="NUMBER" length="22" nullable="Y" />
   <column name="TRANSLATION_STOP" impColumn="NUMBER3" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RNARegulatoryFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1016,6 +1065,7 @@
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="SCORE" impColumn="FLOAT1" type="FLOAT" length="22" nullable="Y" />
   <column name="FUNCTION" impColumn="STRING1" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RNASecondaryStructure" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1031,6 +1081,7 @@
   <column name="IS_PREDICTED" type="NUMBER" length="22" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="SCORE" impColumn="FLOAT1" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RNAStructure" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1056,6 +1107,7 @@
   <column name="STANDARD_NAME" impColumn="STRING9" type="VARCHAR2" length="1500" nullable="Y" />
   <column name="USEDIN" impColumn="STRING10" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="IS_PARTIAL" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RNAType" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1085,6 +1137,7 @@
   <column name="USEDIN" impColumn="STRING13" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="IS_PARTIAL" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
   <column name="IS_PSEUDO" impColumn="NUMBER2" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RepeatRegionAAFeature" impTable="DoTS.AAFeatureImp" primaryKey="AA_FEATURE_ID">
@@ -1112,6 +1165,7 @@
   <column name="SCORE" impColumn="FLOAT2" type="FLOAT" length="22" nullable="Y" />
   <column name="CONSENSUS" impColumn="STRING1" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="ALGORITHM_NAME" impColumn="STRING2" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Repeats" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1139,6 +1193,7 @@
   <column name="STANDARD_NAME" impColumn="STRING11" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="USEDIN" impColumn="STRING12" type="VARCHAR2" length="1500" nullable="Y" />
   <column name="IS_PARTIAL" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ReplicationOriginFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1154,6 +1209,7 @@
   <column name="IS_PREDICTED" type="NUMBER" length="22" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="DESCRIPTION" impColumn="STRING1" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RestrictionFragmentFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1170,6 +1226,7 @@
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="ENZYME_NAME" impColumn="STRING1" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="TYPE_OF_CUT" impColumn="STRING2" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SAGETagFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1188,6 +1245,7 @@
   <column name="BINDING_LOCATION_ID" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
   <column name="TRAILER_LOCATION_ID" impColumn="NUMBER2" type="NUMBER" length="22" nullable="Y" />
   <column name="TAG_LOCATION_ID" impColumn="NUMBER3" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.STS" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1211,6 +1269,7 @@
   <column name="STANDARD_NAME" impColumn="STRING7" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="USEDIN" impColumn="STRING8" type="VARCHAR2" length="1500" nullable="Y" />
   <column name="IS_PARTIAL" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ScaffoldGapFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1229,6 +1288,7 @@
   <column name="MAX_SIZE" impColumn="NUMBER2" type="NUMBER" length="22" nullable="Y" />
   <column name="LEFT_CONTIG" impColumn="STRING1" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="RIGHT_CONTIG" impColumn="STRING2" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SecondaryStructureAAFeature" impTable="DoTS.AAFeatureImp" primaryKey="AA_FEATURE_ID">
@@ -1250,6 +1310,7 @@
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="NAME" impColumn="STRING1" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="SCORE" impColumn="FLOAT1" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SeqGroupExperiment" impTable="DoTS.SeqGroupExperimentImp" primaryKey="SEQ_GROUP_EXPERIMENT_ID">
@@ -1261,6 +1322,7 @@
   <column name="PVALUE_EXP" type="NUMBER" length="22" nullable="Y" />
   <column name="PERCENT_IDENTITY" type="FLOAT" length="22" nullable="Y" />
   <column name="PERCENT_MATCH" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SequenceGroup" impTable="DoTS.SequenceGroupImp" primaryKey="SEQUENCE_GROUP_ID">
@@ -1281,6 +1343,7 @@
   <column name="MAX_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="MIN_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="SEQUENCE_GROUP_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.SEQGROUPEXPERIMENTIMP.SEQ_GROUP_EXPERIMENT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SignalPeptideFeature" impTable="DoTS.AAFeatureImp" primaryKey="AA_FEATURE_ID">
@@ -1313,6 +1376,7 @@
   <column name="NUM_POSITIVES" impColumn="NUMBER5" type="NUMBER" length="22" nullable="Y" />
   <column name="SIGNAL_PROBABILITY" impColumn="FLOAT5" type="FLOAT" length="22" nullable="Y" />
   <column name="ANCHOR_PROBABILITY" impColumn="FLOAT6" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SnpFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1347,6 +1411,7 @@
   <column name="POSITION_IN_PROTEIN" impColumn="NUMBER4" type="NUMBER" length="22" nullable="Y" />
   <column name="HAS_NONSYNONYMOUS_ALLELE" impColumn="NUMBER5" type="NUMBER" length="22" nullable="Y" />
   <column name="MAJOR_ALLELE_COUNT" impColumn="NUMBER6" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Source" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1404,6 +1469,7 @@
   <column name="TISSUE_TYPE" impColumn="STRING40" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="USEDIN" impColumn="STRING41" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="LABEL" impColumn="STRING42" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SplicedNASequence" impTable="DoTS.NASequenceImp" primaryKey="NA_SEQUENCE_ID">
@@ -1427,6 +1493,7 @@
   <column name="SOURCE_NA_SEQUENCE_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.NASEQUENCEIMP.NA_SEQUENCE_ID" />
   <column name="SECONDARY_IDENTIFIER" impColumn="STRING1" type="VARCHAR2" length="255" nullable="Y" />
   <column name="NAME" impColumn="STRING2" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.TandemRepeatFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1453,6 +1520,7 @@
   <column name="T_COUNT" impColumn="NUMBER8" type="NUMBER" length="22" nullable="Y" />
   <column name="ENTROPY" impColumn="FLOAT3" type="FLOAT" length="22" nullable="Y" />
   <column name="CONSENSUS" impColumn="STRING1" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.TertiaryStructureAAFeature" impTable="DoTS.AAFeatureImp" primaryKey="AA_FEATURE_ID">
@@ -1474,6 +1542,7 @@
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="NAME" impColumn="STRING1" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="SCORE" impColumn="FLOAT1" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.TransMembraneAAFeature" impTable="DoTS.AAFeatureImp" primaryKey="AA_FEATURE_ID">
@@ -1498,6 +1567,7 @@
   <column name="FIRST_60" impColumn="STRING2" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="PREDICTED_HELICES" impColumn="NUMBER2" type="NUMBER" length="22" nullable="Y" />
   <column name="TOPOLOGY" impColumn="NUMBER3" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Transcript" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1536,6 +1606,7 @@
   <column name="IS_PARTIAL" impColumn="NUMBER3" type="NUMBER" length="22" nullable="Y" />
   <column name="IS_PSEUDO" impColumn="NUMBER4" type="NUMBER" length="22" nullable="Y" />
   <column name="ANTICODON" impColumn="STRING19" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.TranslatedAAFeature" impTable="DoTS.AAFeatureImp" primaryKey="AA_FEATURE_ID">
@@ -1567,6 +1638,7 @@
   <column name="P_VALUE" impColumn="FLOAT3" type="FLOAT" length="22" nullable="Y" />
   <column name="PARAMETER_VALUES" impColumn="STRING3" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="IS_REVERSED" impColumn="NUMBER6" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.TranslatedAASequence" impTable="DoTS.AASequenceImp" primaryKey="AA_SEQUENCE_ID">
@@ -1586,6 +1658,7 @@
   <column name="NOTES" impColumn="STRING1" type="VARCHAR2" length="255" nullable="Y" />
   <column name="IS_SIMPLE" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
   <column name="SECONDARY_IDENTIFIER" impColumn="STRING2" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.TransposableElement" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1600,6 +1673,7 @@
   <column name="PREDICTION_ALGORITHM_ID" type="NUMBER" length="22" nullable="Y" parent="CORE.ALGORITHM.ALGORITHM_ID" />
   <column name="IS_PREDICTED" type="NUMBER" length="22" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.TrivialTranslation" impTable="DoTS.AASequenceImp" primaryKey="AA_SEQUENCE_ID">
@@ -1620,6 +1694,7 @@
   <column name="CODON_TABLE" impColumn="STRING1" type="VARCHAR2" length="255" nullable="Y" />
   <column name="TRANSLATION_START" impColumn="NUMBER2" type="NUMBER" length="22" nullable="Y" />
   <column name="TRANSLATION_STOP" impColumn="NUMBER3" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.UTRFeature" impTable="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -1634,6 +1709,7 @@
   <column name="PREDICTION_ALGORITHM_ID" type="NUMBER" length="22" nullable="Y" parent="CORE.ALGORITHM.ALGORITHM_ID" />
   <column name="IS_PREDICTED" type="NUMBER" length="22" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.VirtualSequence" impTable="DoTS.NASequenceImp" primaryKey="NA_SEQUENCE_ID">
@@ -1659,6 +1735,7 @@
   <column name="SECONDARY_IDENTIFIER" impColumn="STRING2" type="VARCHAR2" length="255" nullable="Y" />
   <column name="CHROMOSOME" impColumn="STRING3" type="VARCHAR2" length="255" nullable="Y" />
   <column name="CHROMOSOME_ORDER_NUM" impColumn="NUMBER1" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Platform.ArrayDesign" impTable="Platform.ReporterSetImp" primaryKey="REPORTER_SET_ID">
@@ -1684,6 +1761,7 @@
   <column name="NUMBER_GRID_COLUMNS" impColumn="NUMBER5" type="NUMBER" length="22" nullable="Y" />
   <column name="NUMBER_SUB_ROWS" impColumn="NUMBER6" type="NUMBER" length="22" nullable="Y" />
   <column name="NUMBER_SUB_COLUMNS" impColumn="NUMBER7" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Platform.ReporterSet" impTable="Platform.ReporterSetImp" primaryKey="REPORTER_SET_ID">
@@ -1700,6 +1778,7 @@
   <column name="SURFACE_TYPE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="SOURCE_ID" type="VARCHAR2" length="30" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <!-- non-view tables -->
@@ -1711,6 +1790,7 @@
   <column name="MAX_MOLECULAR_WEIGHT" type="NUMBER" length="22" nullable="Y" />
   <column name="HYDROPATHICITY_GRAVY_SCORE" type="NUMBER" length="22" nullable="Y" />
   <column name="AROMATICITY_SCORE" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.AnalysisMethodInvocation" primaryKey="ANALYSIS_METHOD_INVOCATION_ID">
@@ -1718,6 +1798,7 @@
   <column name="NAME" type="VARCHAR2" length="200" nullable="N" />
   <column name="VERSION" type="VARCHAR2" length="30" nullable="Y" />
   <column name="PARAMETERS" type="VARCHAR2" length="200" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.BLATProteinAlignment" primaryKey="BLAT_PROTEIN_ALIGNMENT_ID">
@@ -1756,6 +1837,7 @@
   <column name="BLOCKSIZES" type="VARCHAR2" length="1600" nullable="N" />
   <column name="QSTARTS" type="VARCHAR2" length="1600" nullable="N" />
   <column name="TSTARTS" type="VARCHAR2" length="1600" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.CdsLocation" primaryKey="CDS_LOCATION_ID">
@@ -1770,6 +1852,7 @@
   <column name="PARENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
   <column name="IS_TOP_LEVEL" type="NUMBER" length="22" nullable="Y" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.ChrCopyNumber" primaryKey="CHR_COPY_NUMBER_ID">
@@ -1777,6 +1860,7 @@
   <column name="PROTOCOL_APP_NODE_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOLAPPNODE.PROTOCOL_APP_NODE_ID" />
   <column name="NA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NASEQUENCEIMP.NA_SEQUENCE_ID" />
   <column name="CHR_COPY_NUMBER" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.CompoundMassSpecResult" primaryKey="COMPOUND_MASS_SPEC_RESULT_ID">
@@ -1786,6 +1870,7 @@
   <column name="PERCENTILE" type="NUMBER" length="22" nullable="Y" />
   <column name="STANDARD_ERROR" type="NUMBER" length="22" nullable="Y" />
   <column name="VALUE" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.CompoundPeaks" primaryKey="COMPOUND_PEAKS_ID">
@@ -1795,6 +1880,7 @@
   <column name="MASS" type="NUMBER" length="22" nullable="Y" />
   <column name="RETENTION_TIME" type="NUMBER" length="22" nullable="Y" />
   <column name="MS_POLARITY" type="CHAR" length="1" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.CompoundPeaksChebi" primaryKey="COMPOUND_PEAKS_CHEBI_ID">
@@ -1804,6 +1890,7 @@
   <column name="ISOTOPOMER" type="VARCHAR2" length="100" nullable="Y" />
   <column name="USER_COMPOUND_NAME" type="VARCHAR2" length="200" nullable="Y" />
   <column name="IS_PREFERRED_COMPOUND" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.CrisprPhenotype" primaryKey="CRISPR_PHENOTYPE_ID">
@@ -1815,6 +1902,7 @@
   <column name="GENE_FDR" type="FLOAT" length="22" nullable="Y" />
   <column name="SG_FDR" type="FLOAT" length="22" nullable="Y" />
   <column name="RANK" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.Datasource" primaryKey="DATA_SOURCE_ID">
@@ -1826,18 +1914,21 @@
   <column name="TYPE" type="VARCHAR2" length="50" nullable="Y" />
   <column name="SUBTYPE" type="VARCHAR2" length="50" nullable="Y" />
   <column name="EXTERNAL_DATABASE_NAME" type="VARCHAR2" length="120" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.DbRefCompound" primaryKey="DB_REF_COMPOUND_ID">
   <column name="DB_REF_COMPOUND_ID" type="NUMBER" length="22" nullable="N" />
   <column name="COMPOUND_ID" type="NUMBER" length="22" nullable="N" />
   <column name="DB_REF_ID" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.EcNumberGenus" primaryKey="EC_NUMBER_GENUS_ID">
   <column name="EC_NUMBER_GENUS_ID" type="NUMBER" length="22" nullable="N" />
   <column name="EC_NUMBER" type="VARCHAR2" length="50" nullable="N" />
   <column name="GENUS" type="VARCHAR2" length="50" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.ExonLocation" primaryKey="EXON_LOCATION_ID">
@@ -1853,6 +1944,7 @@
   <column name="SEQUENCE_ONTOLOGY_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="IS_TOP_LEVEL" type="NUMBER" length="22" nullable="Y" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.FeatureLocation" primaryKey="FEATURE_LOCATION_ID">
@@ -1869,6 +1961,7 @@
   <column name="SEQUENCE_ONTOLOGY_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="IS_TOP_LEVEL" type="NUMBER" length="22" nullable="Y" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.GFF3" primaryKey="GFF3_FEATURE_ID">
@@ -1885,11 +1978,13 @@
   <column name="PARENT_ATTR" type="VARCHAR2" length="20" nullable="Y" />
   <column name="ID_ATTR" type="VARCHAR2" length="30" nullable="Y" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.GFF3AttributeKey" primaryKey="GFF3_ATTRIBUTE_KEY_ID">
   <column name="GFF3_ATTRIBUTE_KEY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="64" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.GFF3Attributes" primaryKey="GFF3_ATTRIBUTE_ID">
@@ -1897,6 +1992,7 @@
   <column name="GFF3_ATTRIBUTE_KEY_ID" type="NUMBER" length="22" nullable="N" parent="APIDB.GFF3ATTRIBUTEKEY.GFF3_ATTRIBUTE_KEY_ID" />
   <column name="GFF3_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="APIDB.GFF3.GFF3_FEATURE_ID" />
   <column name="VALUE" type="VARCHAR2" length="64" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.GeneCopyNumber" primaryKey="GENE_COPY_NUMBER_ID">
@@ -1905,6 +2001,7 @@
   <column name="NA_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
   <column name="HAPLOID_NUMBER" type="FLOAT" length="22" nullable="Y" />
   <column name="REF_COPY_NUMBER" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.GeneFeatureName" primaryKey="GENE_FEATURE_NAME_ID">
@@ -1913,6 +2010,7 @@
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="NAME" type="VARCHAR2" length="60" nullable="N" />
   <column name="IS_PREFERRED" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.GeneFeatureProduct" primaryKey="GENE_FEATURE_PRODUCT_ID">
@@ -1921,6 +2019,7 @@
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="PRODUCT" type="VARCHAR2" length="500" nullable="N" />
   <column name="IS_PREFERRED" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.GeneGff" primaryKey="WDK_TABLE_ID">
@@ -1930,6 +2029,7 @@
   <column name="TABLE_NAME" type="VARCHAR2" length="80" nullable="Y" />
   <column name="ROW_COUNT" type="NUMBER" length="22" nullable="Y" />
   <column name="CONTENT" type="CLOB" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.GeneInteraction" primaryKey="GENE_INTERACTION_ID">
@@ -1944,6 +2044,7 @@
   <column name="NUMBER_OF_SEARCHES" type="NUMBER" length="22" nullable="Y" />
   <column name="PREY_NUMBER_OF_BAITS" type="NUMBER" length="22" nullable="Y" />
   <column name="BAIT_NUMBER_OF_PREYS" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.GeneLocation" primaryKey="GENE_LOCATION_ID">
@@ -1958,6 +2059,7 @@
   <column name="SEQUENCE_ONTOLOGY_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="IS_TOP_LEVEL" type="NUMBER" length="22" nullable="Y" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.GoSubset" primaryKey="GO_SUBSET_ID">
@@ -1965,6 +2067,7 @@
   <column name="GO_SUBSET_TERM" type="VARCHAR2" length="500" nullable="N" />
   <column name="ONTOLOGY_TERM_ID" type="NUMBER" length="22" nullable="N" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.GroupTaxonMatrix" primaryKey="GROUP_TAXON_MATRIX_ID">
@@ -2470,6 +2573,7 @@
   <column name="COLUMN498" type="NUMBER" length="22" nullable="Y" />
   <column name="COLUMN499" type="NUMBER" length="22" nullable="Y" />
   <column name="COLUMN500" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.HaplotypeResult" primaryKey="HAPLOTYPE_RESULT_ID">
@@ -2477,6 +2581,7 @@
   <column name="NA_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
   <column name="PROTOCOL_APP_NODE_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOLAPPNODE.PROTOCOL_APP_NODE_ID" />
   <column name="VALUE" type="VARCHAR2" length="5" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.IntronJunction" primaryKey="INTRON_JUNCTION_ID">
@@ -2488,6 +2593,7 @@
   <column name="IS_REVERSED" type="NUMBER" length="22" nullable="Y" />
   <column name="UNIQUE_READS" type="NUMBER" length="22" nullable="Y" />
   <column name="NU_READS" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.IntronLocation" primaryKey="INTRON_LOCATION_ID">
@@ -2500,6 +2606,7 @@
   <column name="PARENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
   <column name="IS_TOP_LEVEL" type="NUMBER" length="22" nullable="Y" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.IsolateGPS" primaryKey="ISOLATE_GPS_ID">
@@ -2508,6 +2615,7 @@
   <column name="COUNTRY" type="VARCHAR2" length="250" nullable="N" />
   <column name="LAT" type="FLOAT" length="22" nullable="N" />
   <column name="LNG" type="FLOAT" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.MassSpecSummary" primaryKey="MASS_SPEC_SUMMARY_ID">
@@ -2520,6 +2628,7 @@
   <column name="SEQUENCE_COUNT" type="NUMBER" length="22" nullable="Y" />
   <column name="SPECTRUM_COUNT" type="NUMBER" length="22" nullable="Y" />
   <column name="AA_SEQ_PERCENT_COVERED" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.MetadataSpecType" primaryKey="METADATA_SPEC_TYPE_ID">
@@ -2527,6 +2636,7 @@
   <column name="PROPERTY" type="VARCHAR2" length="100" nullable="N" />
   <column name="TYPE" type="VARCHAR2" length="10" nullable="Y" />
   <column name="FILTER" type="VARCHAR2" length="10" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.NAFeatureHaploblock" primaryKey="NA_FEATURE_HAPBLOCK_ID">
@@ -2536,6 +2646,7 @@
   <column name="LOD_SCORE_MANT" type="FLOAT" length="22" nullable="Y" />
   <column name="LOD_SCORE_EXP" type="NUMBER" length="22" nullable="Y" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.NAFeatureImage" primaryKey="NA_FEATURE_IMAGE_ID">
@@ -2547,6 +2658,7 @@
   <column name="IMAGE_TYPE" type="VARCHAR2" length="30" nullable="Y" />
   <column name="MAGNIFICATION" type="VARCHAR2" length="20" nullable="Y" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.NAFeatureMetaCycle" primaryKey="NA_FEATURE_META_CYCLE_ID">
@@ -2556,6 +2668,7 @@
   <column name="PERIOD" type="FLOAT" length="22" nullable="Y" />
   <column name="AMPLITUDE" type="FLOAT" length="22" nullable="Y" />
   <column name="PVALUE" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.NAFeaturePhenotype" primaryKey="NA_FEATURE_PHENOTYPE_ID">
@@ -2567,12 +2680,14 @@
   <column name="VALUE" type="VARCHAR2" length="2000" nullable="Y" />
   <column name="VALUE_ID" type="NUMBER" length="22" nullable="Y" />
   <column name="VALUE_CLOB" type="CLOB" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.NaFeaturePhenotypeModel" primaryKey="NA_FEATURE_PHENOTYPE_MODEL_ID">
   <column name="NA_FEATURE_PHENOTYPE_MODEL_ID" type="NUMBER" length="22" nullable="N" />
   <column name="PHENOTYPE_MODEL_ID" type="NUMBER" length="22" nullable="N" parent="APIDB.PHENOTYPEMODEL.PHENOTYPE_MODEL_ID" />
   <column name="NA_FEATURE_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.NaSequenceAttribute" primaryKey="NA_SEQUENCE_ATTRIBUTE_ID">
@@ -2588,6 +2703,7 @@
   <column name="FREQUENCY_OPTIMAL_CODONS" type="NUMBER" length="22" nullable="Y" />
   <column name="SYNONYMOUS_MUTATION_RATE" type="NUMBER" length="22" nullable="Y" />
   <column name="NONSYNONYMOUS_MUTATION_RATE" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.OldAnnotation" primaryKey="OLD_ANNOTATION_ID">
@@ -2596,6 +2712,7 @@
   <column name="TYPE" type="VARCHAR2" length="10" nullable="N" />
   <column name="VALUE" type="VARCHAR2" length="400" nullable="N" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.OldCodingSequence" primaryKey="OLD_CODING_SEQUENCE_ID">
@@ -2603,6 +2720,7 @@
   <column name="SOURCE_ID" type="VARCHAR2" length="80" nullable="N" />
   <column name="CODING_SEQUENCE" type="CLOB" length="4000" nullable="N" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.OntologyTermResult" primaryKey="ONTOLOGY_TERM_RESULT_ID">
@@ -2611,6 +2729,7 @@
   <column name="PROTOCOL_APP_NODE_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOLAPPNODE.PROTOCOL_APP_NODE_ID" />
   <column name="VALUE" type="NUMBER" length="22" nullable="Y" />
   <column name="PERCENTILE" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.Organism" primaryKey="ORGANISM_ID">
@@ -2631,6 +2750,7 @@
   <column name="FAMILY_NCBI_TAXON_IDS" type="VARCHAR2" length="200" nullable="Y" />
   <column name="FAMILY_NAME_FOR_FILES" type="VARCHAR2" length="200" nullable="Y" />
   <column name="HAS_TEMPORARY_NCBI_TAXON_ID" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.OrthologGroup" primaryKey="ORTHOLOG_GROUP_ID">
@@ -2651,6 +2771,7 @@
   <column name="MULTIPLE_SEQUENCE_ALIGNMENT" type="CLOB" length="4000" nullable="Y" />
   <column name="BIOLAYOUT_IMAGE" type="BLOB" length="4000" nullable="Y" />
   <column name="SVG_CONTENT" type="CLOB" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.OrthologGroupAaSequence" primaryKey="ORTHOLOG_GROUP_AA_SEQUENCE_ID">
@@ -2658,6 +2779,7 @@
   <column name="ORTHOLOG_GROUP_ID" type="NUMBER" length="22" nullable="N" parent="APIDB.ORTHOLOGGROUP.ORTHOLOG_GROUP_ID" />
   <column name="AA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.AASEQUENCEIMP.AA_SEQUENCE_ID" />
   <column name="CONNECTIVITY" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.OrthomclGroupDomain" primaryKey="ORTHOMCL_DOMAIN_ID">
@@ -2665,6 +2787,7 @@
   <column name="ORTHOLOG_GROUP_ID" type="NUMBER" length="22" nullable="N" parent="APIDB.ORTHOLOGGROUP.ORTHOLOG_GROUP_ID" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="N" />
   <column name="FREQUENCY" type="FLOAT" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.OrthomclGroupKeyword" primaryKey="ORTHOMCL_KEYWORD_ID">
@@ -2672,6 +2795,7 @@
   <column name="ORTHOLOG_GROUP_ID" type="NUMBER" length="22" nullable="N" parent="APIDB.ORTHOLOGGROUP.ORTHOLOG_GROUP_ID" />
   <column name="KEYWORD" type="VARCHAR2" length="255" nullable="N" />
   <column name="FREQUENCY" type="VARCHAR2" length="20" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.OrthomclResource" primaryKey="ORTHOMCL_RESOURCE_ID">
@@ -2683,6 +2807,7 @@
   <column name="STRAIN" type="VARCHAR2" length="100" nullable="Y" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
   <column name="LINKOUT_URL" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.OrthomclTaxon" primaryKey="ORTHOMCL_TAXON_ID">
@@ -2696,6 +2821,7 @@
   <column name="DEPTH_FIRST_INDEX" type="NUMBER" length="22" nullable="N" />
   <column name="SIBLING_DEPTH_FIRST_INDEX" type="NUMBER" length="22" nullable="Y" />
   <column name="COMMON_NAME" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.PathwayReaction" primaryKey="PATHWAY_REACTION_ID">
@@ -2703,6 +2829,7 @@
   <column name="SOURCE_ID" type="VARCHAR2" length="100" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
   <column name="EQUATION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.PathwayReactionRel" primaryKey="PATHWAY_REACTION_REL_ID">
@@ -2710,6 +2837,7 @@
   <column name="PATHWAY_REACTION_ID" type="NUMBER" length="22" nullable="N" parent="APIDB.PATHWAYREACTION.PATHWAY_REACTION_ID" />
   <column name="PATHWAY_RELATIONSHIP_ID" type="NUMBER" length="22" nullable="N" parent="SRES.PATHWAYRELATIONSHIP.PATHWAY_RELATIONSHIP_ID" />
   <column name="PATHWAY_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.PATHWAY.PATHWAY_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.PathwayReactionXRef" primaryKey="PATHWAY_REACTION_XREF_ID">
@@ -2717,6 +2845,7 @@
   <column name="PATHWAY_REACTION_ID" type="NUMBER" length="22" nullable="N" parent="APIDB.PATHWAYREACTION.PATHWAY_REACTION_ID" />
   <column name="ASSOCIATED_REACTION_ID" type="NUMBER" length="22" nullable="N" parent="APIDB.PATHWAYREACTION.PATHWAY_REACTION_ID" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.PhenotypeGrowthRate" primaryKey="PHENOTYPE_GROWTH_RATE_ID">
@@ -2732,6 +2861,7 @@
   <column name="TIMES_ANALYZED" type="NUMBER" length="22" nullable="Y" />
   <column name="CONSTRUCT" type="VARCHAR2" length="50" nullable="Y" />
   <column name="NOTES" type="VARCHAR2" length="250" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.PhenotypeModel" primaryKey="PHENOTYPE_MODEL_ID">
@@ -2744,6 +2874,7 @@
   <column name="MODIFICATION_TYPE" type="VARCHAR2" length="100" nullable="Y" />
   <column name="IS_SUCCESSFUL" type="NUMBER" length="22" nullable="Y" />
   <column name="ORGANISM" type="VARCHAR2" length="200" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
   <column name="EXPERIMENT_TYPE" type="VARCHAR2" length="100" nullable="Y" />
   <column name="ALLELE" type="VARCHAR2" length="100" nullable="Y" />
   <column name="MUTATION_DESCRIPTION" type="VARCHAR2" length="500" nullable="Y" />
@@ -2763,6 +2894,7 @@
   <column name="PROTOPERITHECIA_PRODUCTION" type="VARCHAR2" length="50" nullable="Y" />
   <column name="PERITHECIA_PRODUCTION" type="VARCHAR2" length="50" nullable="Y" />
   <column name="ASCOSPORE_PRODUCTION" type="VARCHAR2" length="50" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.PhenotypeResult" primaryKey="PHENOTYPE_RESULT_ID">
@@ -2775,6 +2907,7 @@
   <column name="PHENOTYPE_POST_COMPOSITION" type="CLOB" length="4000" nullable="Y" />
   <column name="PHENOTYPE_COMMENT" type="VARCHAR2" length="2000" nullable="Y" />
   <column name="EVIDENCE_TERM_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
   <column name="CHEBI_ANNOTATION_EXTENSION" type="VARCHAR2" length="15" nullable="Y" />
   <column name="PROTEIN_ANNOTATION_EXTENSION" type="VARCHAR2" length="100" nullable="Y" />
 </table>
@@ -2785,12 +2918,14 @@
   <column name="PROTOCOL_APP_NODE_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOLAPPNODE.PROTOCOL_APP_NODE_ID" />
   <column name="SCORE" type="NUMBER" length="22" nullable="Y" />
   <column name="SCORE_TYPE" type="VARCHAR2" length="100" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.PhylogeneticProfile" primaryKey="PHYLO_PROFILE_ID">
   <column name="PHYLO_PROFILE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="SOURCE_ID" type="VARCHAR2" length="50" nullable="N" />
   <column name="PROFILE_STRING" type="VARCHAR2" length="2000" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.PolyAGenes" primaryKey="POLY_A_GENE_ID">
@@ -2802,6 +2937,7 @@
   <column name="WITHIN_CDS" type="NUMBER" length="22" nullable="Y" />
   <column name="IS_DOMINANT" type="NUMBER" length="22" nullable="Y" />
   <column name="PERCENT_FRACTION" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.PubChemCompound" primaryKey="PUBCHEM_COMPOUND_ID">
@@ -2814,6 +2950,7 @@
   <column name="INCHIKEY" type="VARCHAR2" length="100" nullable="Y" />
   <column name="ISOMERICSMILES" type="VARCHAR2" length="1000" nullable="Y" />
   <column name="CANONICALSMILES" type="VARCHAR2" length="1000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.PubChemCompoundProperty" primaryKey="PUBCHEM_COMPOUND_PROPERTY_ID">
@@ -2821,12 +2958,14 @@
   <column name="PUBCHEM_COMPOUND_ID" type="NUMBER" length="22" nullable="N" parent="APIDB.PUBCHEMCOMPOUND.PUBCHEM_COMPOUND_ID" />
   <column name="PROPERTY" type="VARCHAR2" length="20" nullable="N" />
   <column name="VALUE" type="VARCHAR2" length="3000" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.PubChemSubstance" primaryKey="PUBCHEM_SUBSTANCE_ID">
   <column name="PUBCHEM_SUBSTANCE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="SUBSTANCE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="COMPOUND_ID" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.PubChemSubstanceProperty" primaryKey="PUBCHEM_SUBSTANCE_PROPERTY_ID">
@@ -2834,6 +2973,7 @@
   <column name="PUBCHEM_SUBSTANCE_ID" type="NUMBER" length="22" nullable="N" parent="APIDB.PUBCHEMSUBSTANCE.PUBCHEM_SUBSTANCE_ID" />
   <column name="PROPERTY" type="VARCHAR2" length="20" nullable="N" />
   <column name="VALUE" type="VARCHAR2" length="500" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.RelatedNaFeature" primaryKey="RELATED_NA_FEATURE_ID">
@@ -2842,6 +2982,7 @@
   <column name="ASSOCIATED_NA_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="VALUE" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.RflpGenotype" primaryKey="RFLP_GENOTYPE_ID">
@@ -2849,12 +2990,14 @@
   <column name="PROTOCOL_APP_NODE_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOLAPPNODE.PROTOCOL_APP_NODE_ID" />
   <column name="LOCUS_TAG" type="VARCHAR2" length="20" nullable="N" />
   <column name="GENOTYPE" type="VARCHAR2" length="20" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.RflpGenotypeNumber" primaryKey="RFLP_GENOTYPE_ID">
   <column name="RFLP_GENOTYPE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="PROTOCOL_APP_NODE_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOLAPPNODE.PROTOCOL_APP_NODE_ID" />
   <column name="GENOTYPE_NUMBER" type="VARCHAR2" length="20" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.SequenceTaxon" primaryKey="SEQUENCE_TAXON_ID">
@@ -2862,6 +3005,7 @@
   <column name="NA_SEQUENCE_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.NASEQUENCEIMP.NA_SEQUENCE_ID" />
   <column name="TAXON_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.TAXON.TAXON_ID" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.SequenceTaxonString" primaryKey="SEQUENCE_TAXON_STRING_ID">
@@ -2869,6 +3013,7 @@
   <column name="NA_SEQUENCE_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.NASEQUENCEIMP.NA_SEQUENCE_ID" />
   <column name="TAXON_STRING_ID" type="NUMBER" length="22" nullable="Y" parent="APIDB.TAXONSTRING.TAXON_STRING_ID" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.SpliceSiteFeature" primaryKey="SPLICE_SITE_FEATURE_ID">
@@ -2883,6 +3028,7 @@
   <column name="IS_UNIQUE" type="NUMBER" length="22" nullable="N" />
   <column name="AVG_MISMATCHES" type="FLOAT" length="22" nullable="Y" />
   <column name="COUNT_PER_MILLION" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.SpliceSiteGenes" primaryKey="SPLICE_SITE_GENE_ID">
@@ -2894,6 +3040,7 @@
   <column name="PERCENT_FRACTION" type="NUMBER" length="22" nullable="Y" />
   <column name="FIRST_ATG_LOCATION" type="NUMBER" length="22" nullable="Y" />
   <column name="DIST_TO_FIRST_ATG" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
   <column name="ANNOT_ATG_LOCATION" type="NUMBER" length="22" nullable="Y" />
   <column name="DIST_TO_ANNOT_ATG" type="NUMBER" length="22" nullable="Y" />
 </table>
@@ -2903,6 +3050,7 @@
   <column name="SUBJECT" type="VARCHAR2" length="50" nullable="N" />
   <column name="PROTOCOL_APP_NODE_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOLAPPNODE.PROTOCOL_APP_NODE_ID" />
   <column name="VALUE" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="ApiDB.SyntenicGene" primaryKey="SYNTENIC_GENE_ID">
@@ -2916,6 +3064,7 @@
   <column name="BLOCKSIZES" type="VARCHAR2" length="1200" nullable="Y" />
   <column name="SYN_NA_FEATURE_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
   <column name="SYN_ORGANISM_ABBREV" type="VARCHAR2" length="20" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.Synteny" primaryKey="SYNTENY_ID">
@@ -2928,12 +3077,14 @@
   <column name="B_START" type="NUMBER" length="22" nullable="Y" />
   <column name="B_END" type="NUMBER" length="22" nullable="Y" />
   <column name="IS_REVERSED" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.TaxonString" primaryKey="TAXON_STRING_ID">
   <column name="TAXON_STRING_ID" type="NUMBER" length="22" nullable="N" />
   <column name="TAXON_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.TAXON.TAXON_ID" />
   <column name="TAXON_STRING" type="VARCHAR2" length="300" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.TranscriptLocation" primaryKey="TRANSCRIPT_LOCATION_ID">
@@ -2949,6 +3100,7 @@
   <column name="SEQUENCE_ONTOLOGY_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="IS_TOP_LEVEL" type="NUMBER" length="22" nullable="Y" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.TranscriptProduct" primaryKey="TRANSCRIPT_PRODUCT_ID">
@@ -2957,6 +3109,7 @@
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="PRODUCT" type="VARCHAR2" length="500" nullable="N" />
   <column name="IS_PREFERRED" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="PUBLICATION" type="VARCHAR2" length="20" nullable="Y" />
   <column name="EVIDENCE_CODE" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="WITH_FROM" type="VARCHAR2" length="300" nullable="Y" />
@@ -2973,6 +3126,7 @@
   <column name="PARENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
   <column name="IS_TOP_LEVEL" type="NUMBER" length="22" nullable="Y" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="ApiDB.WHOStandards" primaryKey="WHO_STANDARDS_ID">
@@ -2981,12 +3135,14 @@
   <column name="PERCENTILE" type="FLOAT" length="22" nullable="Y" />
   <column name="PROTOCOL_APP_NODE_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOLAPPNODE.PROTOCOL_APP_NODE_ID" />
   <column name="VALUE" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.Algorithm" primaryKey="ALGORITHM_ID">
   <column name="ALGORITHM_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="100" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.AlgorithmImplementation" primaryKey="ALGORITHM_IMPLEMENTATION_ID">
@@ -2998,6 +3154,7 @@
   <column name="EXECUTABLE" type="VARCHAR2" length="255" nullable="Y" />
   <column name="EXECUTABLE_MD5" type="VARCHAR2" length="32" nullable="Y" />
   <column name="DESCRIPTION" type="VARCHAR2" length="500" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.AlgorithmInvocation" primaryKey="ALGORITHM_INVOCATION_ID">
@@ -3009,6 +3166,7 @@
   <column name="CPU_TIME" type="FLOAT" length="22" nullable="Y" />
   <column name="RESULT" type="VARCHAR2" length="350" nullable="N" />
   <column name="COMMENT_STRING" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.AlgorithmParam" primaryKey="ALGORITHM_PARAM_ID">
@@ -3024,6 +3182,7 @@
   <column name="IS_DEFAULT" type="NUMBER" length="22" nullable="N" />
   <column name="ORDER_NUM" type="NUMBER" length="22" nullable="N" />
   <column name="ALGORITHM_INVOCATION_ID" type="NUMBER" length="22" nullable="N" parent="CORE.ALGORITHMINVOCATION.ALGORITHM_INVOCATION_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.AlgorithmParamKey" primaryKey="ALGORITHM_PARAM_KEY_ID">
@@ -3033,11 +3192,13 @@
   <column name="ALGORITHM_PARAM_KEY_TYPE_ID" type="NUMBER" length="22" nullable="N" parent="CORE.ALGORITHMPARAMKEYTYPE.ALGORITHM_PARAM_KEY_TYPE_ID" />
   <column name="IS_LIST_VALUED" type="NUMBER" length="22" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="1024" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.AlgorithmParamKeyType" primaryKey="ALGORITHM_PARAM_KEY_TYPE_ID">
   <column name="ALGORITHM_PARAM_KEY_TYPE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="TYPE" type="VARCHAR2" length="15" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.AnalysisAlgorithm" primaryKey="ANALYSIS_ALGORITHM_ID">
@@ -3045,12 +3206,14 @@
   <column name="TABLE_ID" type="NUMBER" length="22" nullable="N" parent="CORE.TABLEINFO.TABLE_ID" />
   <column name="ROW_ID" type="NUMBER" length="22" nullable="N" />
   <column name="ALGORITHM_INVOCATION_ID" type="NUMBER" length="22" nullable="N" parent="CORE.ALGORITHMINVOCATION.ALGORITHM_INVOCATION_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.Category" primaryKey="CATEGORY_ID">
   <column name="CATEGORY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="100" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="500" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.DatabaseDocumentation" primaryKey="DATABASE_DOCUMENTATION_ID">
@@ -3058,23 +3221,27 @@
   <column name="TABLE_ID" type="NUMBER" length="22" nullable="N" parent="CORE.TABLEINFO.TABLE_ID" />
   <column name="ATTRIBUTE_NAME" type="VARCHAR2" length="120" nullable="Y" />
   <column name="HTML_DOCUMENTATION" type="CLOB" length="4000" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.DatabaseInfo" primaryKey="DATABASE_ID">
   <column name="DATABASE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="60" nullable="Y" />
   <column name="DESCRIPTION" type="VARCHAR2" length="500" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.DatabaseVersion" primaryKey="DATABASE_VERSION_ID">
   <column name="DATABASE_VERSION_ID" type="NUMBER" length="22" nullable="N" />
   <column name="VERSION" type="FLOAT" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.GroupInfo" primaryKey="GROUP_ID">
   <column name="GROUP_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="30" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.ProjectInfo" primaryKey="PROJECT_ID">
@@ -3082,12 +3249,14 @@
   <column name="NAME" type="VARCHAR2" length="40" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
   <column name="RELEASE" type="VARCHAR2" length="20" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.TableCategory" primaryKey="TABLE_CATEGORY_ID">
   <column name="TABLE_CATEGORY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="CATEGORY_ID" type="NUMBER" length="22" nullable="N" parent="CORE.CATEGORY.CATEGORY_ID" />
   <column name="TABLE_ID" type="NUMBER" length="22" nullable="N" parent="CORE.TABLEINFO.TABLE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.TableInfo" primaryKey="TABLE_ID">
@@ -3101,12 +3270,14 @@
   <column name="VIEW_ON_TABLE_ID" type="NUMBER" length="22" nullable="Y" parent="CORE.TABLEINFO.TABLE_ID" />
   <column name="SUPERCLASS_TABLE_ID" type="NUMBER" length="22" nullable="Y" parent="CORE.TABLEINFO.TABLE_ID" />
   <column name="IS_UPDATABLE" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.UserGroup" primaryKey="USER_GROUP_ID">
   <column name="USER_GROUP_ID" type="NUMBER" length="22" nullable="N" />
   <column name="USER_ID" type="NUMBER" length="22" nullable="N" parent="CORE.USERINFO.USER_ID" />
   <column name="GROUP_ID" type="NUMBER" length="22" nullable="N" parent="CORE.GROUPINFO.GROUP_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.UserInfo" primaryKey="USER_ID">
@@ -3117,12 +3288,14 @@
   <column name="LAST_NAME" type="VARCHAR2" length="30" nullable="N" />
   <column name="E_MAIL" type="VARCHAR2" length="60" nullable="N" />
   <column name="CONTACT_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.CONTACT.CONTACT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Core.UserProject" primaryKey="USER_PROJECT_ID">
   <column name="USER_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="USER_ID" type="NUMBER" length="22" nullable="N" parent="CORE.USERINFO.USER_ID" />
   <column name="PROJECT_ID" type="NUMBER" length="22" nullable="N" parent="CORE.PROJECTINFO.PROJECT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AAComment" primaryKey="AA_COMMENT_ID">
@@ -3130,6 +3303,7 @@
   <column name="AA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.AASEQUENCEIMP.AA_SEQUENCE_ID" />
   <column name="COMMENT_NAME_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.COMMENTNAME.COMMENT_NAME_ID" />
   <column name="COMMENT_STRING" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AAEntry" primaryKey="AA_ENTRY_ID">
@@ -3143,6 +3317,7 @@
   <column name="SEQ_REL_VER" type="NUMBER" length="22" nullable="Y" />
   <column name="ANNOT_DATE" type="DATE" length="7" nullable="Y" />
   <column name="ANNOT_REL_VER" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AAFamilyExperiment" primaryKey="AA_FAMILY_EXPERIMENT_ID">
@@ -3150,6 +3325,7 @@
   <column name="DESCRIPTION" type="VARCHAR2" length="2000" nullable="Y" />
   <column name="AA_ORTHOLOG_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.AASEQGROUPEXPERIMENTIMP.AA_SEQ_GROUP_EXPERIMENT_ID" />
   <column name="AA_PARALOG_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.AASEQGROUPEXPERIMENTIMP.AA_SEQ_GROUP_EXPERIMENT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AAFeatureComment" primaryKey="AA_FEATURE_COMMENT_ID">
@@ -3157,12 +3333,14 @@
   <column name="AA_FEATURE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="COMMENT_NAME_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.COMMENTNAME.COMMENT_NAME_ID" />
   <column name="COMMENT_STRING" type="CLOB" length="4000" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AAFeatureDbRef" primaryKey="AA_FEATURE_DB_REF_ID">
   <column name="AA_FEATURE_DB_REF_ID" type="NUMBER" length="22" nullable="N" />
   <column name="AA_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.AAFEATUREIMP.AA_FEATURE_ID" />
   <column name="DB_REF_ID" type="NUMBER" length="22" nullable="N" parent="SRES.DBREF.DB_REF_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AAFeatureExon" primaryKey="AA_FEATURE_EXON_ID">
@@ -3171,6 +3349,7 @@
   <column name="EXON_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
   <column name="CODING_START" type="NUMBER" length="22" nullable="Y" />
   <column name="CODING_END" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AAFeatureImp" primaryKey="AA_FEATURE_ID">
@@ -3208,6 +3387,7 @@
   <column name="STRING4" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="STRING5" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="STRING6" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AAGene" primaryKey="AA_GENE_ID">
@@ -3215,12 +3395,14 @@
   <column name="AA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.AASEQUENCEIMP.AA_SEQUENCE_ID" />
   <column name="NAME" type="VARCHAR2" length="50" nullable="N" />
   <column name="IS_VERIFIED" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AAGeneSynonym" primaryKey="AA_GENE_SYNONYM_ID">
   <column name="AA_GENE_SYNONYM_ID" type="NUMBER" length="22" nullable="N" />
   <column name="AA_GENE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.AAGENE.AA_GENE_ID" />
   <column name="SYNONYM_NAME" type="VARCHAR2" length="50" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AALocation" primaryKey="AA_LOCATION_ID">
@@ -3230,6 +3412,7 @@
   <column name="START_MAX" type="NUMBER" length="22" nullable="Y" />
   <column name="END_MIN" type="NUMBER" length="22" nullable="Y" />
   <column name="END_MAX" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AAMotifGOTermRule" primaryKey="AA_MOTIF_GO_TERM_RULE_ID">
@@ -3241,6 +3424,7 @@
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="REVIEWER_ID" type="NUMBER" length="22" nullable="Y" parent="CORE.USERINFO.USER_ID" />
   <column name="CONFIDENCE" type="VARCHAR2" length="10" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AAMotifGOTermRuleSet" primaryKey="AA_MOTIF_GO_TERM_RULE_SET_ID">
@@ -3254,6 +3438,7 @@
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="REVIEWER_ID" type="NUMBER" length="22" nullable="Y" parent="CORE.USERINFO.USER_ID" />
   <column name="CONFIDENCE" type="VARCHAR2" length="10" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AASeqGroupExperimentImp" primaryKey="AA_SEQ_GROUP_EXPERIMENT_ID">
@@ -3265,12 +3450,14 @@
   <column name="PVALUE_EXP" type="NUMBER" length="22" nullable="Y" />
   <column name="PERCENT_IDENTITY" type="FLOAT" length="22" nullable="Y" />
   <column name="PERCENT_MATCH" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AASequenceDbRef" primaryKey="AA_SEQUENCE_DB_REF_ID">
   <column name="AA_SEQUENCE_DB_REF_ID" type="NUMBER" length="22" nullable="N" />
   <column name="AA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.AASEQUENCEIMP.AA_SEQUENCE_ID" />
   <column name="DB_REF_ID" type="NUMBER" length="22" nullable="N" parent="SRES.DBREF.DB_REF_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AASequenceEnzymeClass" primaryKey="AA_SEQUENCE_ENZYME_CLASS_ID">
@@ -3280,6 +3467,7 @@
   <column name="EVIDENCE_CODE" type="VARCHAR2" length="255" nullable="N" />
   <column name="EC_ASSIGNMENT_CONTACT_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.CONTACT.CONTACT_ID" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AASequenceFamily" primaryKey="AA_SEQUENCE_FAMILY_ID">
@@ -3287,12 +3475,14 @@
   <column name="NAME" type="VARCHAR2" length="500" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="2000" nullable="Y" />
   <column name="AA_FAMILY_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.AAFAMILYEXPERIMENT.AA_FAMILY_EXPERIMENT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AASequenceGroupFamily" primaryKey="AA_SEQUENCE_GROUP_FAMILY_ID">
   <column name="AA_SEQUENCE_GROUP_FAMILY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="AA_SEQUENCE_FAMILY_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.AASEQUENCEFAMILY.AA_SEQUENCE_FAMILY_ID" />
   <column name="AA_SEQUENCE_GROUP_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.AASEQUENCEGROUPIMP.AA_SEQUENCE_GROUP_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AASequenceGroupImp" primaryKey="AA_SEQUENCE_GROUP_ID">
@@ -3312,6 +3502,7 @@
   <column name="MAX_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="MIN_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="AA_SEQ_GROUP_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.AASEQGROUPEXPERIMENTIMP.AA_SEQ_GROUP_EXPERIMENT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AASequenceImp" primaryKey="AA_SEQUENCE_ID">
@@ -3335,36 +3526,42 @@
   <column name="STRING2" type="VARCHAR2" length="255" nullable="Y" />
   <column name="STRING3" type="VARCHAR2" length="255" nullable="Y" />
   <column name="STRING4" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AASequenceKeyword" primaryKey="AA_SEQUENCE_KEYWORD_ID">
   <column name="AA_SEQUENCE_KEYWORD_ID" type="NUMBER" length="22" nullable="N" />
   <column name="AA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.AASEQUENCEIMP.AA_SEQUENCE_ID" />
   <column name="KEYWORD_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.KEYWORD.KEYWORD_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AASequenceOrganelle" primaryKey="AA_SEQUENCE_ORGANELLE_ID">
   <column name="AA_SEQUENCE_ORGANELLE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="AA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.AASEQUENCEIMP.AA_SEQUENCE_ID" />
   <column name="ORGANELLE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.ORGANELLE.ORGANELLE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AASequenceRef" primaryKey="AA_SEQUENCE_REF_ID">
   <column name="AA_SEQUENCE_REF_ID" type="NUMBER" length="22" nullable="N" />
   <column name="AA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.AASEQUENCEIMP.AA_SEQUENCE_ID" />
   <column name="REFERENCE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.BIBLIOGRAPHICREFERENCE.BIBLIOGRAPHIC_REFERENCE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AASequenceSequenceGroup" primaryKey="AA_SEQUENCE_SEQUENCE_GROUP_ID">
   <column name="AA_SEQUENCE_SEQUENCE_GROUP_ID" type="NUMBER" length="22" nullable="N" />
   <column name="AA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.AASEQUENCEIMP.AA_SEQUENCE_ID" />
   <column name="AA_SEQUENCE_GROUP_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.AASEQUENCEGROUPIMP.AA_SEQUENCE_GROUP_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AASequenceTaxon" primaryKey="AA_SEQUENCE_TAXON_ID">
   <column name="AA_SEQUENCE_TAXON_ID" type="NUMBER" length="22" nullable="N" />
   <column name="AA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.AASEQUENCEIMP.AA_SEQUENCE_ID" />
   <column name="TAXON_ID" type="NUMBER" length="22" nullable="N" parent="SRES.TAXON.TAXON_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Allele" primaryKey="ALLELE_ID">
@@ -3375,6 +3572,7 @@
   <column name="MUTAGEN_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="MUTAGENESIS_DESCRIPTION" type="VARCHAR2" length="1000" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AlleleComplementation" primaryKey="ALLELE_COMPLEMENTATION_ID">
@@ -3383,6 +3581,7 @@
   <column name="COMPLEMENTATION_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.COMPLEMENTATION.COMPLEMENTATION_ID" />
   <column name="TYPE" type="VARCHAR2" length="40" nullable="N" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AlleleInstance" primaryKey="ALLELE_INSTANCE_ID">
@@ -3391,6 +3590,7 @@
   <column name="NA_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
   <column name="DESCRIPTION" type="VARCHAR2" length="500" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AllelePhenotype" primaryKey="ALLELE_PHENOTYPE_ID">
@@ -3398,6 +3598,7 @@
   <column name="ALLELE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.ALLELE.ALLELE_ID" />
   <column name="PHENOTYPE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AllelePhenotypeClass" primaryKey="ALLELE_PHENOTYPE_CLASS_ID">
@@ -3405,18 +3606,21 @@
   <column name="ALLELE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.ALLELE.ALLELE_ID" />
   <column name="PHENOTYPE_CLASS_ID" type="NUMBER" length="22" nullable="N" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AnatomyLOE" primaryKey="ANATOMY_LOE_ID">
   <column name="ANATOMY_LOE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="255" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="500" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AnatomyLibrary" primaryKey="ANATOMY_LIBRARY_ID">
   <column name="ANATOMY_LIBRARY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="ANATOMY_ID" type="NUMBER" length="22" nullable="N" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="DBEST_LIBRARY_ID" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AssemblyAnatomyPercent" primaryKey="ASSEMBLY_ANATOMY_PERCENT_ID">
@@ -3427,6 +3631,7 @@
   <column name="PERCENT" type="FLOAT" length="22" nullable="N" />
   <column name="ANATOMY_ESTS" type="NUMBER" length="22" nullable="N" />
   <column name="EST_COUNT" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AssemblySNP" primaryKey="ASSEMBLY_SNP_ID">
@@ -3450,6 +3655,7 @@
   <column name="ASSEMBLY_DEPTH" type="NUMBER" length="22" nullable="N" />
   <column name="ASSEMBLY_POSITION" type="NUMBER" length="22" nullable="N" />
   <column name="CONSENSUS_POSITION" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AssemblySequence" primaryKey="ASSEMBLY_SEQUENCE_ID">
@@ -3465,6 +3671,7 @@
   <column name="GAPPED_SEQUENCE" type="CLOB" length="4000" nullable="Y" />
   <column name="HAVE_PROCESSED" type="NUMBER" length="22" nullable="N" />
   <column name="PROCESSED_CATEGORY" type="VARCHAR2" length="50" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.AssemblySequenceSNP" primaryKey="ASSEMBLY_SEQUENCE_SNP_ID">
@@ -3474,6 +3681,7 @@
   <column name="GAPPED_LOCATION" type="NUMBER" length="22" nullable="N" />
   <column name="NA_SEQUENCE_LOCATION" type="NUMBER" length="22" nullable="Y" />
   <column name="SEQUENCE_CHARACTER" type="CHAR" length="1" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Attribution" primaryKey="ATTRIBUTION_ID">
@@ -3481,6 +3689,7 @@
   <column name="TABLE_ID" type="NUMBER" length="22" nullable="N" parent="CORE.TABLEINFO.TABLE_ID" />
   <column name="ROW_ID" type="NUMBER" length="22" nullable="N" />
   <column name="CONTACT_ID" type="NUMBER" length="22" nullable="N" parent="SRES.CONTACT.CONTACT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.BLATAlignment" primaryKey="BLAT_ALIGNMENT_ID">
@@ -3519,12 +3728,14 @@
   <column name="BLOCKSIZES" type="VARCHAR2" length="1200" nullable="N" />
   <column name="QSTARTS" type="VARCHAR2" length="4000" nullable="N" />
   <column name="TSTARTS" type="VARCHAR2" length="4000" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.BLATAlignmentQuality" primaryKey="BLAT_ALIGNMENT_QUALITY_ID">
   <column name="BLAT_ALIGNMENT_QUALITY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="40" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="400" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.BestSimilarityPair" primaryKey="BEST_SIMILARITY_PAIR_ID">
@@ -3539,6 +3750,7 @@
   <column name="PERCENT_IDENTITY" type="FLOAT" length="22" nullable="Y" />
   <column name="PERCENT_MATCH" type="FLOAT" length="22" nullable="Y" />
   <column name="ORTHOLOG_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.SEQGROUPEXPERIMENTIMP.SEQ_GROUP_EXPERIMENT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Clone" primaryKey="CLONE_ID">
@@ -3551,12 +3763,14 @@
   <column name="MGI_ID" type="NUMBER" length="22" nullable="Y" />
   <column name="DBEST_LENGTH" type="NUMBER" length="22" nullable="Y" />
   <column name="WASHU_LENGTH" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.CloneInSet" primaryKey="CLONE_IN_SET_ID">
   <column name="CLONE_IN_SET_ID" type="NUMBER" length="22" nullable="N" />
   <column name="CLONE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.CLONE.CLONE_ID" />
   <column name="CLONE_SET_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.CLONESET.CLONE_SET_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.CloneSet" primaryKey="CLONE_SET_ID">
@@ -3567,18 +3781,21 @@
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
   <column name="CBIL_NAME" type="VARCHAR2" length="36" nullable="Y" />
   <column name="DATE_IN" type="DATE" length="7" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.CommentName" primaryKey="COMMENT_NAME_ID">
   <column name="COMMENT_NAME_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="20" nullable="N" />
   <column name="C_CATEGORY" type="VARCHAR2" length="20" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Comments" primaryKey="COMMENTS_ID">
   <column name="COMMENTS_ID" type="NUMBER" length="22" nullable="N" />
   <column name="COMMENT_STRING" type="CLOB" length="4000" nullable="N" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Complementation" primaryKey="COMPLEMENTATION_ID">
@@ -3590,6 +3807,7 @@
   <column name="TAXON_ID" type="NUMBER" length="22" nullable="N" parent="SRES.TAXON.TAXON_ID" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Complex" primaryKey="COMPLEX_ID">
@@ -3600,6 +3818,7 @@
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="SOURCE_ID" type="VARCHAR2" length="32" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ComplexAnatomy" primaryKey="COMPLEX_ANATOMY_ID">
@@ -3607,6 +3826,7 @@
   <column name="COMPLEX_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.COMPLEX.COMPLEX_ID" />
   <column name="ANATOMY_ID" type="NUMBER" length="22" nullable="N" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ComplexComponent" primaryKey="COMPLEX_COMPONENT_ID">
@@ -3614,12 +3834,14 @@
   <column name="TABLE_ID" type="NUMBER" length="22" nullable="N" parent="CORE.TABLEINFO.TABLE_ID" />
   <column name="ROW_ID" type="NUMBER" length="22" nullable="N" />
   <column name="COMPLEX_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.COMPLEX.COMPLEX_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ComplexType" primaryKey="COMPLEX_TYPE_ID">
   <column name="COMPLEX_TYPE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="80" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ConsistentAlignment" primaryKey="CONSISTENT_ALIGNMENT_ID">
@@ -3641,36 +3863,42 @@
   <column name="GENOMIC_START" type="NUMBER" length="22" nullable="N" />
   <column name="GENOMIC_END" type="NUMBER" length="22" nullable="N" />
   <column name="IS_REVERSED" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.DbRefAAFeature" primaryKey="DB_REF_AA_FEATURE_ID">
   <column name="DB_REF_AA_FEATURE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="AA_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.AAFEATUREIMP.AA_FEATURE_ID" />
   <column name="DB_REF_ID" type="NUMBER" length="22" nullable="N" parent="SRES.DBREF.DB_REF_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.DbRefNAFeature" primaryKey="DB_REF_NA_FEATURE_ID">
   <column name="DB_REF_NA_FEATURE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NA_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
   <column name="DB_REF_ID" type="NUMBER" length="22" nullable="N" parent="SRES.DBREF.DB_REF_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.DbRefNASequence" primaryKey="DB_REF_NA_SEQUENCE_ID">
   <column name="DB_REF_NA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NASEQUENCEIMP.NA_SEQUENCE_ID" />
   <column name="DB_REF_ID" type="NUMBER" length="22" nullable="N" parent="SRES.DBREF.DB_REF_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.DbRefPfamEntry" primaryKey="DB_REF_PFAM_ENTRY_ID">
   <column name="DB_REF_PFAM_ENTRY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="PFAM_ENTRY_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.PFAMENTRY.PFAM_ENTRY_ID" />
   <column name="DB_REF_ID" type="NUMBER" length="22" nullable="N" parent="SRES.DBREF.DB_REF_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.DevStageLibrary" primaryKey="DEV_STAGE_LIBRARY_ID">
   <column name="DEV_STAGE_LIBRARY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="DEVELOPMENTAL_STAGE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="LIBRARY_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.LIBRARY.LIBRARY_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.EPCR" primaryKey="EPCR_ID">
@@ -3686,6 +3914,7 @@
   <column name="SIMILARITY_ID_2" type="NUMBER" length="22" nullable="Y" />
   <column name="SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="NUM_MISMATCHES" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.EST" primaryKey="EST_ID">
@@ -3706,6 +3935,7 @@
   <column name="PUTATIVE_FULL_LENGTH_READ" type="NUMBER" length="22" nullable="N" />
   <column name="TRACE_POOR_QUALITY" type="NUMBER" length="22" nullable="N" />
   <column name="POLYA_SIGNAL" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.EffectorActionType" primaryKey="EFFECTOR_ACTION_TYPE_ID">
@@ -3714,6 +3944,7 @@
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="SOURCE_ID" type="VARCHAR2" length="32" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.EndSequencePairMap" primaryKey="END_SEQUENCE_PAIR_MAP_ID">
@@ -3727,6 +3958,7 @@
   <column name="NA_SEQUENCE_ID_2" type="NUMBER" length="22" nullable="N" parent="DOTS.NASEQUENCEIMP.NA_SEQUENCE_ID" />
   <column name="MIN_PRODUCT_LENGTH" type="NUMBER" length="22" nullable="Y" />
   <column name="MAX_PRODUCT_LENGTH" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Evidence" primaryKey="EVIDENCE_ID">
@@ -3738,6 +3970,7 @@
   <column name="ATTRIBUTE_NAME" type="VARCHAR2" length="30" nullable="Y" />
   <column name="EVIDENCE_GROUP_ID" type="NUMBER" length="22" nullable="N" />
   <column name="BEST_EVIDENCE" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ExonLocation" primaryKey="EXON_LOCATION_ID">
@@ -3748,6 +3981,7 @@
   <column name="END_MIN" type="NUMBER" length="22" nullable="Y" />
   <column name="END_MAX" type="NUMBER" length="22" nullable="Y" />
   <column name="ORDER_NUM" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ExternalDatabaseKeyword" primaryKey="EXTERNAL_DATABASE_KEYWORD_ID">
@@ -3755,6 +3989,7 @@
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="KEYWORD_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.KEYWORD.KEYWORD_ID" />
   <column name="SOURCE_ID" type="VARCHAR2" length="32" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Family" primaryKey="FAMILY_ID">
@@ -3764,24 +3999,28 @@
   <column name="NAME" type="VARCHAR2" length="100" nullable="N" />
   <column name="TYPE" type="VARCHAR2" length="10" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.FamilyGene" primaryKey="FAMILY_GENE_ID">
   <column name="FAMILY_GENE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="FAMILY_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.FAMILY.FAMILY_ID" />
   <column name="GENE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.GENE.GENE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.FamilyProtein" primaryKey="FAMILY_PROTEIN_ID">
   <column name="FAMILY_PROTEIN_ID" type="NUMBER" length="22" nullable="N" />
   <column name="PROTEIN_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.PROTEIN.PROTEIN_ID" />
   <column name="FAMILY_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.FAMILY.FAMILY_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.FeatureName" primaryKey="FEATURE_NAME_ID">
   <column name="FEATURE_NAME_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="30" nullable="N" />
   <column name="FEATURE_CATEGORY" type="VARCHAR2" length="30" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.FingerprintClone" primaryKey="FINGERPRINT_CLONE_ID">
@@ -3789,6 +4028,7 @@
   <column name="SOURCE_ID" type="VARCHAR2" length="30" nullable="N" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="IS_SEQUENCED" type="VARCHAR2" length="1" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.FingerprintCloneContig" primaryKey="FINGERPRINT_CLONE_CONTIG_ID">
@@ -3796,6 +4036,7 @@
   <column name="FINGERPRINT_CLONE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.FINGERPRINTCLONE.FINGERPRINT_CLONE_ID" />
   <column name="FINGERPRINT_CONTIG_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.FINGERPRINTCONTIG.FINGERPRINT_CONTIG_ID" />
   <column name="CLONE_ORDER_NUM" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.FingerprintCloneMarker" primaryKey="FINGERPRINT_CLONE_MARKER_ID">
@@ -3805,6 +4046,7 @@
   <column name="MARKER_TYPE" type="VARCHAR2" length="30" nullable="Y" />
   <column name="SOURCE_ID" type="VARCHAR2" length="30" nullable="N" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.FingerprintContig" primaryKey="FINGERPRINT_CONTIG_ID">
@@ -3812,6 +4054,7 @@
   <column name="FINGERPRINT_MAP_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.FINGERPRINTMAP.FINGERPRINT_MAP_ID" />
   <column name="NAME" type="VARCHAR2" length="30" nullable="N" />
   <column name="NUMBER_OF_CLONES" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.FingerprintMap" primaryKey="FINGERPRINT_MAP_ID">
@@ -3822,6 +4065,7 @@
   <column name="SOURCE_ID" type="VARCHAR2" length="32" nullable="Y" />
   <column name="NUMBER_OF_CLONES" type="NUMBER" length="22" nullable="Y" />
   <column name="NUMBER_OF_CONTIGS" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.GOAssocInstEvidCode" primaryKey="GO_ASSOC_INST_EVID_CODE_ID">
@@ -3829,6 +4073,7 @@
   <column name="GO_EVIDENCE_CODE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="GO_ASSOCIATION_INSTANCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.GOASSOCIATIONINSTANCE.GO_ASSOCIATION_INSTANCE_ID" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="REFERENCE" type="VARCHAR2" length="500" nullable="Y" />
   <column name="EVIDENCE_CODE_PARAMETER" type="VARCHAR2" length="400" nullable="Y" />
 </table>
@@ -3843,6 +4088,7 @@
   <column name="DEFINING" type="NUMBER" length="22" nullable="N" />
   <column name="GO_ASSOCIATION_DATE" type="DATE" length="7" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.GOAssociationInstance" primaryKey="GO_ASSOCIATION_INSTANCE_ID">
@@ -3856,12 +4102,14 @@
   <column name="IS_DEPRECATED" type="NUMBER" length="22" nullable="N" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="P_VALUE_RATIO" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.GOAssociationInstanceLOE" primaryKey="GO_ASSOC_INST_LOE_ID">
   <column name="GO_ASSOC_INST_LOE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="80" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Gene" primaryKey="GENE_ID">
@@ -3875,12 +4123,14 @@
   <column name="REVIEWER_SUMMARY" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="SEQUENCE_ONTOLOGY_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.GeneCategory" primaryKey="GENE_CATEGORY_ID">
   <column name="GENE_CATEGORY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="TERM" type="VARCHAR2" length="80" nullable="N" />
   <column name="DEFINITION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.GeneChromosomalLocation" primaryKey="GENE_CHROMOSOMAL_LOCATION_ID">
@@ -3889,12 +4139,14 @@
   <column name="CHROMOSOME" type="NUMBER" length="22" nullable="N" />
   <column name="CYTOGENETIC" type="VARCHAR2" length="50" nullable="Y" />
   <column name="METHOD" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.GeneFamily" primaryKey="GENE_FAMILY_ID">
   <column name="GENE_FAMILY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="40" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.GeneFamilyRelation" primaryKey="GENE_FAMILY_RELATION_ID">
@@ -3902,6 +4154,7 @@
   <column name="GENE_FAMILY_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.GENEFAMILY.GENE_FAMILY_ID" />
   <column name="GENE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.GENE.GENE_ID" />
   <column name="CONFIDENCE" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.GeneFeatureSAGETagLink" primaryKey="GENE_FEATURE_SAGE_TAG_LINK_ID">
@@ -3913,6 +4166,7 @@
   <column name="THREE_PRIME_TAG_OFFSET" type="NUMBER" length="22" nullable="N" />
   <column name="SAME_STRAND" type="NUMBER" length="22" nullable="N" />
   <column name="EXPERIMENTALLY_VERIFIED" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.GeneFeatureSeqOverlap" primaryKey="GENE_FEATURE_SEQ_OVERLAP_ID">
@@ -3934,6 +4188,7 @@
   <column name="GENE_PERCENT_COVERED" type="FLOAT" length="22" nullable="N" />
   <column name="GENE_PERCENT_CODING_COVERED" type="FLOAT" length="22" nullable="N" />
   <column name="SEQUENCE_PERCENT_COVERED" type="FLOAT" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.GeneInstance" primaryKey="GENE_INSTANCE_ID">
@@ -3945,18 +4200,21 @@
   <column name="REVIEWER_SUMMARY" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="IS_REFERENCE" type="NUMBER" length="22" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.GeneInstanceCategory" primaryKey="GENE_INSTANCE_CATEGORY_ID">
   <column name="GENE_INSTANCE_CATEGORY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="40" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.GeneSuperFamily" primaryKey="GENE_SUPER_FAMILY_ID">
   <column name="GENE_SUPER_FAMILY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="40" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.GeneSuperFamilyRelation" primaryKey="GENE_SUPERFAMILY_RELATION_ID">
@@ -3964,6 +4222,7 @@
   <column name="GENE_SUPER_FAMILY_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.GENESUPERFAMILY.GENE_SUPER_FAMILY_ID" />
   <column name="GENE_FAMILY_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.GENEFAMILY.GENE_FAMILY_ID" />
   <column name="CONFIDENCE" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.GeneSynonym" primaryKey="GENE_SYNONYM_ID">
@@ -3972,6 +4231,7 @@
   <column name="SYNONYM_NAME" type="VARCHAR2" length="30" nullable="N" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="IS_OBSOLETE" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.GeneTrapAssembly" primaryKey="GENE_TRAP_ASSEMBLY_ID">
@@ -3983,12 +4243,14 @@
   <column name="MATCH_END" type="NUMBER" length="22" nullable="N" />
   <column name="IS_REVERSED" type="NUMBER" length="22" nullable="N" />
   <column name="PERCENT_IDENTITY" type="FLOAT" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.IndexWord" primaryKey="INDEX_WORD_ID">
   <column name="INDEX_WORD_ID" type="NUMBER" length="22" nullable="N" />
   <column name="WORD" type="VARCHAR2" length="255" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.IndexWordLink" primaryKey="INDEX_WORD_LINK_ID">
@@ -3996,6 +4258,7 @@
   <column name="INDEX_WORD_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.INDEXWORD.INDEX_WORD_ID" />
   <column name="TARGET_TABLE_ID" type="NUMBER" length="22" nullable="N" parent="CORE.TABLEINFO.TABLE_ID" />
   <column name="TARGET_ID" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.IndexWordSimLink" primaryKey="INDEX_WORD_SIM_LINK_ID">
@@ -4008,6 +4271,7 @@
   <column name="BEST_P_VALUE_MANT" type="FLOAT" length="22" nullable="N" />
   <column name="BEST_P_VALUE_EXP" type="NUMBER" length="22" nullable="N" />
   <column name="BEST_SCORE" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Interaction" primaryKey="INTERACTION_ID">
@@ -4021,18 +4285,21 @@
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="SOURCE_ID" type="VARCHAR2" length="32" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.InteractionInteractionLOE" primaryKey="INTERACTION_INTERACTION_LOE_ID">
   <column name="INTERACTION_INTERACTION_LOE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="INTERACTION_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.INTERACTION.INTERACTION_ID" />
   <column name="INTERACTION_LOE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.INTERACTIONLOE.INTERACTION_LOE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.InteractionLOE" primaryKey="INTERACTION_LOE_ID">
   <column name="INTERACTION_LOE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="80" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.InteractionType" primaryKey="INTERACTION_TYPE_ID">
@@ -4041,6 +4308,7 @@
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="SOURCE_ID" type="VARCHAR2" length="32" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.IsExpressed" primaryKey="IS_EXPRESSED_ID">
@@ -4049,6 +4317,7 @@
   <column name="TABLE_ID" type="NUMBER" length="22" nullable="N" parent="CORE.TABLEINFO.TABLE_ID" />
   <column name="ROW_ID" type="NUMBER" length="22" nullable="N" />
   <column name="IS_CONFIRMED" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Keyword" primaryKey="KEYWORD_ID">
@@ -4056,6 +4325,7 @@
   <column name="KEYWORD" type="VARCHAR2" length="80" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
   <column name="PREFERRED_KEYWORD_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.KEYWORD.KEYWORD_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Library" primaryKey="LIBRARY_ID">
@@ -4086,6 +4356,7 @@
   <column name="COMMENT_STRING" type="CLOB" length="4000" nullable="Y" />
   <column name="DBEST_ORGANISM" type="VARCHAR2" length="300" nullable="Y" />
   <column name="DBEST_ORGAN" type="VARCHAR2" length="300" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.MergeSplit" primaryKey="MERGE_SPLIT_ID">
@@ -4095,6 +4366,7 @@
   <column name="NEW_ID" type="NUMBER" length="22" nullable="N" />
   <column name="MERGE_SPLIT_GROUP_ID" type="NUMBER" length="22" nullable="N" />
   <column name="IS_MERGE" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.MicroSatelliteMap" primaryKey="PLASMOMAP_ID">
@@ -4112,6 +4384,7 @@
   <column name="PRODUCT_LENGTH" type="NUMBER" length="22" nullable="N" />
   <column name="TAXON_ID" type="NUMBER" length="22" nullable="N" parent="SRES.TAXON.TAXON_ID" />
   <column name="OUTCROSS" type="VARCHAR2" length="30" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Motif" primaryKey="MOTIF_ID">
@@ -4122,12 +4395,14 @@
   <column name="MOTIF" type="VARCHAR2" length="255" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="N" />
   <column name="PROBABILITY" type="FLOAT" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.MotifRejectionReason" primaryKey="MOTIF_REJECTION_REASON_ID">
   <column name="MOTIF_REJECTION_REASON_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="255" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.MutualInformationScore" primaryKey="MUTUAL_INFORMATION_SCORE_ID">
@@ -4135,12 +4410,14 @@
   <column name="PRIMARY_PROFILE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.PHYLOGENETICPROFILE.PHYLOGENETIC_PROFILE_ID" />
   <column name="SECONDARY_PROFILE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.PHYLOGENETICPROFILE.PHYLOGENETIC_PROFILE_ID" />
   <column name="MUTUAL_INFORMATION_SCORE" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NAComment" primaryKey="NA_COMMENT_ID">
   <column name="NA_COMMENT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NASEQUENCEIMP.NA_SEQUENCE_ID" />
   <column name="COMMENT_STRING" type="CLOB" length="4000" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NAEntry" primaryKey="NA_ENTRY_ID">
@@ -4155,12 +4432,14 @@
   <column name="CREATED_REL_VER" type="NUMBER" length="22" nullable="Y" />
   <column name="UPDATE_DATE" type="DATE" length="7" nullable="Y" />
   <column name="UPDATE_REL_VER" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NAFeatRelationshipType" primaryKey="NA_FEAT_RELATIONSHIP_TYPE_ID">
   <column name="NA_FEAT_RELATIONSHIP_TYPE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="255" nullable="N" />
   <column name="DESCRIPTION" type="CLOB" length="4000" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NAFeatureComment" primaryKey="NA_FEATURE_COMMENT_ID">
@@ -4168,6 +4447,7 @@
   <column name="NA_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
   <column name="COMMENT_STRING" type="CLOB" length="4000" nullable="N" />
   <column name="COMMENT_DATE" type="DATE" length="7" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NAFeatureImp" primaryKey="NA_FEATURE_ID">
@@ -4238,24 +4518,28 @@
   <column name="STRING40" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="STRING41" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="STRING42" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NAFeatureNAGene" primaryKey="NA_FEATURE_NA_GENE_ID">
   <column name="NA_FEATURE_NA_GENE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NA_GENE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAGENE.NA_GENE_ID" />
   <column name="NA_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NAFeatureNAPT" primaryKey="NA_FEATURE_NA_PT_ID">
   <column name="NA_FEATURE_NA_PT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NA_PRIMARY_TRANSCRIPT_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAPRIMARYTRANSCRIPT.NA_PRIMARY_TRANSCRIPT_ID" />
   <column name="NA_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NAFeatureNAProtein" primaryKey="NA_FEATURE_NA_PROTEIN_ID">
   <column name="NA_FEATURE_NA_PROTEIN_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NA_PROTEIN_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAPROTEIN.NA_PROTEIN_ID" />
   <column name="NA_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NAFeatureRelationship" primaryKey="NA_FEATURE_RELATIONSHIP_ID">
@@ -4264,12 +4548,14 @@
   <column name="CHILD_NA_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
   <column name="NA_FEAT_RELATIONSHIP_TYPE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAFEATRELATIONSHIPTYPE.NA_FEAT_RELATIONSHIP_TYPE_ID" />
   <column name="ORDINAL" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NAGene" primaryKey="NA_GENE_ID">
   <column name="NA_GENE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="300" nullable="Y" />
   <column name="IS_VERIFIED" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NALocation" primaryKey="NA_LOCATION_ID">
@@ -4288,12 +4574,14 @@
   <column name="LOCATION_TYPE" type="VARCHAR2" length="50" nullable="Y" />
   <column name="REMARK" type="VARCHAR2" length="255" nullable="Y" />
   <column name="DEBUG_FIELD" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NAPrimaryTranscript" primaryKey="NA_PRIMARY_TRANSCRIPT_ID">
   <column name="NA_PRIMARY_TRANSCRIPT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NA_GENE_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.NAGENE.NA_GENE_ID" />
   <column name="IS_VERIFIED" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NAProtein" primaryKey="NA_PROTEIN_ID">
@@ -4301,6 +4589,7 @@
   <column name="NA_PRIMARY_TRANSCRIPT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.NAPRIMARYTRANSCRIPT.NA_PRIMARY_TRANSCRIPT_ID" />
   <column name="NAME" type="VARCHAR2" length="300" nullable="Y" />
   <column name="IS_VERIFIED" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NASeqCytoLocation" primaryKey="NA_SEQ_CYTO_LOCATION_ID">
@@ -4310,6 +4599,7 @@
   <column name="START_BAND" type="VARCHAR2" length="8" nullable="N" />
   <column name="END_BAND" type="VARCHAR2" length="8" nullable="N" />
   <column name="METHOD" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NASequenceImp" primaryKey="NA_SEQUENCE_ID">
@@ -4340,24 +4630,28 @@
   <column name="STRING1" type="VARCHAR2" length="255" nullable="Y" />
   <column name="STRING2" type="VARCHAR2" length="255" nullable="Y" />
   <column name="STRING3" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NASequenceKeyword" primaryKey="NA_SEQUENCE_KEYWORD_ID">
   <column name="NA_SEQUENCE_KEYWORD_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NASEQUENCEIMP.NA_SEQUENCE_ID" />
   <column name="KEYWORD_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.KEYWORD.KEYWORD_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NASequenceOrganelle" primaryKey="NA_SEQUENCE_ORGANELLE_ID">
   <column name="NA_SEQUENCE_ORGANELLE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NASEQUENCEIMP.NA_SEQUENCE_ID" />
   <column name="ORGANELLE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.ORGANELLE.ORGANELLE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NASequenceRef" primaryKey="NA_SEQUENCE_REF_ID">
   <column name="NA_SEQUENCE_REF_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NASEQUENCEIMP.NA_SEQUENCE_ID" />
   <column name="REFERENCE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.BIBLIOGRAPHICREFERENCE.BIBLIOGRAPHIC_REFERENCE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.NRDBEntry" primaryKey="NRDB_ENTRY_ID">
@@ -4370,6 +4664,7 @@
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
   <column name="TAXON_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.TAXON.TAXON_ID" />
   <column name="IS_PREFERRED" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.OpticalMap" primaryKey="OPTICAL_MAP_ID">
@@ -4381,6 +4676,7 @@
   <column name="MAP_NAME" type="VARCHAR2" length="50" nullable="N" />
   <column name="CHROMOSOME_ORIENTATION" type="VARCHAR2" length="10" nullable="N" />
   <column name="TAXON_ID" type="NUMBER" length="22" nullable="N" parent="SRES.TAXON.TAXON_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.OpticalMapAlignment" primaryKey="OPTICAL_MAP_ALIGNMENT_ID">
@@ -4391,6 +4687,7 @@
   <column name="P_VALUE" type="FLOAT" length="22" nullable="N" />
   <column name="START_FRAGMENT" type="NUMBER" length="22" nullable="N" />
   <column name="END_FRAGMENT" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.OpticalMapAlignmentSpan" primaryKey="OPTICAL_MAP_ALIGNMENT_SPAN_ID">
@@ -4403,6 +4700,7 @@
   <column name="OPTICAL_MAP_LENGTH" type="FLOAT" length="22" nullable="Y" />
   <column name="FRAGMENT_LENGTH_KB" type="FLOAT" length="22" nullable="Y" />
   <column name="ORDER_NUM" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.OpticalMapFragment" primaryKey="OPTICAL_MAP_FRAGMENT_ID">
@@ -4411,12 +4709,14 @@
   <column name="FRAGMENT_LENGTH_KB" type="FLOAT" length="22" nullable="N" />
   <column name="FRAGMENT_ORDER" type="NUMBER" length="22" nullable="N" />
   <column name="CUMULATIVE_LENGTH_KB" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Organelle" primaryKey="ORGANELLE_ID">
   <column name="ORGANELLE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="300" nullable="Y" />
   <column name="PLASMID_NAME" type="VARCHAR2" length="300" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Pathway" primaryKey="PATHWAY_ID">
@@ -4425,12 +4725,14 @@
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="SOURCE_ID" type="VARCHAR2" length="32" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.PathwayInteraction" primaryKey="PATHWAY_INTERACTION_ID">
   <column name="PATHWAY_INTERACTION_ID" type="NUMBER" length="22" nullable="N" />
   <column name="PATHWAY_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.PATHWAY.PATHWAY_ID" />
   <column name="INTERACTION_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.INTERACTION.INTERACTION_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.PfamEntry" primaryKey="PFAM_ENTRY_ID">
@@ -4443,6 +4745,7 @@
   <column name="ALIGNMENT_METHOD" type="VARCHAR2" length="100" nullable="Y" />
   <column name="NUMBER_OF_SEQS" type="NUMBER" length="22" nullable="N" />
   <column name="COMMENT_STRING" type="CLOB" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.PhylogeneticProfile" primaryKey="PHYLOGENETIC_PROFILE_ID">
@@ -4450,6 +4753,7 @@
   <column name="NA_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
   <column name="PHYLOGENETIC_PROFILE_SET_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.PHYLOGENETICPROFILESET.PHYLOGENETIC_PROFILE_SET_ID" />
   <column name="MINUS_LOG_ENTROPY" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.PhylogeneticProfileMember" primaryKey="PHYLOGENETIC_PROFILE_MEMBER_ID">
@@ -4457,12 +4761,14 @@
   <column name="PHYLOGENETIC_PROFILE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="TAXON_ID" type="NUMBER" length="22" nullable="N" parent="SRES.TAXON.TAXON_ID" />
   <column name="MINUS_LOG_E_VALUE" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.PhylogeneticProfileSet" primaryKey="PHYLOGENETIC_PROFILE_SET_ID">
   <column name="PHYLOGENETIC_PROFILE_SET_ID" type="NUMBER" length="22" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
   <column name="PRED_ALG_INVOCATION_ID" type="NUMBER" length="22" nullable="N" parent="CORE.ALGORITHMINVOCATION.ALGORITHM_INVOCATION_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ProjectLink" primaryKey="PROJECT_LINK_ID">
@@ -4471,6 +4777,7 @@
   <column name="TABLE_ID" type="NUMBER" length="22" nullable="N" parent="CORE.TABLEINFO.TABLE_ID" />
   <column name="ID" type="NUMBER" length="22" nullable="N" />
   <column name="CURRENT_VERSION" type="VARCHAR2" length="4" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Protein" primaryKey="PROTEIN_ID">
@@ -4481,12 +4788,14 @@
   <column name="DESCRIPTION" type="VARCHAR2" length="500" nullable="Y" />
   <column name="REVIEWER_SUMMARY" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="SEQUENCE_ONTOLOGY_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ProteinCategory" primaryKey="PROTEIN_CATEGORY_ID">
   <column name="PROTEIN_CATEGORY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="TERM" type="VARCHAR2" length="80" nullable="N" />
   <column name="DEFINITION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ProteinInstance" primaryKey="PROTEIN_INSTANCE_ID">
@@ -4497,12 +4806,14 @@
   <column name="REVIEWER_SUMMARY" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="IS_REFERENCE" type="NUMBER" length="22" nullable="N" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ProteinInstanceCategory" primaryKey="PROTEIN_INSTANCE_CATEGORY_ID">
   <column name="PROTEIN_INSTANCE_CATEGORY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="40" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ProteinProperty" primaryKey="PROTEIN_PROPERTY_ID">
@@ -4516,18 +4827,21 @@
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="SOURCE_ID" type="VARCHAR2" length="32" nullable="Y" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ProteinPropertyType" primaryKey="PROTEIN_PROPERTY_TYPE_ID">
   <column name="PROTEIN_PROPERTY_TYPE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="80" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ProteinProteinCategory" primaryKey="PROTEIN_PROTEIN_CATEGORY_ID">
   <column name="PROTEIN_PROTEIN_CATEGORY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="PROTEIN_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.PROTEIN.PROTEIN_ID" />
   <column name="PROTEIN_CATEGORY_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.PROTEINCATEGORY.PROTEIN_CATEGORY_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.ProteinSynonym" primaryKey="PROTEIN_SYNONYM_ID">
@@ -4535,6 +4849,7 @@
   <column name="PROTEIN_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.PROTEIN.PROTEIN_ID" />
   <column name="SYNONYM_NAME" type="VARCHAR2" length="50" nullable="N" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RHMap" primaryKey="RH_MAP_ID">
@@ -4545,6 +4860,7 @@
   <column name="SOURCE_ID" type="VARCHAR2" length="32" nullable="Y" />
   <column name="LAB" type="VARCHAR2" length="200" nullable="Y" />
   <column name="DESCRIPTION" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RHMapMarker" primaryKey="RH_MAP_MARKER_ID">
@@ -4560,6 +4876,7 @@
   <column name="LAB" type="VARCHAR2" length="8" nullable="Y" />
   <column name="ASSAY" type="VARCHAR2" length="200" nullable="Y" />
   <column name="PANEL_DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RHMarker" primaryKey="RH_MARKER_ID">
@@ -4576,6 +4893,7 @@
   <column name="DESCRIPTION" type="VARCHAR2" length="500" nullable="Y" />
   <column name="TAXON_ID" type="NUMBER" length="22" nullable="N" parent="SRES.TAXON.TAXON_ID" />
   <column name="TYPE" type="VARCHAR2" length="8" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RNA" primaryKey="RNA_ID">
@@ -4585,6 +4903,7 @@
   <column name="GENE_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.GENE.GENE_ID" />
   <column name="REVIEWER_SUMMARY" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="SEQUENCE_ONTOLOGY_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RNAAnatomy" primaryKey="RNA_ANATOMY_ID">
@@ -4594,18 +4913,21 @@
   <column name="EST_NUMBER" type="NUMBER" length="22" nullable="Y" />
   <column name="RAD_CONFIRMED" type="NUMBER" length="22" nullable="N" />
   <column name="LITERATURE_CONFIRMED" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RNAAnatomyLOE" primaryKey="RNA_ANATOMY_LOE_ID">
   <column name="RNA_ANATOMY_LOE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="RNA_ANATOMY_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.RNAANATOMY.RNA_ANATOMY_ID" />
   <column name="ANATOMY_LOE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.ANATOMYLOE.ANATOMY_LOE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RNACategory" primaryKey="RNA_CATEGORY_ID">
   <column name="RNA_CATEGORY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="TERM" type="VARCHAR2" length="80" nullable="N" />
   <column name="DEFINITION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RNAFeatureExon" primaryKey="RNA_FEATURE_EXON_ID">
@@ -4615,6 +4937,7 @@
   <column name="ORDER_NUMBER" type="NUMBER" length="22" nullable="Y" />
   <column name="IS_INITIAL_EXON" type="NUMBER" length="22" nullable="Y" />
   <column name="IS_FINAL_EXON" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="CODING_START" type="NUMBER" length="22" nullable="Y" />
   <column name="CODING_END" type="NUMBER" length="22" nullable="Y" />
 </table>
@@ -4625,6 +4948,7 @@
   <column name="DESCRIPTION" type="VARCHAR2" length="1000" nullable="Y" />
   <column name="SEQUENCE" type="CLOB" length="4000" nullable="Y" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RNAIPhenotype" primaryKey="RNAI_PHENOTYPE_ID">
@@ -4632,6 +4956,7 @@
   <column name="RNAI_CONSTRUCT_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.RNAICONSTRUCT.RNAI_CONSTRUCT_ID" />
   <column name="PHENOTYPE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RNAInstance" primaryKey="RNA_INSTANCE_ID">
@@ -4642,18 +4967,21 @@
   <column name="IS_REFERENCE" type="NUMBER" length="22" nullable="N" />
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="RNA_INSTANCE_CATEGORY_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.RNAINSTANCECATEGORY.RNA_INSTANCE_CATEGORY_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RNAInstanceCategory" primaryKey="RNA_INSTANCE_CATEGORY_ID">
   <column name="RNA_INSTANCE_CATEGORY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="255" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RNARNACategory" primaryKey="RNA_RNA_CATEGORY_ID">
   <column name="RNA_RNA_CATEGORY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="RNA_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.RNA.RNA_ID" />
   <column name="RNA_CATEGORY_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.RNACATEGORY.RNA_CATEGORY_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RejectedMotif" primaryKey="REJECTED_MOTIF_ID">
@@ -4662,6 +4990,7 @@
   <column name="EXTERNAL_DATABASE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.EXTERNALDATABASE.EXTERNAL_DATABASE_ID" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="MOTIF_REJECTION_REASON_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.MOTIFREJECTIONREASON.MOTIF_REJECTION_REASON_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RepeatType" primaryKey="REPEAT_TYPE_ID">
@@ -4673,10 +5002,12 @@
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="SOURCE_ID" type="VARCHAR2" length="32" nullable="Y" />
   <column name="EXEMPLAR_NA_SEQUENCE_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.NASEQUENCEIMP.NA_SEQUENCE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RowSet" primaryKey="ROW_SET_ID">
   <column name="ROW_SET_ID" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.RowSetMember" primaryKey="ROW_SET_MEMBER_ID">
@@ -4684,6 +5015,7 @@
   <column name="ROW_SET_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.ROWSET.ROW_SET_ID" />
   <column name="TABLE_ID" type="NUMBER" length="22" nullable="N" parent="CORE.TABLEINFO.TABLE_ID" />
   <column name="ROW_ID" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SecondaryAccs" primaryKey="SECONDARY_ACCS_ID">
@@ -4693,12 +5025,14 @@
   <column name="NA_ENTRY_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.NAENTRY.NA_ENTRY_ID" />
   <column name="SOURCE_ID" type="VARCHAR2" length="15" nullable="N" />
   <column name="SECONDARY_ACCS" type="VARCHAR2" length="20" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SecondaryStructure" primaryKey="SECONDARY_STRUCTURE_ID">
   <column name="SECONDARY_STRUCTURE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="AA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.AASEQUENCEIMP.AA_SEQUENCE_ID" />
   <column name="PRED_ALG_INVOCATION_ID" type="NUMBER" length="22" nullable="N" parent="CORE.ALGORITHMINVOCATION.ALGORITHM_INVOCATION_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SecondaryStructureCall" primaryKey="SECONDARY_STRUCTURE_CALL_ID">
@@ -4707,6 +5041,7 @@
   <column name="STRUCTURE_TYPE" type="VARCHAR2" length="1" nullable="N" />
   <column name="CALL_CONFIDENCE" type="CLOB" length="4000" nullable="Y" />
   <column name="PERCENTAGE" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SeqGroupExperimentImp" primaryKey="SEQ_GROUP_EXPERIMENT_ID">
@@ -4718,6 +5053,7 @@
   <column name="PVALUE_EXP" type="NUMBER" length="22" nullable="Y" />
   <column name="PERCENT_IDENTITY" type="FLOAT" length="22" nullable="Y" />
   <column name="PERCENT_MATCH" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SequenceFamily" primaryKey="SEQUENCE_FAMILY_ID">
@@ -4725,6 +5061,7 @@
   <column name="NAME" type="VARCHAR2" length="500" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="2000" nullable="Y" />
   <column name="SEQUENCE_FAMILY_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.SEQUENCEFAMILYEXPERIMENT.SEQUENCE_FAMILY_EXPERIMENT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SequenceFamilyExperiment" primaryKey="SEQUENCE_FAMILY_EXPERIMENT_ID">
@@ -4733,12 +5070,14 @@
   <column name="ORTHOLOG_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.SEQGROUPEXPERIMENTIMP.SEQ_GROUP_EXPERIMENT_ID" />
   <column name="IN_PARALOG_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.SEQGROUPEXPERIMENTIMP.SEQ_GROUP_EXPERIMENT_ID" />
   <column name="OUT_PARALOG_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.SEQGROUPEXPERIMENTIMP.SEQ_GROUP_EXPERIMENT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SequenceGroupFamily" primaryKey="SEQUENCE_GROUP_FAMILY_ID">
   <column name="SEQUENCE_GROUP_FAMILY_ID" type="NUMBER" length="22" nullable="N" />
   <column name="SEQUENCE_FAMILY_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.SEQUENCEFAMILY.SEQUENCE_FAMILY_ID" />
   <column name="SEQUENCE_GROUP_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.SEQUENCEGROUPIMP.SEQUENCE_GROUP_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SequenceGroupImp" primaryKey="SEQUENCE_GROUP_ID">
@@ -4759,6 +5098,7 @@
   <column name="MAX_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="MIN_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="SEQUENCE_GROUP_EXPERIMENT_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.SEQGROUPEXPERIMENTIMP.SEQ_GROUP_EXPERIMENT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SequencePiece" primaryKey="SEQUENCE_PIECE_ID">
@@ -4771,6 +5111,7 @@
   <column name="STRAND_ORIENTATION" type="VARCHAR2" length="7" nullable="Y" />
   <column name="START_POSITION" type="NUMBER" length="22" nullable="Y" />
   <column name="END_POSITION" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SequenceSequenceGroup" primaryKey="SEQUENCE_SEQUENCE_GROUP_ID">
@@ -4778,6 +5119,7 @@
   <column name="SEQUENCE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="SOURCE_TABLE_ID" type="NUMBER" length="22" nullable="Y" parent="CORE.TABLEINFO.TABLE_ID" />
   <column name="SEQUENCE_GROUP_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.SEQUENCEGROUPIMP.SEQUENCE_GROUP_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SequenceType" primaryKey="SEQUENCE_TYPE_ID">
@@ -4789,6 +5131,7 @@
   <column name="PARENT_SEQUENCE_TYPE_ID" type="NUMBER" length="22" nullable="Y" parent="DOTS.SEQUENCETYPE.SEQUENCE_TYPE_ID" />
   <column name="NAME" type="VARCHAR2" length="80" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.Similarity" primaryKey="SIMILARITY_ID">
@@ -4811,6 +5154,7 @@
   <column name="NUMBER_POSITIVE" type="NUMBER" length="22" nullable="Y" />
   <column name="IS_REVERSED" type="NUMBER" length="22" nullable="N" />
   <column name="READING_FRAME" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.SimilaritySpan" primaryKey="SIMILARITY_SPAN_ID">
@@ -4829,6 +5173,7 @@
   <column name="QUERY_END" type="NUMBER" length="22" nullable="Y" />
   <column name="IS_REVERSED" type="NUMBER" length="22" nullable="N" />
   <column name="READING_FRAME" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="DoTS.TranslatedAAFeatSeg" primaryKey="TRANSLATED_AA_FEAT_SEG_ID">
@@ -4841,6 +5186,7 @@
   <column name="AA_END_POS" type="NUMBER" length="22" nullable="Y" />
   <column name="NUCLEOTIDES_SHIFTED" type="NUMBER" length="22" nullable="Y" />
   <column name="TYPE_OF_SHIFT" type="VARCHAR2" length="20" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Model.ModelContext" primaryKey="MODEL_CONTEXT_ID">
@@ -4852,12 +5198,14 @@
   <column name="DEVELOPMENTAL_STAGE_START_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="DEVELOPMENTAL_STAGE_END_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="TAXON_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.TAXON.TAXON_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Model.Network" primaryKey="NETWORK_ID">
   <column name="NETWORK_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="100" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="250" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Model.NetworkNode" primaryKey="NETWORK_NODE_ID">
@@ -4868,6 +5216,7 @@
   <column name="PARENT_ID" type="NUMBER" length="22" nullable="Y" parent="MODEL.NETWORKNODE.NETWORK_NODE_ID" />
   <column name="DISPLAY_LABEL" type="VARCHAR2" length="40" nullable="Y" />
   <column name="IDENTIFIER" type="VARCHAR2" length="50" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Model.NetworkRelContext" primaryKey="NETWORK_REL_CONTEXT_ID">
@@ -4877,12 +5226,14 @@
   <column name="NETWORK_CONTEXT_ID" type="NUMBER" length="22" nullable="N" parent="MODEL.MODELCONTEXT.MODEL_CONTEXT_ID" />
   <column name="WEIGHT" type="FLOAT" length="22" nullable="Y" />
   <column name="SOURCE_NODE" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Model.NetworkRelContextLink" primaryKey="NETWORK_RC_LINK_ID">
   <column name="NETWORK_RC_LINK_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NETWORK_ID" type="NUMBER" length="22" nullable="N" parent="MODEL.NETWORK.NETWORK_ID" />
   <column name="NETWORK_REL_CONTEXT_ID" type="NUMBER" length="22" nullable="N" parent="MODEL.NETWORKRELCONTEXT.NETWORK_REL_CONTEXT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Model.NetworkRelEvidence" primaryKey="NETWORK_REL_EVIDENCE_ID">
@@ -4901,6 +5252,7 @@
   <column name="TEXT_EVIDENCE" type="VARCHAR2" length="250" nullable="Y" />
   <column name="GENOMIC_LOCATION" type="VARCHAR2" length="50" nullable="Y" />
   <column name="DISPLAY_NAME" type="VARCHAR2" length="500" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Model.NetworkRelationship" primaryKey="NETWORK_RELATIONSHIP_ID">
@@ -4908,12 +5260,14 @@
   <column name="NODE_ID" type="NUMBER" length="22" nullable="N" parent="MODEL.NETWORKNODE.NETWORK_NODE_ID" />
   <column name="ASSOCIATED_NODE_ID" type="NUMBER" length="22" nullable="Y" parent="MODEL.NETWORKNODE.NETWORK_NODE_ID" />
   <column name="WEIGHT" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Model.NetworkRelationshipType" primaryKey="NETWORK_RELATIONSHIP_TYPE_ID">
   <column name="NETWORK_RELATIONSHIP_TYPE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="RELATIONSHIP_TYPE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="DISPLAY_NAME" type="VARCHAR2" length="100" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Platform.Reporter" primaryKey="REPORTER_ID">
@@ -4923,12 +5277,14 @@
   <column name="SOURCE_ID" type="VARCHAR2" length="50" nullable="N" />
   <column name="PHYSICAL_LOCATION" type="VARCHAR2" length="100" nullable="Y" />
   <column name="SEQUENCE" type="VARCHAR2" length="2000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Platform.ReporterGene" primaryKey="REPORTER_GENE_ID">
   <column name="REPORTER_GENE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="REPORTER_ID" type="NUMBER" length="22" nullable="N" parent="PLATFORM.REPORTER.REPORTER_ID" />
   <column name="GENE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.GENE.GENE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Platform.ReporterLocation" primaryKey="REPORTER_LOCATION_ID">
@@ -4938,12 +5294,14 @@
   <column name="REPORTER_START" type="NUMBER" length="22" nullable="N" />
   <column name="REPORTER_END" type="NUMBER" length="22" nullable="N" />
   <column name="ON_REVERSE_STRAND" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Platform.ReporterNaFeature" primaryKey="REPORTER_NA_FEAT_ID">
   <column name="REPORTER_NA_FEAT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="REPORTER_ID" type="NUMBER" length="22" nullable="N" parent="PLATFORM.REPORTER.REPORTER_ID" />
   <column name="NA_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Platform.ReporterSetAnnotation" primaryKey="REPORTER_SET_ANNOTATION_ID">
@@ -4951,12 +5309,14 @@
   <column name="REPORTER_SET_ID" type="NUMBER" length="22" nullable="N" parent="PLATFORM.REPORTERSETIMP.REPORTER_SET_ID" />
   <column name="NAME" type="VARCHAR2" length="500" nullable="N" />
   <column name="VALUE" type="VARCHAR2" length="100" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Platform.ReporterSetGroup" primaryKey="REPORTER_SET_GROUP_ID">
   <column name="REPORTER_SET_GROUP_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="100" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="500" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Platform.ReporterSetImp" primaryKey="REPORTER_SET_ID">
@@ -4982,6 +5342,7 @@
   <column name="NUMBER7" type="NUMBER" length="22" nullable="Y" />
   <column name="STRING1" type="VARCHAR2" length="50" nullable="Y" />
   <column name="STRING2" type="VARCHAR2" length="50" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Results.AlphaDiversity" primaryKey="ALPHA_DIVERSITY_ID">
@@ -4992,6 +5353,7 @@
   <column name="CHAO_1" type="FLOAT" length="22" nullable="Y" />
   <column name="SHANNON" type="FLOAT" length="22" nullable="Y" />
   <column name="SIMPSON" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Results.CompoundMassSpec" primaryKey="COMPOUND_MASS_SPEC_ID">
@@ -5001,6 +5363,7 @@
   <column name="VALUE" type="FLOAT" length="22" nullable="Y" />
   <column name="STANDARD_ERROR" type="FLOAT" length="22" nullable="Y" />
   <column name="ISOTOPOMER" type="VARCHAR2" length="100" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Results.EditingEvent" primaryKey="EDITING_EVENT_ID">
@@ -5013,6 +5376,7 @@
   <column name="ALTERNATE_SEQUENCE" type="VARCHAR2" length="200" nullable="Y" />
   <column name="FREQUENCY" type="FLOAT" length="22" nullable="Y" />
   <column name="P_VALUE" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Results.FamilyDiffResult" primaryKey="FAMILY_DIFF_RES_ID">
@@ -5031,6 +5395,7 @@
   <column name="Q_VALUE" type="FLOAT" length="22" nullable="Y" />
   <column name="CONFIDENCE_UP" type="FLOAT" length="22" nullable="Y" />
   <column name="CONFIDENCE_DOWN" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Results.FamilyExpression" primaryKey="FAMILY_EXPRESSION_ID">
@@ -5041,6 +5406,7 @@
   <column name="CONFIDENCE" type="FLOAT" length="22" nullable="Y" />
   <column name="STANDARD_ERROR" type="FLOAT" length="22" nullable="Y" />
   <column name="CATEGORICAL_VALUE" type="VARCHAR2" length="100" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="PERCENTILE_CHANNEL1" type="FLOAT" length="22" nullable="Y" />
   <column name="PERCENTILE_CHANNEL2" type="FLOAT" length="22" nullable="Y" />
 </table>
@@ -5061,6 +5427,7 @@
   <column name="Q_VALUE" type="FLOAT" length="22" nullable="Y" />
   <column name="CONFIDENCE_UP" type="FLOAT" length="22" nullable="Y" />
   <column name="CONFIDENCE_DOWN" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Results.GeneExpression" primaryKey="GENE_EXPRESSION_ID">
@@ -5071,6 +5438,7 @@
   <column name="CONFIDENCE" type="FLOAT" length="22" nullable="Y" />
   <column name="STANDARD_ERROR" type="FLOAT" length="22" nullable="Y" />
   <column name="CATEGORICAL_VALUE" type="VARCHAR2" length="100" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="PERCENTILE_CHANNEL1" type="FLOAT" length="22" nullable="Y" />
   <column name="PERCENTILE_CHANNEL2" type="FLOAT" length="22" nullable="Y" />
 </table>
@@ -5081,6 +5449,7 @@
   <column name="GENE1_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.GENE.GENE_ID" />
   <column name="GENE2_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.GENE.GENE_ID" />
   <column name="SIMILARITY" type="FLOAT" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Results.NAFeatureDiffResult" primaryKey="NA_FEAT_DIFF_RES_ID">
@@ -5099,6 +5468,7 @@
   <column name="Q_VALUE" type="FLOAT" length="22" nullable="Y" />
   <column name="CONFIDENCE_UP" type="FLOAT" length="22" nullable="Y" />
   <column name="CONFIDENCE_DOWN" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="CONFIDENCE" type="FLOAT" length="22" nullable="Y" />
   <column name="Z_SCORE" type="FLOAT" length="22" nullable="Y" />
   <column name="IS_SIGNIFICANT" type="NUMBER" length="22" nullable="Y" />
@@ -5112,6 +5482,7 @@
   <column name="CONFIDENCE" type="FLOAT" length="22" nullable="Y" />
   <column name="STANDARD_ERROR" type="FLOAT" length="22" nullable="Y" />
   <column name="CATEGORICAL_VALUE" type="VARCHAR2" length="100" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="PERCENTILE_CHANNEL1" type="FLOAT" length="22" nullable="Y" />
   <column name="PERCENTILE_CHANNEL2" type="FLOAT" length="22" nullable="Y" />
 </table>
@@ -5121,6 +5492,7 @@
   <column name="PROTOCOL_APP_NODE_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOLAPPNODE.PROTOCOL_APP_NODE_ID" />
   <column name="NA_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
   <column name="VALUE" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Results.NaFeaturePhenotypeComp" primaryKey="NA_FEATURE_PHENOTYPE_COMP_ID">
@@ -5128,6 +5500,7 @@
   <column name="NA_FEATURE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NAFEATUREIMP.NA_FEATURE_ID" />
   <column name="PHENOTYPE_COMPOSITION_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.PHENOTYPECOMPOSITION.PHENOTYPE_COMPOSITION_ID" />
   <column name="PROTOCOL_APP_NODE_ID" type="NUMBER" length="22" nullable="Y" parent="STUDY.PROTOCOLAPPNODE.PROTOCOL_APP_NODE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Results.OtuAbundance" primaryKey="OTU_ABUNDANCE_ID">
@@ -5136,6 +5509,7 @@
   <column name="NA_SEQUENCE_ID" type="NUMBER" length="22" nullable="N" parent="DOTS.NASEQUENCEIMP.NA_SEQUENCE_ID" />
   <column name="RAW_COUNT" type="NUMBER" length="22" nullable="Y" />
   <column name="RELATIVE_ABUNDANCE" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="TAXON_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
@@ -5155,6 +5529,7 @@
   <column name="Q_VALUE" type="FLOAT" length="22" nullable="Y" />
   <column name="CONFIDENCE_UP" type="FLOAT" length="22" nullable="Y" />
   <column name="CONFIDENCE_DOWN" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Results.ReporterExpression" primaryKey="REPORTER_EXPRESSION_ID">
@@ -5165,6 +5540,7 @@
   <column name="CONFIDENCE" type="FLOAT" length="22" nullable="Y" />
   <column name="STANDARD_ERROR" type="FLOAT" length="22" nullable="Y" />
   <column name="CATEGORICAL_VALUE" type="VARCHAR2" length="100" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="PERCENTILE_CHANNEL1" type="FLOAT" length="22" nullable="Y" />
   <column name="PERCENTILE_CHANNEL2" type="FLOAT" length="22" nullable="Y" />
 </table>
@@ -5177,6 +5553,7 @@
   <column name="CONFIDENCE" type="FLOAT" length="22" nullable="Y" />
   <column name="STANDARD_ERROR" type="FLOAT" length="22" nullable="Y" />
   <column name="CATEGORICAL_VALUE" type="VARCHAR2" length="100" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Results.RnaDiffResult" primaryKey="RNA_DIFF_RES_ID">
@@ -5195,6 +5572,7 @@
   <column name="Q_VALUE" type="FLOAT" length="22" nullable="Y" />
   <column name="CONFIDENCE_UP" type="FLOAT" length="22" nullable="Y" />
   <column name="CONFIDENCE_DOWN" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Results.RnaExpression" primaryKey="RNA_EXPRESSION_ID">
@@ -5205,6 +5583,7 @@
   <column name="CONFIDENCE" type="FLOAT" length="22" nullable="Y" />
   <column name="STANDARD_ERROR" type="FLOAT" length="22" nullable="Y" />
   <column name="CATEGORICAL_VALUE" type="VARCHAR2" length="100" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="PERCENTILE_CHANNEL1" type="FLOAT" length="22" nullable="Y" />
   <column name="PERCENTILE_CHANNEL2" type="FLOAT" length="22" nullable="Y" />
 </table>
@@ -5228,6 +5607,7 @@
   <column name="Q_VALUE" type="FLOAT" length="22" nullable="Y" />
   <column name="CONFIDENCE_UP" type="FLOAT" length="22" nullable="Y" />
   <column name="CONFIDENCE_DOWN" type="FLOAT" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Results.SegmentResult" primaryKey="SEGMENT_RESULT_ID">
@@ -5245,6 +5625,7 @@
   <column name="CONFIDENCE" type="FLOAT" length="22" nullable="Y" />
   <column name="STANDARD_ERROR" type="FLOAT" length="22" nullable="Y" />
   <column name="CATEGORICAL_VALUE" type="VARCHAR2" length="100" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Results.SeqVariation" primaryKey="SEQ_VARIATION_ID">
@@ -5278,6 +5659,7 @@
   <column name="ALLELE_PERCENT" type="FLOAT" length="22" nullable="Y" />
   <column name="COVERAGE" type="NUMBER" length="22" nullable="Y" />
   <column name="QUALITY" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="PRODUCTS_FULL" type="VARCHAR2" length="2500" nullable="Y" />
   <column name="DIFF_FROM_ADJACENT_SNP" type="NUMBER" length="22" nullable="Y" />
 </table>
@@ -5298,6 +5680,7 @@
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="SOURCE_ID" type="VARCHAR2" length="50" nullable="Y" />
   <column name="CONTACT_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.CONTACT.CONTACT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="SRes.Contact" primaryKey="CONTACT_ID">
@@ -5317,6 +5700,7 @@
   <column name="EMAIL" type="VARCHAR2" length="255" nullable="Y" />
   <column name="PHONE" type="VARCHAR2" length="255" nullable="Y" />
   <column name="FAX" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="SRes.DbRef" primaryKey="DB_REF_ID">
@@ -5330,6 +5714,7 @@
   <column name="CHROMOSOME" type="VARCHAR2" length="2" nullable="Y" />
   <column name="CENTIMORGANS" type="NUMBER" length="22" nullable="Y" />
   <column name="REMARK" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="SRes.EnzymeClass" primaryKey="ENZYME_CLASS_ID">
@@ -5343,6 +5728,7 @@
   <column name="DESCRIPTION" type="VARCHAR2" length="200" nullable="Y" />
   <column name="PARENT_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ENZYMECLASS.ENZYME_CLASS_ID" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="SRes.EnzymeClassAttribute" primaryKey="ENZYME_CLASS_ATTRIBUTE_ID">
@@ -5350,11 +5736,13 @@
   <column name="ENZYME_CLASS_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ENZYMECLASS.ENZYME_CLASS_ID" />
   <column name="ATTRIBUTE_NAME" type="VARCHAR2" length="32" nullable="N" />
   <column name="ATTRIBUTE_VALUE" type="VARCHAR2" length="4000" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="SRes.ExternalDatabase" primaryKey="EXTERNAL_DATABASE_ID">
   <column name="EXTERNAL_DATABASE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="150" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="SRes.ExternalDatabaseRelease" primaryKey="EXTERNAL_DATABASE_RELEASE_ID">
@@ -5373,6 +5761,7 @@
   <column name="BLAST_FILE" type="VARCHAR2" length="255" nullable="Y" />
   <column name="BLAST_FILE_MD5" type="VARCHAR2" length="32" nullable="Y" />
   <column name="ID_IS_ALIAS" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="SRes.GeneticCode" primaryKey="GENETIC_CODE_ID">
@@ -5382,6 +5771,7 @@
   <column name="NAME" type="VARCHAR2" length="255" nullable="Y" />
   <column name="CODE" type="VARCHAR2" length="255" nullable="N" />
   <column name="STARTS" type="VARCHAR2" length="255" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="SRes.OntologyRelationship" primaryKey="ONTOLOGY_RELATIONSHIP_ID">
@@ -5390,6 +5780,7 @@
   <column name="PREDICATE_TERM_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="OBJECT_TERM_ID" type="NUMBER" length="22" nullable="N" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="ONTOLOGY_RELATIONSHIP_TYPE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
@@ -5399,6 +5790,7 @@
   <column name="ONTOLOGY_SYNONYM" type="VARCHAR2" length="1500" nullable="N" />
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="SOURCE_ID" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="IS_PREFERRED" type="NUMBER" length="22" nullable="Y" />
   <column name="DEFINITION" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="DISPLAY_ORDER" type="NUMBER" length="22" nullable="Y" />
@@ -5421,12 +5813,14 @@
   <column name="MINIMUM_LEVEL" type="NUMBER" length="22" nullable="Y" />
   <column name="MAXIMUM_LEVEL" type="NUMBER" length="22" nullable="Y" />
   <column name="NUMBER_OF_LEVELS" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="SRes.OntologyTermType" primaryKey="ONTOLOGY_TERM_TYPE_ID">
   <column name="ONTOLOGY_TERM_TYPE_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NAME" type="VARCHAR2" length="50" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="100" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="SRes.Pathway" primaryKey="PATHWAY_ID">
@@ -5436,6 +5830,7 @@
   <column name="EXTERNAL_DATABASE_RELEASE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.EXTERNALDATABASERELEASE.EXTERNAL_DATABASE_RELEASE_ID" />
   <column name="SOURCE_ID" type="VARCHAR2" length="50" nullable="N" />
   <column name="URL" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="SRes.PathwayNode" primaryKey="PATHWAY_NODE_ID">
@@ -5450,6 +5845,7 @@
   <column name="Y" type="NUMBER" length="22" nullable="Y" />
   <column name="WIDTH" type="NUMBER" length="22" nullable="Y" />
   <column name="HEIGHT" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="CELLULAR_LOCATION" type="VARCHAR2" length="200" nullable="Y" />
 </table>
 
@@ -5459,6 +5855,7 @@
   <column name="RELATIONSHIP_SUBTYPE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="NODE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.PATHWAYNODE.PATHWAY_NODE_ID" />
   <column name="ASSOCIATED_NODE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.PATHWAYNODE.PATHWAY_NODE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="IS_REVERSIBLE" type="NUMBER" length="22" nullable="Y" />
 </table>
 
@@ -5467,6 +5864,7 @@
   <column name="PHENOTYPE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="QUALITY_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="BIOLOGICAL_ENTITY_ID" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="SRes.Taxon" primaryKey="TAXON_ID">
@@ -5476,6 +5874,7 @@
   <column name="RANK" type="VARCHAR2" length="255" nullable="N" />
   <column name="GENETIC_CODE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.GENETICCODE.GENETIC_CODE_ID" />
   <column name="MITOCHONDRIAL_GENETIC_CODE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.GENETICCODE.GENETIC_CODE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="SRes.TaxonName" primaryKey="TAXON_NAME_ID">
@@ -5484,6 +5883,7 @@
   <column name="NAME" type="VARCHAR2" length="255" nullable="N" />
   <column name="UNIQUE_NAME_VARIANT" type="VARCHAR2" length="255" nullable="Y" />
   <column name="NAME_CLASS" type="VARCHAR2" length="255" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Study.Characteristic" primaryKey="CHARACTERISTIC_ID">
@@ -5492,6 +5892,7 @@
   <column name="ONTOLOGY_TERM_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="VALUE" type="VARCHAR2" length="1000" nullable="Y" />
   <column name="TABLE_ID" type="NUMBER" length="22" nullable="Y" parent="CORE.TABLEINFO.TABLE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="UNIT_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="QUALIFIER_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
 </table>
@@ -5500,18 +5901,21 @@
   <column name="FUNDING_ID" type="NUMBER" length="22" nullable="N" />
   <column name="CONTACT_ID" type="NUMBER" length="22" nullable="N" parent="SRES.CONTACT.CONTACT_ID" />
   <column name="GRANT_ID" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Study.Input" primaryKey="INPUT_ID">
   <column name="INPUT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="PROTOCOL_APP_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOLAPP.PROTOCOL_APP_ID" />
   <column name="PROTOCOL_APP_NODE_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOLAPPNODE.PROTOCOL_APP_NODE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Study.Output" primaryKey="OUTPUT_ID">
   <column name="OUTPUT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="PROTOCOL_APP_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOLAPP.PROTOCOL_APP_ID" />
   <column name="PROTOCOL_APP_NODE_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOLAPPNODE.PROTOCOL_APP_NODE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Study.Protocol" primaryKey="PROTOCOL_ID">
@@ -5524,12 +5928,14 @@
   <column name="SOURCE_ID" type="VARCHAR2" length="100" nullable="Y" />
   <column name="URI" type="VARCHAR2" length="300" nullable="Y" />
   <column name="CONTACT_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.CONTACT.CONTACT_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Study.ProtocolApp" primaryKey="PROTOCOL_APP_ID">
   <column name="PROTOCOL_APP_ID" type="NUMBER" length="22" nullable="N" />
   <column name="PROTOCOL_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOL.PROTOCOL_ID" />
   <column name="PROTOCOL_APP_DATE" type="DATE" length="7" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Study.ProtocolAppContact" primaryKey="PROTOCOL_APP_CONTACT_ID">
@@ -5538,6 +5944,7 @@
   <column name="ORDER_NUM" type="NUMBER" length="22" nullable="Y" />
   <column name="CONTACT_ID" type="NUMBER" length="22" nullable="N" parent="SRES.CONTACT.CONTACT_ID" />
   <column name="ROLE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Study.ProtocolAppNode" primaryKey="PROTOCOL_APP_NODE_ID">
@@ -5550,6 +5957,7 @@
   <column name="SOURCE_ID" type="VARCHAR2" length="100" nullable="Y" />
   <column name="SUBTYPE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="TAXON_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.TAXON.TAXON_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="NODE_ORDER_NUM" type="NUMBER" length="22" nullable="Y" />
   <column name="ISA_TYPE" type="VARCHAR2" length="50" nullable="Y" />
 </table>
@@ -5561,6 +5969,7 @@
   <column name="VALUE" type="VARCHAR2" length="150" nullable="Y" />
   <column name="TABLE_ID" type="NUMBER" length="22" nullable="Y" parent="CORE.TABLEINFO.TABLE_ID" />
   <column name="ROW_ID" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
   <column name="UNIT_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
 </table>
 
@@ -5572,6 +5981,7 @@
   <column name="UNIT_TYPE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="DEFAULT_VALUE" type="VARCHAR2" length="100" nullable="Y" />
   <column name="IS_USER_SPECIFIED" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Study.ProtocolSeriesLink" primaryKey="PROTOCOL_SERIES_LINK_ID">
@@ -5579,6 +5989,7 @@
   <column name="PROTOCOL_SERIES_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOL.PROTOCOL_ID" />
   <column name="PROTOCOL_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOL.PROTOCOL_ID" />
   <column name="ORDER_NUM" type="NUMBER" length="22" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Study.Study" primaryKey="STUDY_ID">
@@ -5592,12 +6003,14 @@
   <column name="APPROACHES" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="RESULTS" type="VARCHAR2" length="4000" nullable="Y" />
   <column name="CONCLUSIONS" type="VARCHAR2" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Study.StudyBibRef" primaryKey="STUDY_BIB_REF_ID">
   <column name="STUDY_BIB_REF_ID" type="NUMBER" length="22" nullable="N" />
   <column name="STUDY_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.STUDY.STUDY_ID" />
   <column name="BIBLIOGRAPHIC_REFERENCE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.BIBLIOGRAPHICREFERENCE.BIBLIOGRAPHIC_REFERENCE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Study.StudyContact" primaryKey="STUDY_CONTACT_ID">
@@ -5605,12 +6018,14 @@
   <column name="STUDY_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.STUDY.STUDY_ID" />
   <column name="CONTACT_ID" type="NUMBER" length="22" nullable="N" parent="SRES.CONTACT.CONTACT_ID" />
   <column name="ROLE_ID" type="NUMBER" length="22" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Study.StudyDesign" primaryKey="STUDY_DESIGN_ID">
   <column name="STUDY_DESIGN_ID" type="NUMBER" length="22" nullable="N" />
   <column name="STUDY_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.STUDY.STUDY_ID" />
   <column name="STUDY_DESIGN_TYPE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Study.StudyFactor" primaryKey="STUDY_FACTOR_ID">
@@ -5619,6 +6034,7 @@
   <column name="STUDY_FACTOR_TYPE_ID" type="NUMBER" length="22" nullable="N" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="NAME" type="VARCHAR2" length="100" nullable="N" />
   <column name="DESCRIPTION" type="VARCHAR2" length="1000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Study.StudyFactorValue" primaryKey="STUDY_FACTOR_VALUE_ID">
@@ -5628,18 +6044,21 @@
   <column name="VALUE" type="VARCHAR2" length="100" nullable="Y" />
   <column name="TABLE_ID" type="NUMBER" length="22" nullable="Y" parent="CORE.TABLEINFO.TABLE_ID" />
   <column name="ROW_ID" type="NUMBER" length="22" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Study.StudyFunding" primaryKey="STUDY_FUNDING_ID">
   <column name="STUDY_FUNDING_ID" type="NUMBER" length="22" nullable="N" />
   <column name="STUDY_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.STUDY.STUDY_ID" />
   <column name="FUNDING_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.FUNDING.FUNDING_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="Study.StudyLink" primaryKey="STUDY_LINK_ID">
   <column name="STUDY_LINK_ID" type="NUMBER" length="22" nullable="N" />
   <column name="STUDY_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.STUDY.STUDY_ID" />
   <column name="PROTOCOL_APP_NODE_ID" type="NUMBER" length="22" nullable="N" parent="STUDY.PROTOCOLAPPNODE.PROTOCOL_APP_NODE_ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="N" />
 </table>
 
 <table name="chEBI.Chemical_Data" primaryKey="ID">
@@ -5736,6 +6155,7 @@
 <table name="hmdb.autogen_structures" primaryKey="ID">
   <column name="ID" type="NUMBER" length="22" nullable="N" />
   <column name="STRUCTURE_ID" type="NUMBER" length="22" nullable="N" parent="HMDB.STRUCTURES.ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="hmdb.chemical_data" primaryKey="ID">
@@ -5744,6 +6164,7 @@
   <column name="CHEMICAL_DATA" type="VARCHAR2" length="255" nullable="N" />
   <column name="SOURCE" type="VARCHAR2" length="255" nullable="N" />
   <column name="TYPE" type="VARCHAR2" length="255" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="hmdb.compounds" primaryKey="ID">
@@ -5754,6 +6175,7 @@
   <column name="HMDB_ACCESSION" type="VARCHAR2" length="30" nullable="N" />
   <column name="STATUS" type="VARCHAR2" length="1" nullable="Y" />
   <column name="DEFINITION" type="CLOB" length="4000" nullable="Y" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="hmdb.database_accession" primaryKey="ID">
@@ -5762,11 +6184,13 @@
   <column name="ACCESSION_NUMBER" type="VARCHAR2" length="255" nullable="N" />
   <column name="TYPE" type="VARCHAR2" length="32" nullable="N" />
   <column name="SOURCE" type="VARCHAR2" length="32" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="hmdb.default_structures" primaryKey="ID">
   <column name="ID" type="NUMBER" length="22" nullable="N" />
   <column name="STRUCTURE_ID" type="NUMBER" length="22" nullable="N" parent="HMDB.STRUCTURES.ID" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="hmdb.names" primaryKey="ID">
@@ -5775,6 +6199,7 @@
   <column name="NAME" type="VARCHAR2" length="1000" nullable="N" />
   <column name="TYPE" type="VARCHAR2" length="32" nullable="N" />
   <column name="SOURCE" type="VARCHAR2" length="32" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 
 <table name="hmdb.structures" primaryKey="ID">
@@ -5783,5 +6208,6 @@
   <column name="STRUCTURE" type="CLOB" length="4000" nullable="N" />
   <column name="TYPE" type="VARCHAR2" length="255" nullable="N" />
   <column name="DIMENSION" type="VARCHAR2" length="255" nullable="N" />
+  <column name="ROW_PROJECT_ID" type="NUMBER" length="22" nullable="Y" />
 </table>
 </tables>
