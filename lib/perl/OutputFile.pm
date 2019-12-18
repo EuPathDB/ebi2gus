@@ -14,10 +14,14 @@ sub setFieldDelimiter { $_[0]->{_field_delimiter} = $_[1] }
 sub getRowDelimiter { $_[0]->{_row_delimiter} }
 sub setRowDelimiter { $_[0]->{_row_delimiter} = $_[1] }
 
+
+sub getHeaderFields { $_[0]->{_header_fields} }
+sub setHeaderFields { $_[0]->{_header_fields} = $_[1] }
+
 sub nextPk { ++$_[0]->{_next_pk} }
 
 sub new {
-    my ($class, $realTableName, $outputDirectory, $headerFields) = @_;
+    my ($class, $realTableName, $outputDirectory) = @_;
 
     my $self = bless {}, $class;    
 
@@ -33,32 +37,36 @@ sub new {
     $self->setFieldDelimiter("#EOC#\t");
     $self->setRowDelimiter("#EOR#\n");
 
-    $self->writeHeader($headerFields);
-
     return $self;
 }
 
 sub  writeHeader() {
-    my ($self, $fields) = @_;
+    my ($self) = @_;
 
+    my $headerFields = $self->getHeaderFields();
+    
     my $fh = $self->getFileHandle();
 
     my $fieldDelim = $self->getFieldDelimiter();
     my $rowDelim = $self->getRowDelimiter();
     
-    print $fh join($fieldDelim, @$fields) . $rowDelim;
+    print $fh join($fieldDelim, @$headerFields) . $rowDelim;
 }
 
 
 sub  writeRow() {
-    my ($self, $fields, $row) = @_;
+    my ($self, $impToViewFieldMap, $row) = @_;
+
+    my $headerFields = $self->getHeaderFields();
 
     my $fh = $self->getFileHandle();
 
     my $fieldDelim = $self->getFieldDelimiter();
     my $rowDelim = $self->getRowDelimiter();
+
+    my @viewFields = map { $impToViewFieldMap->{$_} } @$headerFields;
     
-    print $fh join($fieldDelim, map { $row->{$_} } @$fields) . $rowDelim;
+    print $fh join($fieldDelim, map { $_ ? $row->{$_} : undef } @viewFields) . $rowDelim;
 }
 
 

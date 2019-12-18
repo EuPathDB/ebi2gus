@@ -3,8 +3,6 @@ use base qw(GUSRow);
 
 use strict;
 
-use Data::Dumper;
-
 sub init {
     my ($self, $transcript, $gusTranslatedAASequence, $gusTranscript) = @_;
 

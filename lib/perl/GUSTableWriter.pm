@@ -17,9 +17,9 @@ sub writeRow {
 	my $outputFile = $self->getOutputFile();
 
 	my $tableDefinition = $self->getTableDefinition();
-	my $fields = $tableDefinition->getFields();
-
-	$outputFile->writeRow($fields, $gusRow);
+	my $impToViewFieldMap = $tableDefinition->getImpToViewFieldMap();
+	
+	$outputFile->writeRow($impToViewFieldMap, $gusRow);
 	return 1;
     }
     die "Invalid Row for table: " . $self->getTableDefinition()->getName();

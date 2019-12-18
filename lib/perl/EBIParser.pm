@@ -2,8 +2,6 @@ package EBIParser;
 
 use strict;
 
-use Data::Dumper;
-
 use GUSTableWriter;
 use OutputFile;
 
@@ -39,7 +37,8 @@ my %SKIP_LOGICS = ('mobidblite' => 1,
 # these are required objects
 # a gus table definition object will be made for each of them
 sub getTables {
-    return (['GUS::DoTS::GeneFeature',
+    return ([
+'GUS::DoTS::GeneFeature',
 	     'GUS::DoTS::ExternalNASequence',
 	     'GUS::DoTS::NALocation',
 	     'GUS::DoTS::Transcript',
@@ -47,7 +46,7 @@ sub getTables {
 	     'GUS::DoTS::ExonFeature',
 	     'GUS::DoTS::RNAFeatureExon',
 	     'GUS::DoTS::TranslatedAASequence',	     
-	     'GUS::DoTS::TranslatedAAFeature',
+ 	     'GUS::DoTS::TranslatedAAFeature',
 	     'GUS::SRes::ExternalDatabase',
 	     'GUS::SRes::ExternalDatabaseRelease',
 	     'GUS::DoTS::AAFeatureExon',
@@ -59,8 +58,8 @@ sub getTables {
 	     'GUS::DoTS::TandemRepeatFeature',
 	     'GUS::DoTS::Repeats',
 	     'GUS::DoTS::SignalPeptideFeature',
-	     'GUS::DoTS::TransMembraneAAFeature',
-	     'GUS::DoTS::LowComplexityAAFeature',
+ 	     'GUS::DoTS::TransMembraneAAFeature',
+ 	     'GUS::DoTS::LowComplexityAAFeature',
 	     'GUS::DoTS::AALocation',
 	     'GUS::SRes::DbRef',
 	     'GUS::DoTS::DbRefAAFeature',
@@ -96,6 +95,8 @@ sub setGUSTableWriters {
 
     my %outputFiles;
     
+    my %allFields;
+
     foreach my $className (@$tables) {
 	$className =~ s/^GUS:://;
 	$className =~ s/::/./;
@@ -105,18 +106,33 @@ sub setGUSTableWriters {
 	my $gusTableDefinition = $gusTableDefinitionsParser->makeTableDefinition($className);
 	my $realTableName = $gusTableDefinition->getRealTableName();
 
+	my @impFields = $gusTableDefinition->isView() ? keys %{$gusTableDefinition->getImpToViewFieldMap()} : @{$gusTableDefinition->getFields()};
+
+	foreach(@impFields) {
+	    $allFields{$realTableName}{$_}++;
+	}
+
 	my $outputFile; #Only one fileName/FileHandle/Counter Per RealTableName
 	if($outputFiles{$realTableName}) {
 	    $outputFile = $outputFiles{$realTableName};
 	}
 	else {
-	    my $headerFields = $gusTableDefinition->getFields();
+#	    my $headerFields = $gusTableDefinition->getFields();
 
-	    $outputFile = OutputFile->new($realTableName, $outputDirectory, $headerFields);
+	    $outputFile = OutputFile->new($realTableName, $outputDirectory);
 	    $outputFiles{$realTableName} = $outputFile;
 	}
 	
 	$gusTableWriters->{$className} = GUSTableWriter->new($gusTableDefinition, $outputFile);
+    }
+
+    foreach my $realTableName (keys %outputFiles) {
+	my $outputFile = $outputFiles{$realTableName};
+	my $impFields = $allFields{$realTableName};
+	my @headerFields = keys %$impFields;
+	$outputFile->setHeaderFields(\@headerFields);
+
+	$outputFile->writeHeader();
     }
 
     $self->{_gus_table_writers} = $gusTableWriters;

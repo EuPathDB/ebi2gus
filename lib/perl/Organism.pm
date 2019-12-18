@@ -4,8 +4,6 @@ use strict;
 
 use XML::Simple;
 
-use Data::Dumper;
-
 sub getNcbiTaxonId { $_[0]->{_ncbi_tax_id} }
 sub setNcbiTaxonId { $_[0]->{_ncbi_tax_id}  = $_[1] }
 

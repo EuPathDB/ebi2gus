@@ -1,7 +1,6 @@
 package GUSRow;
 
 use strict;
-use Data::Dumper;
 
 sub getGUSTableWriter { $_[0]->{_gus_table_writer} }
 sub setGUSTableWriter { $_[0]->{_gus_table_writer} = $_[1] }
