@@ -2,6 +2,8 @@ package OutputFile;
 
 use strict;
 
+use GUS::Core::ProjectInfo qw($projectId);
+
 sub getFileName { $_[0]->{_file_name} }
 sub setFileName { $_[0]->{_file_name} = $_[1] }
 
@@ -57,6 +59,7 @@ sub  writeHeader() {
 sub  writeRow() {
     my ($self, $impToViewFieldMap, $row) = @_;
 
+    $row->{row_project_id} = $projectId;
     my $headerFields = $self->getHeaderFields();
 
     my $fh = $self->getFileHandle();
@@ -65,7 +68,7 @@ sub  writeRow() {
     my $rowDelim = $self->getRowDelimiter();
 
     my @viewFields = map { $impToViewFieldMap->{$_} } @$headerFields;
-    
+
     print $fh join($fieldDelim, map { $_ ? $row->{$_} : undef } @viewFields) . $rowDelim;
 }
 

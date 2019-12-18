@@ -22,21 +22,23 @@ my $OUTPUT_DIRECTORY = "/tmp";
 
 sub HELP_MESSAGE {
     print STDERR <<"EOM";
-usage : $0 -r ensemble_registry_file \\
+usage : $0 -e ensemble_registry_file \\
         -t table_definitions_xml_file \\
 	-d genome_database_name \\
 	-v genome_database_version \\
 	-n ncbi_tax_id \\
 	-c chromosome_map_file \\
+	-p project_name \\
+	-r project_release \\
         -o output_directory
 EOM
     exit -1;
 }
-our ($opt_r, $opt_a, $opt_o, $opt_t, $opt_h, $opt_v, $opt_n, $opt_c, $opt_d);
-getopts('r:o:t:v:n:c:h:d:a:') or HELP_MESSAGE();
+our ($opt_r, $opt_a, $opt_o, $opt_t, $opt_h, $opt_v, $opt_n, $opt_c, $opt_d, $opt_p, $opt_e);
+getopts('p:r:o:t:v:n:c:h:d:a:e:') or HELP_MESSAGE();
 
 HELP_MESSAGE() if($opt_h);
-$REGISTRY_CONF_FILE = $opt_r if($opt_r);
+$REGISTRY_CONF_FILE = $opt_e if($opt_e);
 $TABLE_DEFINITIONS_XML_FILE = $opt_t if($opt_t);
 $OUTPUT_DIRECTORY = $opt_o if($opt_o);
 
@@ -45,10 +47,13 @@ my $genomeDatabaseName = $opt_d;
 my $genomeDatabaseVersion = $opt_v;
 my $chromosomeMapFile = $opt_c;
 
+my $projectName = $opt_p;
+my $projectRelease = $opt_r;
+
 if($opt_h || 
    !-e $REGISTRY_CONF_FILE || !-e $TABLE_DEFINITIONS_XML_FILE || 
    !defined($ncbiTaxId) || !$genomeDatabaseVersion || 
-   !$genomeDatabaseName) { 
+   !$genomeDatabaseName || !$projectName || !$projectRelease) { 
     HELP_MESSAGE();
 }
 
@@ -68,7 +73,7 @@ my $sliceAdaptor = $registry->get_adaptor('default', 'Core', 'Slice' );
 
 my $topLevelSlices = $sliceAdaptor->fetch_all('toplevel');
 
-my $ebiParser = EBIParser->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism, $registry);
+my $ebiParser = EBIParser->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism, $registry, $projectName, $projectRelease);
 $ebiParser->parse();
 # exit;
 

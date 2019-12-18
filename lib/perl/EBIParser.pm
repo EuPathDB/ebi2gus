@@ -65,6 +65,7 @@ sub getTables {
 	     'GUS::DoTS::DbRefAAFeature',
 	     'GUS::DoTS::DbRefNAFeature',
 	     'GUS::DoTS::DomainFeature',
+	     'GUS::Core::ProjectInfo',
 	     'GUS::Core::DatabaseInfo',
 	     'GUS::Core::TableInfo',
 	     'GUS::DoTS::GOAssociation',
@@ -77,6 +78,12 @@ sub getTables {
 
 sub getSlices { $_[0]->{_slices} }
 sub setSlices { $_[0]->{_slices} = $_[1] }
+
+sub getProjectName { $_[0]->{_project_name} }
+sub setProjectName { $_[0]->{_project_name} = $_[1] }
+
+sub getProjectRelease { $_[0]->{_project_release} }
+sub setProjectRelease { $_[0]->{_project_release} = $_[1] }
 
 sub getRegistry { $_[0]->{_registry} }
 sub setRegistry { $_[0]->{_registry} = $_[1] }
@@ -139,14 +146,19 @@ sub setGUSTableWriters {
 }
 
 sub new {
-    my ($class, $slices, $gusTableDefinitions, $outputDirectory, $organism, $registry) = @_;
-
+    my ($class, $slices, $gusTableDefinitions, $outputDirectory, $organism, $registry, $projectName, $projectRelease) = @_;
+    
     my $self = bless {}, $class;
 
     $self->setSlices($slices);
+
     $self->setGUSTableWriters($gusTableDefinitions, $outputDirectory);
     $self->setOrganism($organism);
 
+    $self->setProjectName($projectName);
+    $self->setProjectRelease($projectRelease);
+
+    
     $self->setRegistry($registry);
     
     $self->importTableModules();
@@ -572,9 +584,14 @@ sub getExternalDatabaseRelaseFromNameVersion {
 
 sub parse {
     my ($self) = @_;
+
+    my $gusTableWriters = $self->getGUSTableWriters();
+    
+    my $projectName = $self->getProjectName();
+    my $projectRelease = $self->getProjectRelease();
+    my $gusProjectInfo = GUS::Core::ProjectInfo->new($gusTableWriters, $projectName, $projectRelease);
     
     my $topLevelSlices = $self->getSlices();
-    my $gusTableWriters = $self->getGUSTableWriters();
     my $organism = $self->getOrganism();
     
     my $gusTaxon = GUS::SRes::Taxon->new($gusTableWriters, $organism);

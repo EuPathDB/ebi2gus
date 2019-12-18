@@ -43,17 +43,16 @@ sub new {
     if(my $impTable = $tableHash->{impTable}) {
 	$self->setRealTableName($impTable);
 	$self->{_is_view} = 1;
-	my %viewToImpFieldMap = map { lc $_ => lc $tableHash->{column}->{$_}->{impColumn} || lc $_  } keys %{$tableHash->{column}};
-
-	my %impToViewFieldMap = map { lc $tableHash->{column}->{$_}->{impColumn} || lc $_ => lc $_  } keys %{$tableHash->{column}};
-
-	$self->setViewToImpFieldMap(\%viewToImpFieldMap);
-	$self->setImpToViewFieldMap(\%impToViewFieldMap);
     }
     else {
 	$self->setRealTableName($tableName);
     }
 
+    my %viewToImpFieldMap = map { lc $_ => lc $tableHash->{column}->{$_}->{impColumn} || lc $_  } keys %{$tableHash->{column}};
+    my %impToViewFieldMap = map { lc $tableHash->{column}->{$_}->{impColumn} || lc $_ => lc $_  } keys %{$tableHash->{column}};
+
+    $self->setViewToImpFieldMap(\%viewToImpFieldMap);
+    $self->setImpToViewFieldMap(\%impToViewFieldMap);
 
     my (@fields, %fieldDataTypes);
     foreach my $field (keys %{$tableHash->{column}}) {
