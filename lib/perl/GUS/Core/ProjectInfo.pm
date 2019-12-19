@@ -9,9 +9,6 @@ our $projectId;
 
 sub new {
     my $class = shift;
-
-
-    print STDERR "NEW METHOD FOR PROJECT INFO\n";
     
     # this bit calls init
     my $self = $class->SUPER::new(@_);
@@ -29,8 +26,6 @@ sub new {
 sub init {
     my ($self, $name, $release) = @_;
 
-    print STDERR "INIT METHOD FOR PROJECT INFO\n";
-    
     return {name => $name,
 	    release => $release};
 }
