@@ -7,10 +7,10 @@ our @EXPORT = qw(%seenOntologyTerms);
 
 our %seenOntologyTerms;
 
-my %sequenceOntologyMap = (chromosome => 'TODO_1234',
-			   polypeptide => 'TODO_1235',
-			   exon => 'TODO_1236',
-			   mature_transcript => 'TODO_12344',
+my %sequenceOntologyMap = (chromosome => 'SO:0000340',
+			   polypeptide => 'SO:0000104',
+			   exon => 'SO:0000147',
+			   mature_transcript => 'SO:0000233',
     );
 
 
@@ -34,25 +34,23 @@ sub new {
 
 
 sub init {
-    my ($self, $biotype, $sourceId) = @_;
+    my ($self, $sourceId, $name, $externalDatabaseReleaseId) = @_;
 
-    my $name;
+    die "" unless($externalDatabaseReleaseId);
+    
     unless($sourceId) {
-	if(ref $biotype eq "Bio::EnsEMBL::Biotype") {
-	    $sourceId = $biotype->so_acc();
-	    $name = $biotype->name();
-	}
-	else {
-	    $sourceId = $sequenceOntologyMap{$biotype};
-	    $name = $biotype;
-	}
+	die "required either name or sourceid for ontologyterm" unless($name);
 
+	$sourceId = $sequenceOntologyMap{$name};
+	$self->setAltNaturalKey("$name|$externalDatabaseReleaseId");
 	die "Could not determine sourceId for name=$name, sourceId=$sourceId" unless($sourceId);    
     }
 
-    $self->setNaturalKey($sourceId);
-    $self->setAltNaturalKey($name) if($name);    
-    return {source_id => $sourceId};
+    $self->setNaturalKey("$sourceId|$externalDatabaseReleaseId");
+
+    return {source_id => $sourceId,
+	    external_database_release_id => $externalDatabaseReleaseId,
+	    name => $name};
 
     
 }

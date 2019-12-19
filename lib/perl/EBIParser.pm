@@ -79,6 +79,25 @@ sub getTables {
 sub getSlices { $_[0]->{_slices} }
 sub setSlices { $_[0]->{_slices} = $_[1] }
 
+sub getGOSpec { $_[0]->{_go_spec} }
+sub setGOSpec { $_[0]->{_go_spec} = $_[1] }
+
+sub getGOEvidSpec { $_[0]->{_go_evid_spec} }
+sub setGOEvidSpec { $_[0]->{_go_evid_spec} = $_[1] }
+
+sub getSOSpec { $_[0]->{_so_spec} }
+sub setSOSpec { $_[0]->{_so_spec} = $_[1] }
+
+sub getGOExtDbRlsId { $_[0]->{_go_ext_db_rls_id} }
+sub setGOExtDbRlsId { $_[0]->{_go_ext_db_rls_id} = $_[1] }
+
+sub getGOEvidExtDbRlsId { $_[0]->{_go_evid_ext_db_rls_id} }
+sub setGOEvidExtDbRlsId { $_[0]->{_go_evid_ext_db_rls_id} = $_[1] }
+
+
+sub getSOExtDbRlsId { $_[0]->{_so_ext_db_rls_id} }
+sub setSOExtDbRlsId { $_[0]->{_so_ext_db_rls_id} = $_[1] }
+
 sub getProjectName { $_[0]->{_project_name} }
 sub setProjectName { $_[0]->{_project_name} = $_[1] }
 
@@ -146,7 +165,7 @@ sub setGUSTableWriters {
 }
 
 sub new {
-    my ($class, $slices, $gusTableDefinitions, $outputDirectory, $organism, $registry, $projectName, $projectRelease) = @_;
+    my ($class, $slices, $gusTableDefinitions, $outputDirectory, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec) = @_;
     
     my $self = bless {}, $class;
 
@@ -158,10 +177,13 @@ sub new {
     $self->setProjectName($projectName);
     $self->setProjectRelease($projectRelease);
 
-    
     $self->setRegistry($registry);
     
     $self->importTableModules();
+
+    $self->setGOSpec($goSpec);
+    $self->setGOEvidSpec($goEvidSpec);
+    $self->setSOSpec($soSpec);
     
     return $self;
 }
@@ -206,33 +228,39 @@ sub ontologyTermFromBiotype {
     my ($self, $biotype, $gusTableWriters) = @_;
 
     my $name = $biotype->name();
+    my $sourceId = $biotype->so_acc();
+    my $soExtDbRlsId =  $self->getSOExtDbRlsId();
     
-    if($seenOntologyTerms{$name}) {
-	return $seenOntologyTerms{$name};
+    if($seenOntologyTerms{"$sourceId|$soExtDbRlsId"}) {
+	return $seenOntologyTerms{"$sourceId|$soExtDbRlsId"};
     }
 
-    return GUS::SRes::OntologyTerm->new($gusTableWriters, $biotype, undef)->getPrimaryKey();
+    return GUS::SRes::OntologyTerm->new($gusTableWriters, $sourceId, $name, $soExtDbRlsId)->getPrimaryKey();
 }
 
 sub ontologyTermFromName {
     my ($self, $name, $gusTableWriters) = @_;
 
-    if($seenOntologyTerms{$name}) {
-	return $seenOntologyTerms{$name};
+    my $soExtDbRlsId =  $self->getSOExtDbRlsId();
+
+    if($seenOntologyTerms{"$name|$soExtDbRlsId"}) {
+	return $seenOntologyTerms{"$name|$soExtDbRlsId"};
     }
 
-    return GUS::SRes::OntologyTerm->new($gusTableWriters, $name, undef)->getPrimaryKey();
+    return GUS::SRes::OntologyTerm->new($gusTableWriters, undef, $name, $soExtDbRlsId)->getPrimaryKey();
 }
 
 
-sub ontologyTermFromSourceId {
-    my ($self, $sourceId, $gusTableWriters) = @_;
+sub ontologyTermFromEvidenceCode {
+    my ($self, $evidenceCode, $gusTableWriters) = @_;
 
-    if($seenOntologyTerms{$sourceId}) {
-	return $seenOntologyTerms{$sourceId};
+    my $goEvidExtDbRlsId =  $self->getGOEvidExtDbRlsId();
+    
+    if($seenOntologyTerms{"$evidenceCode|$goEvidExtDbRlsId"}) {
+	return $seenOntologyTerms{"$evidenceCode|$goEvidExtDbRlsId"};
     }
 
-    return GUS::SRes::OntologyTerm->new($gusTableWriters, undef, $sourceId)->getPrimaryKey();
+    return GUS::SRes::OntologyTerm->new($gusTableWriters, $evidenceCode, $evidenceCode, $goEvidExtDbRlsId)->getPrimaryKey();
 }
 
 
@@ -241,11 +269,13 @@ sub ontologyTermFromGOTerm {
 
     $goTerm =~ s/:/_/;
 
-    if($seenOntologyTerms{$goTerm}) {
-	return $seenOntologyTerms{$goTerm};
+    my $goExtDbRlsId =  $self->getGOExtDbRlsId();
+    
+    if($seenOntologyTerms{"$goTerm|$goExtDbRlsId"}) {
+	return $seenOntologyTerms{"$goTerm|$goExtDbRlsId"};
     }
 
-    return GUS::SRes::OntologyTerm->new($gusTableWriters, undef, $goTerm)->getPrimaryKey();
+    return GUS::SRes::OntologyTerm->new($gusTableWriters, $goTerm, $goTerm, $goExtDbRlsId)->getPrimaryKey();
 }
 
 
@@ -423,7 +453,7 @@ sub parseGOAssociation {
     my $gusGoAssociationInstance = GUS::DoTS::GOAssociationInstance->new($gusTableWriters, $gusGoAssociation->getPrimaryKey(), $goEvidenceLoeId);
 
     foreach my $linkageType (@{$xref->get_all_linkage_types()}) {
-	my $evidenceCodeId = $self->ontologyTermFromSourceId($linkageType, $gusTableWriters);
+	my $evidenceCodeId = $self->ontologyTermFromEvidenceCode($linkageType, $gusTableWriters);
 	GUS::DoTS::GOAssocInstEvidCode->new($gusTableWriters, $evidenceCodeId, $gusGoAssociationInstance->getPrimaryKey());
     }
 }
@@ -590,6 +620,18 @@ sub parse {
     my $projectName = $self->getProjectName();
     my $projectRelease = $self->getProjectRelease();
     my $gusProjectInfo = GUS::Core::ProjectInfo->new($gusTableWriters, $projectName, $projectRelease);
+
+    my $goSpec = $self->getGOSpec();
+    my $goEvidSpec = $self->getGOEvidSpec();
+    my $soSpec = $self->getSOSpec();
+
+    my $goExtDbRlsId = $self->getExternalDatabaseRelaseFromSpec($goSpec);
+    my $goEvidExtDbRlsId = $self->getExternalDatabaseRelaseFromSpec($goEvidSpec);
+    my $soExtDbRlsId = $self->getExternalDatabaseRelaseFromSpec($soSpec);
+
+    $self->setGOExtDbRlsId($goExtDbRlsId);
+    $self->setGOEvidExtDbRlsId($goEvidExtDbRlsId);
+    $self->setSOExtDbRlsId($soExtDbRlsId);
     
     my $topLevelSlices = $self->getSlices();
     my $organism = $self->getOrganism();
@@ -601,6 +643,12 @@ sub parse {
     foreach my $slice (@$topLevelSlices) {
 	$self->parseSlice($slice, $gusExternalDatabaseRelease, $gusTaxon);
     }
+}
+
+sub getExternalDatabaseRelaseFromSpec {
+    my ($self, $spec) = @_;
+    my ($name, $version) = split(/\|/, $spec);
+    return $self->getExternalDatabaseRelaseFromNameVersion($name, $version);
 }
 
 
