@@ -26,6 +26,10 @@ sub init {
     $self->setNaturalKey("$name|$databaseId");
     
     return {name => $name,
+	    is_versioned => "",
+	    is_updatable => "",
+	    table_type => "",
+	    is_view => "",
 	    database_id => $databaseId};
 }
 

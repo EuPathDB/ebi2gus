@@ -30,12 +30,13 @@ usage : $0 -e ensemble_registry_file \\
 	-c chromosome_map_file \\
 	-p project_name \\
 	-r project_release \\
+	-a organism_abbrev \\
         -o output_directory
 EOM
     exit -1;
 }
 our ($opt_r, $opt_a, $opt_o, $opt_t, $opt_h, $opt_v, $opt_n, $opt_c, $opt_d, $opt_p, $opt_e, $opt_g, $opt_s, $opt_l);
-getopts('l:g:s:p:r:o:t:v:n:c:h:d:a:e:') or HELP_MESSAGE();
+getopts('l:g:s:p:r:o:t:v:n:c:h:d:a:e:a:') or HELP_MESSAGE();
 
 HELP_MESSAGE() if($opt_h);
 $REGISTRY_CONF_FILE = $opt_e if($opt_e);
@@ -46,6 +47,8 @@ my $ncbiTaxId = $opt_n;
 my $genomeDatabaseName = $opt_d;
 my $genomeDatabaseVersion = $opt_v;
 my $chromosomeMapFile = $opt_c;
+
+my $organismAbbrev = $opt_a;
 
 my $projectName = $opt_p;
 my $projectRelease = $opt_r;
@@ -58,7 +61,7 @@ if($opt_h ||
    !-e $REGISTRY_CONF_FILE || !-e $TABLE_DEFINITIONS_XML_FILE || 
    !defined($ncbiTaxId) || !$genomeDatabaseVersion || 
    !$genomeDatabaseName || !$projectName || !$projectRelease ||
-   !$goSpec || !$soSpec || !$goEvidSpec) { 
+   !$goSpec || !$soSpec || !$goEvidSpec || !$organismAbbrev) { 
     HELP_MESSAGE();
 }
 
@@ -78,7 +81,7 @@ my $sliceAdaptor = $registry->get_adaptor('default', 'Core', 'Slice' );
 
 my $topLevelSlices = $sliceAdaptor->fetch_all('toplevel');
 
-my $ebiParser = EBIParser->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec);
+my $ebiParser = EBIParser->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec, $organismAbbrev);
 $ebiParser->parse();
 # exit;
 

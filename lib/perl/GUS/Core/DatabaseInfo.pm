@@ -25,7 +25,7 @@ sub init {
 
     $self->setNaturalKey($name);
     
-    return {name => $name};
+    return {name => $name, description => ""};
 
     
 }

@@ -13,7 +13,7 @@ sub init {
 
     my $ncbiTaxonId = $organism->getNcbiTaxonId();
     
-    return {ncbi_tax_id => $ncbiTaxonId};
+    return {ncbi_tax_id => $ncbiTaxonId, rank => 1};
 }
 
 1;

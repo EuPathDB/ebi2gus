@@ -18,7 +18,7 @@ sub init {
 	    source_id => $gusTranslatedAASequenceAsHash->{source_id},
 	    translation_start => 1,
 	    translation_stop => $translationStop,
-	    #	    is_predicted => TODO,
+	    is_predicted => 0,
     };
 
 }

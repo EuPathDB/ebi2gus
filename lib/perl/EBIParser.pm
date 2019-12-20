@@ -5,6 +5,8 @@ use strict;
 use GUSTableWriter;
 use OutputFile;
 
+use Data::Dumper;
+
 use GUS::SRes::OntologyTerm qw(%seenOntologyTerms);
 use GUS::SRes::ExternalDatabase qw(%seenExternalDatabases);
 use GUS::SRes::ExternalDatabaseRelease qw(%seenExternalDatabaseReleases);
@@ -78,6 +80,10 @@ sub getTables {
 
 sub getSlices { $_[0]->{_slices} }
 sub setSlices { $_[0]->{_slices} = $_[1] }
+
+sub getOrganismAbbrev { $_[0]->{_organism_abbrev} }
+sub setOrganismAbbrev { $_[0]->{_organism_abbrev} = $_[1] }
+
 
 sub getGOSpec { $_[0]->{_go_spec} }
 sub setGOSpec { $_[0]->{_go_spec} = $_[1] }
@@ -286,12 +292,15 @@ sub parseSlice {
     my $gusTableWriters = $self->getGUSTableWriters();
 
     my $gusSequenceOntologyId = $self->ontologyTermForSlice($slice, $gusTableWriters);
-    my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId);
 
-    # TODO:  genomic sequence synonyms / dbXRefs
+    my $organismAbbrev = $self->getOrganismAbbrev();
+    my $sequenceSourceId = $organismAbbrev . ":" . $slice->seq_region_name();
+
     foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
-	print "NAME=" . $sliceSynonym->name() . "\n";
+	$sequenceSourceId = $sliceSynonym->name() if($sliceSynonym->dbname() eq "INSDC");
     }
+    
+    my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $sequenceSourceId);
 
     my %transcriptXrefsLogics;
     my %geneXrefsLogics;
@@ -337,6 +346,8 @@ sub parseRepeatFeature {
 sub parseGene {
     my ($self, $gene, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence) = @_;
 
+    next unless($gene->stable_id() eq 'AGAP002315');
+    
     my $gusTableWriters = $self->getGUSTableWriters();
 
     my $geneSequenceOntologyId = $self->ontologyTermFromBiotype($gene->get_Biotype(), $gusTableWriters);
@@ -351,7 +362,9 @@ sub parseGene {
     foreach my $exon ( @{ $gene->get_all_Exons() } ) {
 	my $gusExonFeature = GUS::DoTS::ExonFeature->new($gusTableWriters, $exon, $gusGeneFeature, $gusExternalDatabaseRelease, $exonSequenceOntologyId);
 	my $gusExonNALocation = GUS::DoTS::NALocation->new($gusTableWriters, $exon, $gusExonFeature);
-	$exonMap{$exon->dbID()} = $gusExonFeature->getPrimaryKey();
+
+	my $exonKey = $exon->start()."-".$exon->end()."-".$exon->strand()."-".$exon->phase()."-".$exon->end_phase();
+	$exonMap{$exonKey} = $gusExonFeature->getPrimaryKey();
     }
     
     foreach my $transcript ( @{ $gene->get_all_Transcripts() } ) {
@@ -394,10 +407,12 @@ sub parseTranscript {
     }
 
     my $exonOrderNum = 1;
-    foreach my $exonTranscript ( @{ $transcript->get_all_ExonTranscripts() } ) {
-	my $exon = $exonTranscript->exon();
-
-	my $gusExonId = $exonMap->{$exon->dbID()};
+    foreach my $exon ( @{ $transcript->get_all_Exons() } ) {
+#	my $exon = $exonTranscript->exon();
+	my $exonKey = $exon->start()."-".$exon->end()."-".$exon->strand()."-".$exon->phase()."-".$exon->end_phase();
+	
+	my $gusExonId = $exonMap->{$exonKey};
+	    
 	GUS::DoTS::RNAFeatureExon->new($gusTableWriters, $gusExonId, $gusTranscript, $exonOrderNum);
 
 	if($geneType eq "protein_coding") {
@@ -447,7 +462,7 @@ sub parseGOAssociation {
     my $loeName = ref($xref) eq 'Bio::EnsEMBL::OntologyXref' ? $xref->analysis()->logic_name() : $xref->db();
     my $goEvidenceLoeId = $seenGOEvidences{$loeName};
     unless($goEvidenceLoeId) {
-	$goEvidenceLoeId = GUS::DoTS::GOAssociationInstanceLOE->new($gusTableWriters, $loeName);
+	$goEvidenceLoeId = GUS::DoTS::GOAssociationInstanceLOE->new($gusTableWriters, $loeName)->getPrimaryKey();
     }
 
     my $gusGoAssociationInstance = GUS::DoTS::GOAssociationInstance->new($gusTableWriters, $gusGoAssociation->getPrimaryKey(), $goEvidenceLoeId);

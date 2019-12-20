@@ -2,6 +2,8 @@ package GUSRow;
 
 use strict;
 
+use GUS::Core::ProjectInfo qw($projectId);
+
 sub getGUSTableWriter { $_[0]->{_gus_table_writer} }
 sub setGUSTableWriter { $_[0]->{_gus_table_writer} = $_[1] }
 
@@ -58,6 +60,7 @@ sub new {
     my $primaryKeyField = $gusTableWriter->getTableDefinition()->getPrimaryKeyField();
     
     $row->{$primaryKeyField} = $primaryKey;
+    $row->{row_project_id} = $projectId if($projectId);
 
     $self->setGUSRowAsHash($row);
     

@@ -19,6 +19,7 @@ sub new {
     
     $projectId = $self->getPrimaryKey();
 
+    
     return $self;
 }
 
@@ -26,8 +27,12 @@ sub new {
 sub init {
     my ($self, $name, $release) = @_;
 
+    my $primaryKey = $self->getPrimaryKey();
+
+    
     return {name => $name,
-	    release => $release};
+	    release => $release,
+    row_project_id => $primaryKey};
 }
 
 1;

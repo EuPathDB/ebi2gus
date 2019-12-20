@@ -38,6 +38,7 @@ sub new {
 
     my $self = bless {}, $class;
 
+
     $self->setName($tableName);
 
     if(my $impTable = $tableHash->{impTable}) {
@@ -54,17 +55,24 @@ sub new {
     $self->setViewToImpFieldMap(\%viewToImpFieldMap);
     $self->setImpToViewFieldMap(\%impToViewFieldMap);
 
-    my (@fields, %fieldDataTypes);
+    my (@fields, %fieldDataTypes, @nonNullFields);
     foreach my $field (keys %{$tableHash->{column}}) {
-	$field = lc $field;
-	push @fields, $field;
+	my $lcField = lc $field;
 
 	my $type = $tableHash->{column}->{$field}->{type};
 	my $length = $tableHash->{column}->{$field}->{length};
-	$fieldDataTypes{$field} = {type => $type, length => $length};
+
+	$fieldDataTypes{$lcField} = {type => $type, length => $length};
+
+	if($tableHash->{column}->{$field}->{nullable} eq "N") {
+	    push @nonNullFields, $lcField;
+	}
+	push @fields, $lcField;	
     }
     $self->setFieldDataTypes(\%fieldDataTypes);
     $self->setFields(\@fields);
+
+    $self->setNonNullFields(\@nonNullFields);
     $self->setPrimaryKeyField(lc $tableHash->{primaryKey});
 
     return $self; 
