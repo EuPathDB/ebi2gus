@@ -171,7 +171,7 @@ sub setGUSTableWriters {
 }
 
 sub new {
-    my ($class, $slices, $gusTableDefinitions, $outputDirectory, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec) = @_;
+    my ($class, $slices, $gusTableDefinitions, $outputDirectory, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec, $organismAbbrev) = @_;
     
     my $self = bless {}, $class;
 
@@ -190,6 +190,8 @@ sub new {
     $self->setGOSpec($goSpec);
     $self->setGOEvidSpec($goEvidSpec);
     $self->setSOSpec($soSpec);
+    $self->setOrganismAbbrev();
+
     
     return $self;
 }
@@ -345,8 +347,6 @@ sub parseRepeatFeature {
 
 sub parseGene {
     my ($self, $gene, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence) = @_;
-
-    next unless($gene->stable_id() eq 'AGAP002315');
     
     my $gusTableWriters = $self->getGUSTableWriters();
 
