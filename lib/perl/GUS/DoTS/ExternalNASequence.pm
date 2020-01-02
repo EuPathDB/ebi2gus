@@ -39,8 +39,8 @@ sub init {
 	    name => $slice->seq_region_name(),
 	    taxon_id => $gusTaxon->getPrimaryKey(),
 	    external_database_release_id => $gusExternalDatabaseRelease->getPrimaryKey(),
-	    chromosome => $chromosomeMap->{chromosome},
-	    chromosome_order_num => $chromosomeMap->{chromosome_order_num},
+	    chromosome => $chromosomeMap->{$sequenceSourceId}->{chromosome},
+	    chromosome_order_num => $chromosomeMap->{$sequenceSourceId}->{chromosome_order_num},
 	    sequence_ontology_id => $gusSequenceOntologyId
     };
 }
