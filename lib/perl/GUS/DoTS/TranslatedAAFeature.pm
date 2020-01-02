@@ -4,7 +4,7 @@ use base qw(GUSRow);
 use strict;
 
 sub init {
-    my ($self, $transcript, $gusTranslatedAASequence, $gusTranscript) = @_;
+    my ($self, $transcript, $gusTranslatedAASequence, $gusTranscript, $gusExternalDatabaseRelease) = @_;
 
     my $gusTranslatedAASequenceAsHash  = $gusTranslatedAASequence->getGUSRowAsHash();
     
@@ -19,6 +19,7 @@ sub init {
 	    translation_start => 1,
 	    translation_stop => $translationStop,
 	    is_predicted => 0,
+	    external_database_release_id => $gusExternalDatabaseRelease->getPrimaryKey(),
     };
 
 }
