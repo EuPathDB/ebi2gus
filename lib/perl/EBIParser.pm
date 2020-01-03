@@ -14,6 +14,7 @@ use GUS::SRes::DbRef qw(%seenDBRefs);
 use GUS::Core::DatabaseInfo qw(%seenDatabases);
 use GUS::Core::TableInfo qw(%seenTables);
 use GUS::DoTS::GOAssociationInstanceLOE qw(%seenGOEvidences);
+use GUS::DoTS::GOAssociation qw(%seenGOAssociations);
 
 my %INTERPRO_LOGICS = ('pfam' => 1,
 		       'pirsf' => 1,
@@ -457,7 +458,12 @@ sub parseGOAssociation {
     my $goId = $xref->display_id();
     my $gusGOTermId = $self->ontologyTermFromGOTerm($goId, $gusTableWriters);
 
-    my $gusGoAssociation = GUS::DoTS::GOAssociation->new($gusTableWriters, $proteinTableId, $gusTranslatedAASequence->getPrimaryKey(), $gusGOTermId);
+    my $goAssociationKey = $proteinTableId . "|" . $gusTranslatedAASequence->getPrimaryKey() . "|" . $gusGOTermId;
+    my $goAssociationId = $seenGOAssociations{$goAssociationKey};
+    unless($goAssociationId) {
+	$goAssociationId = GUS::DoTS::GOAssociation->new($gusTableWriters, $proteinTableId, $gusTranslatedAASequence->getPrimaryKey(), $gusGOTermId)->getPrimaryKey();
+    }
+
 
     my $loeName = ref($xref) eq 'Bio::EnsEMBL::OntologyXref' ? $xref->analysis()->logic_name() : $xref->db();
     my $goEvidenceLoeId = $seenGOEvidences{$loeName};
@@ -465,7 +471,7 @@ sub parseGOAssociation {
 	$goEvidenceLoeId = GUS::DoTS::GOAssociationInstanceLOE->new($gusTableWriters, $loeName)->getPrimaryKey();
     }
 
-    my $gusGoAssociationInstance = GUS::DoTS::GOAssociationInstance->new($gusTableWriters, $gusGoAssociation->getPrimaryKey(), $goEvidenceLoeId);
+    my $gusGoAssociationInstance = GUS::DoTS::GOAssociationInstance->new($gusTableWriters, $goAssociationId, $goEvidenceLoeId);
 
     foreach my $linkageType (@{$xref->get_all_linkage_types()}) {
 	my $evidenceCodeId = $self->ontologyTermFromEvidenceCode($linkageType, $gusTableWriters);
