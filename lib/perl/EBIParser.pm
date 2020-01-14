@@ -309,9 +309,9 @@ sub parseSlice {
     my %geneXrefsLogics;
     my %translationXrefsLogics;    
 
-    foreach my $gene (@{$slice->get_all_Genes()}) {
-	$self->parseGene($gene, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence);
-    }
+#    foreach my $gene (@{$slice->get_all_Genes()}) {
+#	$self->parseGene($gene, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence);
+#    }
 
     foreach my $repeatFeature (@{$slice->get_all_RepeatFeatures()} ) {
 	$self->parseRepeatFeature($repeatFeature, $gusExternalDatabaseRelease, $gusExternalNASequence);
@@ -336,11 +336,11 @@ sub parseRepeatFeature {
     elsif($logicName eq "trf") {
 	$gusFeature = GUS::DoTS::TandemRepeatFeature->new($gusTableWriters, $repeatFeature, $gusExternalNASequence, $gusExternalDatabaseRelease);	
     }
-    elsif($logicName =~ /^repeatmask_/) {
+    elsif($logicName =~ /^repeatmask/) {
 	$gusFeature = GUS::DoTS::Repeats->new($gusTableWriters, $repeatFeature, $gusExternalNASequence, $gusExternalDatabaseRelease);		
     }
     else {
-	die "unknown repeat feature type:  $logicName";
+	return;
     }
 
     GUS::DoTS::NALocation->new($gusTableWriters, $repeatFeature, $gusFeature);
@@ -397,13 +397,17 @@ sub parseTranscript {
 
     # add Product name
     my $gusTranscript = GUS::DoTS::Transcript->new($gusTableWriters, $transcript, $gusGeneFeature, $gusSplicedNASequence, $gusExternalDatabaseRelease, $transcriptSequenceOntologyId);
-    my $gusTranscriptNALocation = GUS::DoTS::NALocation::Transcript->new($gusTableWriters, $gusGeneFeature, $gusSplicedNASequence);
+    my $gusTranscriptNALocation = GUS::DoTS::NALocation::Transcript->new($gusTableWriters, $gusTranscript, $gusSplicedNASequence);
 
     my $geneType = $gene->get_Biotype()->name();
 
     my ($gusTranslatedAAFeature, $gusTranslatedAASequence);
-    if($geneType eq "protein_coding") {
+
+
+    
+    if($transcript->get_Biotype()->name() eq "protein_coding") {
 	my $translation = $transcript->translation();
+
 	($gusTranslatedAAFeature, $gusTranslatedAASequence) = $self->parseTranslation($translation, $transcript, $gusTranscript, $taxonId, $gusExternalDatabaseRelease);
     }
 

@@ -25,7 +25,6 @@ use base qw(GUSRow);
 sub init {
     my ($self, $gusParentFeature, $gusSplicedNASequence) = @_;
 
-    my $gusParentFeatureAsHash = $gusParentFeature->getGUSRowAsHash();
     my $gusSplicedNASequenceAsHash = $gusSplicedNASequence->getGUSRowAsHash();
     
     return {na_feature_id => $gusParentFeature->getPrimaryKey(),
@@ -33,7 +32,7 @@ sub init {
 	    start_max => 1,
 	    end_min => $gusSplicedNASequenceAsHash->{length},
 	    end_max => $gusSplicedNASequenceAsHash->{length},
-	    is_reversed => $gusParentFeatureAsHash->{is_reversed},
+	    is_reversed => 0
     };
 }
 
