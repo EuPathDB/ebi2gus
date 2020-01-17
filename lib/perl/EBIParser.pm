@@ -309,9 +309,9 @@ sub parseSlice {
     my %geneXrefsLogics;
     my %translationXrefsLogics;    
 
-#    foreach my $gene (@{$slice->get_all_Genes()}) {
-#	$self->parseGene($gene, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence);
-#    }
+    foreach my $gene (@{$slice->get_all_Genes()}) {
+	$self->parseGene($gene, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence);
+    }
 
     foreach my $repeatFeature (@{$slice->get_all_RepeatFeatures()} ) {
 	$self->parseRepeatFeature($repeatFeature, $gusExternalDatabaseRelease, $gusExternalNASequence);
