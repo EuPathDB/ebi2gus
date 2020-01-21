@@ -297,13 +297,13 @@ sub parseSlice {
     my $gusSequenceOntologyId = $self->ontologyTermForSlice($slice, $gusTableWriters);
 
     my $organismAbbrev = $self->getOrganismAbbrev();
-    my $sequenceSourceId = $organismAbbrev . ":" . $slice->seq_region_name();
+    my $sequenceSourceId = $slice->seq_region_name();
 
     foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
 	$sequenceSourceId = $sliceSynonym->name() if($sliceSynonym->dbname() eq "INSDC");
     }
     
-    my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $sequenceSourceId);
+    my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $sequenceSourceId, $organismAbbrev);
 
     my %transcriptXrefsLogics;
     my %geneXrefsLogics;
