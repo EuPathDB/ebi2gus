@@ -4,6 +4,9 @@ use strict;
 
 use XML::Simple;
 
+sub getOrganismAbbrev { $_[0]->{_organism_abbrev} }
+sub setOrganismAbbrev { $_[0]->{_organism_abbrev} = $_[1] }
+
 sub getNcbiTaxonId { $_[0]->{_ncbi_tax_id} }
 sub setNcbiTaxonId { $_[0]->{_ncbi_tax_id}  = $_[1] }
 
@@ -18,7 +21,7 @@ sub setChromosomeMap { $_[0]->{_chromosome_map} = $_[1] }
 
 
 sub new {
-    my ($class, $ncbiTaxId, $genomeDatabaseName, $genomeDatabaseVersion, $chromosomeMapFile) = @_;
+    my ($class, $ncbiTaxId, $genomeDatabaseName, $genomeDatabaseVersion, $chromosomeMapFile, $organismAbbrev) = @_;
 
     unless(defined $ncbiTaxId) {
 	die "Required ncbi_taxon_id missing from organism xml";
@@ -46,7 +49,8 @@ sub new {
     $self->setGenomeDatabaseName($genomeDatabaseName);
     $self->setGenomeDatabaseVersion($genomeDatabaseVersion);
     $self->setChromosomeMap(\%chromosomeMap);
-
+    $self->setOrganismAbbrev($organismAbbrev);
+    
     return $self;
 }
 
