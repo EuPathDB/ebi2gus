@@ -71,7 +71,7 @@ if($chromosomeMapFile && !-e $chromosomeMapFile) {
 
 my $gusTableDefinitions = GUSTableDefinitionParser->new($TABLE_DEFINITIONS_XML_FILE);
 
-my $organism = Organism->new($ncbiTaxId, $genomeDatabaseName, $genomeDatabaseVersion, $chromosomeMapFile);
+my $organism = Organism->new($ncbiTaxId, $genomeDatabaseName, $genomeDatabaseVersion, $chromosomeMapFile, $organismAbbrev);
 
 my $registry = 'Bio::EnsEMBL::Registry';
 
@@ -81,7 +81,7 @@ my $sliceAdaptor = $registry->get_adaptor('default', 'Core', 'Slice' );
 
 my $topLevelSlices = $sliceAdaptor->fetch_all('toplevel');
 
-my $ebiParser = EBIParser->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec, $organismAbbrev);
+my $ebiParser = EBIParser->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec);
 $ebiParser->parse();
 # exit;
 

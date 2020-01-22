@@ -82,9 +82,8 @@ sub getTables {
 sub getSlices { $_[0]->{_slices} }
 sub setSlices { $_[0]->{_slices} = $_[1] }
 
-sub getOrganismAbbrev { $_[0]->{_organism_abbrev} }
-sub setOrganismAbbrev { $_[0]->{_organism_abbrev} = $_[1] }
-
+sub getOrganism { $_[0]->{_organism} }
+sub setOrganism { $_[0]->{_organism} = $_[1] }
 
 sub getGOSpec { $_[0]->{_go_spec} }
 sub setGOSpec { $_[0]->{_go_spec} = $_[1] }
@@ -113,9 +112,6 @@ sub setProjectRelease { $_[0]->{_project_release} = $_[1] }
 
 sub getRegistry { $_[0]->{_registry} }
 sub setRegistry { $_[0]->{_registry} = $_[1] }
-
-sub getOrganism { $_[0]->{_organism} }
-sub setOrganism { $_[0]->{_organism} = $_[1] }
 
 
 sub getGUSTableWriters { $_[0]->{_gus_table_writers} }
@@ -172,7 +168,7 @@ sub setGUSTableWriters {
 }
 
 sub new {
-    my ($class, $slices, $gusTableDefinitions, $outputDirectory, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec, $organismAbbrev) = @_;
+    my ($class, $slices, $gusTableDefinitions, $outputDirectory, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec) = @_;
     
     my $self = bless {}, $class;
 
@@ -191,7 +187,7 @@ sub new {
     $self->setGOSpec($goSpec);
     $self->setGOEvidSpec($goEvidSpec);
     $self->setSOSpec($soSpec);
-    $self->setOrganismAbbrev();
+
 
     
     return $self;
@@ -296,7 +292,7 @@ sub parseSlice {
 
     my $gusSequenceOntologyId = $self->ontologyTermForSlice($slice, $gusTableWriters);
 
-    my $organismAbbrev = $self->getOrganismAbbrev();
+    my $organismAbbrev = $self->getOrganism()->getOrganismAbbrev();
     my $sequenceSourceId = $slice->seq_region_name();
 
     foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
