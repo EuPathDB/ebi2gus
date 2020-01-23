@@ -581,12 +581,12 @@ sub parseInterpro {
     my ($interproDbRefId, $interproExternalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($interproName, $interproVersion, $interproPrimaryId, $interproSecondaryId, $remark);
     my ($domainDbRefId, $domainExternalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($name, $version, $domainPrimaryId, $domainSecondaryId, $remark);
 
-    GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $interproDbRefId, $gusTranslatedAAFeature->getPrimaryKey());
-    GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $domainDbRefId, $gusTranslatedAAFeature->getPrimaryKey());    
-
     my $interproDomainFeature = GUS::DoTS::DomainFeature->new($gusTableWriters, $gusTranslatedAASequence, undef, $interproExternalDatabaseReleaseId, $interproPrimaryId, undef);
     my $domainFeature = GUS::DoTS::DomainFeature->new($gusTableWriters, $gusTranslatedAASequence, $interproDomainFeature, $domainExternalDatabaseReleaseId, $domainPrimaryId, $evalue);
-    
+
+    GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $interproDbRefId, $interproDomainFeature->getPrimaryKey());
+    GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $domainDbRefId, $domainFeature->getPrimaryKey());    
+
     return($interproDomainFeature, $domainFeature);
 }
 
