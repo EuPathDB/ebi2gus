@@ -229,6 +229,30 @@ sub ontologyTermForSlice {
     return $self->ontologyTermFromName($name, $gusTableWriters);
 }
 
+
+sub ontologyTermFromBiotypeGeneTranscript {
+    my ($self, $biotype, $gusTableWriters, $geneOrTranscript, $isProteinCoding) = @_;
+
+    if($biotype->name() eq 'pseudogene') {
+	if($geneOrTranscript eq 'gene' && $isProteinCoding) {
+	    $biotype->so_acc('SO:0001217'); #protein_coding_gene
+	}
+	elsif($geneOrTranscript eq 'gene') {
+	    $biotype->so_acc('SO:0001263'); #ncRNA_gene
+	}
+	elsif($geneOrTranscript eq 'transcript' && $isProteinCoding) {
+	    $biotype->so_acc('SO:0000234'); # mRNA
+	}
+	elsif($geneOrTranscript eq 'transcript') {
+	    $biotype->so_acc('SO:0000655'); # ncRNA
+	}
+	else {
+	    die "geneortranscript must be either gene or transcript";
+	}
+    }
+    return $self->ontologyTermFromBiotype($biotype, $gusTableWriters);
+}
+
 sub ontologyTermFromBiotype {
     my ($self, $biotype, $gusTableWriters) = @_;
 
@@ -293,13 +317,14 @@ sub parseSlice {
     my $gusSequenceOntologyId = $self->ontologyTermForSlice($slice, $gusTableWriters);
 
     my $organismAbbrev = $self->getOrganism()->getOrganismAbbrev();
-    my $sequenceSourceId = $slice->seq_region_name();
+
+    my $insdcSynonym;
 
     foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
-	$sequenceSourceId = $sliceSynonym->name() if($sliceSynonym->dbname() eq "INSDC");
+	$insdcSynonym = $sliceSynonym->name() if($sliceSynonym->dbname() eq "INSDC");
     }
     
-    my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $sequenceSourceId, $organismAbbrev);
+    my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdcSynonym, $organismAbbrev);
 
     my %transcriptXrefsLogics;
     my %geneXrefsLogics;
@@ -347,7 +372,15 @@ sub parseGene {
     
     my $gusTableWriters = $self->getGUSTableWriters();
 
-    my $geneSequenceOntologyId = $self->ontologyTermFromBiotype($gene->get_Biotype(), $gusTableWriters);
+    my $isProteinCoding;
+    foreach(@{ $gene->get_all_Transcripts() }) {
+	if($_->translation()) {
+	    $isProteinCoding = 1;
+	    last;
+	}
+    }
+    
+    my $geneSequenceOntologyId = $self->ontologyTermFromBiotypeGeneTranscript($gene->get_Biotype(), $gusTableWriters, 'gene', $isProteinCoding);
     # TODO: product name
     my $gusGeneFeature = GUS::DoTS::GeneFeature->new($gusTableWriters, $gene, $gusExternalNASequence, $gusExternalDatabaseRelease, $geneSequenceOntologyId);
     my $gusGeneNALocation = GUS::DoTS::NALocation->new($gusTableWriters, $gene, $gusGeneFeature);
@@ -388,9 +421,13 @@ sub parseTranscript {
 
     my $splicedNASequenceOntologyId = $self->ontologyTermFromName("mature_transcript", $gusTableWriters);
     my $gusSplicedNASequence = GUS::DoTS::SplicedNASequence->new($gusTableWriters, $transcript, $taxonId, $gusExternalDatabaseRelease, $splicedNASequenceOntologyId);
-    
-    my $transcriptSequenceOntologyId = $self->ontologyTermFromBiotype($transcript->get_Biotype(), $gusTableWriters);
 
+    my $translation = $transcript->translation();
+
+    my $isProteinCoding = $transcript ? 1 : 0;
+    
+    my $transcriptSequenceOntologyId = $self->ontologyTermFromBiotypeGeneTranscript($transcript->get_Biotype(), $gusTableWriters, 'transcript', $isProteinCoding);
+    
     # add Product name
     my $gusTranscript = GUS::DoTS::Transcript->new($gusTableWriters, $transcript, $gusGeneFeature, $gusSplicedNASequence, $gusExternalDatabaseRelease, $transcriptSequenceOntologyId);
     my $gusTranscriptNALocation = GUS::DoTS::NALocation::Transcript->new($gusTableWriters, $gusTranscript, $gusSplicedNASequence);
@@ -399,29 +436,23 @@ sub parseTranscript {
 
     my ($gusTranslatedAAFeature, $gusTranslatedAASequence);
 
-
-    
-    if($transcript->get_Biotype()->name() eq "protein_coding") {
-	my $translation = $transcript->translation();
-
+    if($translation) {
 	($gusTranslatedAAFeature, $gusTranslatedAASequence) = $self->parseTranslation($translation, $transcript, $gusTranscript, $taxonId, $gusExternalDatabaseRelease);
     }
 
     my $exonOrderNum = 1;
     foreach my $exon ( @{ $transcript->get_all_Exons() } ) {
-#	my $exon = $exonTranscript->exon();
 	my $exonKey = $exon->start()."-".$exon->end()."-".$exon->strand()."-".$exon->phase()."-".$exon->end_phase();
 	
 	my $gusExonId = $exonMap->{$exonKey};
 	    
 	GUS::DoTS::RNAFeatureExon->new($gusTableWriters, $gusExonId, $gusTranscript, $exonOrderNum);
 
-	if($geneType eq "protein_coding") {
+	if($translation) {
 	    my $codingRegionStart = $exon->coding_region_start($transcript);
 	    my $codingRegionEnd = $exon->coding_region_end($transcript);
-	    if(defined $codingRegionStart) {
-		GUS::DoTS::AAFeatureExon->new($gusTableWriters, $gusTranslatedAAFeature, $gusExonId, $codingRegionStart, $codingRegionEnd);		    
-	    }
+	    # doesn't make a lot of sense but we add a row here even if the 
+	    GUS::DoTS::AAFeatureExon->new($gusTableWriters, $gusTranslatedAAFeature, $gusExonId, $codingRegionStart, $codingRegionEnd);		    
 	}
 	$exonOrderNum++;
     }
