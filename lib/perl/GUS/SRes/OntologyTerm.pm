@@ -50,7 +50,7 @@ sub init {
 
     return {source_id => $sourceId,
 	    external_database_release_id => $externalDatabaseReleaseId,
-	    name => ''};
+	    name => $name};
 
     
 }
