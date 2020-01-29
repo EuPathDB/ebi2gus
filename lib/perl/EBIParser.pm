@@ -7,6 +7,9 @@ use OutputFile;
 
 use Data::Dumper;
 
+use Bio::SeqIO;
+use Bio::Seq;
+
 use GUS::SRes::OntologyTerm qw(%seenOntologyTerms);
 use GUS::SRes::ExternalDatabase qw(%seenExternalDatabases);
 use GUS::SRes::ExternalDatabaseRelease qw(%seenExternalDatabaseReleases);
@@ -79,6 +82,9 @@ sub getTables {
 	    ]);
 }
 
+sub getRepeatMaskedIO { $_[0]->{_repeat_masked_io} }
+sub setRepeatMaskedIO { $_[0]->{_repeat_masked_io} = $_[1] }
+    
 sub getSlices { $_[0]->{_slices} }
 sub setSlices { $_[0]->{_slices} = $_[1] }
 
@@ -188,7 +194,11 @@ sub new {
     $self->setGOEvidSpec($goEvidSpec);
     $self->setSOSpec($soSpec);
 
+    my $repeatMaskedFile = "$outputDirectory/blocked.seq";
+    my $repeatMaskedIO = Bio::SeqIO->new(-file   => ">$repeatMaskedFile",
+					 -format => 'fasta' );
 
+    $self->setRepeatMaskedIO($repeatMaskedIO);
     
     return $self;
 }
@@ -308,9 +318,30 @@ sub ontologyTermFromGOTerm {
 }
 
 
+sub dumpRepeatMaskedSeq {
+    my ($self, $slice) = @_;
+
+    my $io = $self->getRepeatMaskedIO();
+    my $organismAbbrev = $self->getOrganism()->getOrganismAbbrev();
+
+    my $sequenceSourceId = $organismAbbrev . ":" . $slice->seq_region_name();    
+
+    my $repeatMaskedSlice = $slice->get_repeatmasked_seq();
+    $repeatMaskedSlice->soft_mask(1);
+
+    my $repeatMaskedSeq = $repeatMaskedSlice->seq();
+
+    my $seq = Bio::Seq->new(-display_id => $sequenceSourceId,
+			    -seq => $repeatMaskedSeq);
+    
+    $io->write_seq($seq);
+}
+
 
 sub parseSlice {
     my ($self, $slice, $gusExternalDatabaseRelease, $gusTaxon) = @_;
+
+    $self->dumpRepeatMaskedSeq($slice);
 
     my $gusTableWriters = $self->getGUSTableWriters();
 
