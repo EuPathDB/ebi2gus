@@ -244,18 +244,18 @@ sub ontologyTermFromBiotypeGeneTranscript {
     my ($self, $biotype, $gusTableWriters, $geneOrTranscript, $isProteinCoding) = @_;
 
     if($biotype->name() eq 'pseudogene') {
-	if($geneOrTranscript eq 'gene' && $isProteinCoding) {
+	if($geneOrTranscript eq 'gene') {
 	    $biotype->so_acc('SO:0001217'); #protein_coding_gene
 	}
-	elsif($geneOrTranscript eq 'gene') {
-	    $biotype->so_acc('SO:0001263'); #ncRNA_gene
-	}
-	elsif($geneOrTranscript eq 'transcript' && $isProteinCoding) {
+#	elsif($geneOrTranscript eq 'gene') {
+#	    $biotype->so_acc('SO:0001263'); #ncRNA_gene
+#	}
+	elsif($geneOrTranscript eq 'transcript') {
 	    $biotype->so_acc('SO:0000234'); # mRNA
 	}
-	elsif($geneOrTranscript eq 'transcript') {
-	    $biotype->so_acc('SO:0000655'); # ncRNA
-	}
+#	elsif($geneOrTranscript eq 'transcript') {
+#	    $biotype->so_acc('SO:0000655'); # ncRNA
+#	}
 	else {
 	    die "geneortranscript must be either gene or transcript";
 	}
