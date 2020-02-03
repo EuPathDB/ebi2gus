@@ -319,12 +319,11 @@ sub ontologyTermFromGOTerm {
 
 
 sub dumpRepeatMaskedSeq {
-    my ($self, $slice) = @_;
+    my ($self, $slice, $externalNaSeq) = @_;
 
     my $io = $self->getRepeatMaskedIO();
-    my $organismAbbrev = $self->getOrganism()->getOrganismAbbrev();
 
-    my $sequenceSourceId = $organismAbbrev . ":" . $slice->seq_region_name();    
+    my $sequenceSourceId = $externalNaSeq->getGUSRowAsHash()->{source_id};
 
     my $repeatMaskedSlice = $slice->get_repeatmasked_seq();
     $repeatMaskedSlice->soft_mask(1);
@@ -341,7 +340,7 @@ sub dumpRepeatMaskedSeq {
 sub parseSlice {
     my ($self, $slice, $gusExternalDatabaseRelease, $gusTaxon) = @_;
 
-    $self->dumpRepeatMaskedSeq($slice);
+
 
     my $gusTableWriters = $self->getGUSTableWriters();
 
@@ -357,6 +356,9 @@ sub parseSlice {
     
     my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdcSynonym, $organismAbbrev);
 
+    $self->dumpRepeatMaskedSeq($slice, $gusExternalNASequence);
+
+    
     my %transcriptXrefsLogics;
     my %geneXrefsLogics;
     my %translationXrefsLogics;    

@@ -37,7 +37,7 @@ sub init {
 	    t_count => $monomersHash->{T},
 	    g_count => $monomersHash->{G},
 	    other_count => $otherCount,
-	    source_id => $organismAbbrev . ":" . $sequenceSourceId,
+	    source_id => $organismAbbrev . "_" . $sequenceSourceId,
 	    name => $insdc,
 	    taxon_id => $gusTaxon->getPrimaryKey(),
 	    external_database_release_id => $gusExternalDatabaseRelease->getPrimaryKey(),
