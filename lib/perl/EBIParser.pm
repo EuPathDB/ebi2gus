@@ -14,6 +14,7 @@ use GUS::SRes::OntologyTerm qw(%seenOntologyTerms);
 use GUS::SRes::ExternalDatabase qw(%seenExternalDatabases);
 use GUS::SRes::ExternalDatabaseRelease qw(%seenExternalDatabaseReleases);
 use GUS::SRes::DbRef qw(%seenDBRefs);
+use GUS::SRes::EnzymeClass qw(%seenEnzymeClasses);
 use GUS::Core::DatabaseInfo qw(%seenDatabases);
 use GUS::Core::TableInfo qw(%seenTables);
 use GUS::DoTS::GOAssociationInstanceLOE qw(%seenGOEvidences);
@@ -58,7 +59,10 @@ sub getTables {
 	     'GUS::DoTS::AAFeatureExon',
 	     'GUS::SRes::Taxon',
 	     'GUS::SRes::OntologyTerm',
-	     'GUS::ApiDB::AaSequenceAttribute',
+	     'GUS::SRes::EnzymeClass',	
+	     'GUS::DoTS::AASequenceEnzymeClass',
+             'GUS::ApiDB::AaSequenceAttribute',
+             'GUS::ApiDB::GeneFeatureName',
 	     'GUS::DoTS::LowComplexityNAFeature',
 	     'GUS::DoTS::TransposableElement',
 	     'GUS::DoTS::TandemRepeatFeature',
@@ -70,6 +74,7 @@ sub getTables {
 	     'GUS::SRes::DbRef',
 	     'GUS::DoTS::DbRefAAFeature',
 	     'GUS::DoTS::DbRefNAFeature',
+             'GUS::DoTS::DbRefNASequence',
 	     'GUS::DoTS::DomainFeature',
 	     'GUS::Core::ProjectInfo',
 	     'GUS::Core::DatabaseInfo',
@@ -353,12 +358,22 @@ sub parseSlice {
     foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
 	$insdcSynonym = $sliceSynonym->name() if($sliceSynonym->dbname() eq "INSDC");
     }
-    
+
     my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdcSynonym, $organismAbbrev);
 
     $self->dumpRepeatMaskedSeq($slice, $gusExternalNASequence);
 
-    
+
+    foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
+	my $databaseName = $sliceSynonym->dbname();
+	my $databaseVersion = 1;
+	my $primaryId = $sliceSynonym->name();
+
+	my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $primaryId, undef, undef);
+
+	GUS::DoTS::DbRefNASequence->new($gusTableWriters, $dbRefId, $gusExternalNASequence->getPrimaryKey());
+    }
+
     my %transcriptXrefsLogics;
     my %geneXrefsLogics;
     my %translationXrefsLogics;    
@@ -402,7 +417,7 @@ sub parseRepeatFeature {
 
 sub parseGene {
     my ($self, $gene, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence) = @_;
-    
+
     my $gusTableWriters = $self->getGUSTableWriters();
 
     my $isProteinCoding;
@@ -418,6 +433,10 @@ sub parseGene {
     my $gusGeneFeature = GUS::DoTS::GeneFeature->new($gusTableWriters, $gene, $gusExternalNASequence, $gusExternalDatabaseRelease, $geneSequenceOntologyId);
     my $gusGeneNALocation = GUS::DoTS::NALocation->new($gusTableWriters, $gene, $gusGeneFeature);
 
+    if(my $geneName = $gene->external_name()) {
+	GUS::ApiDB::GeneFeatureName->new($gusTableWriters, $geneName, $gusGeneFeature->getPrimaryKey(),0, $gusExternalDatabaseRelease->getPrimaryKey());	
+    }
+    
     my $taxonId = $gusTaxon->getPrimaryKey();
     
     my %exonMap;
@@ -439,9 +458,15 @@ sub parseGene {
 	my $databaseVersion = $xref->analysis()->logic_name();
 
 	my $primaryId = $xref->primary_id();
-	
-	my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $primaryId, undef, undef);
-	GUS::DoTS::DbRefNAFeature->new($gusTableWriters, $dbRefId, $gusGeneFeature->getPrimaryKey());
+
+	my @synonyms = @{$xref->get_all_synonyms()};
+
+	push @synonyms, $primaryId;
+
+	foreach my $synOrPrimary (@synonyms) {
+	    my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $synOrPrimary, undef, undef);
+	    GUS::DoTS::DbRefNAFeature->new($gusTableWriters, $dbRefId, $gusGeneFeature->getPrimaryKey());
+	}
     }
 }
 
@@ -570,10 +595,36 @@ sub parseTranslation {
 	
 	my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $primaryId, undef, undef);
 	GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $dbRefId, $gusTranslatedAAFeature->getPrimaryKey());
+
+	if($databaseName eq 'KEGG_Enzyme') {
+	    $self->parseKeggEnzyme($primaryId, $gusTranslatedAASequence->getPrimaryKey(), $databaseName);
+	}
+	
     }
     
     return($gusTranslatedAAFeature, $gusTranslatedAASequence);
 }
+
+
+sub parseKeggEnzyme {
+    my ($self, $keggEnzyme, $gusAASequenceId, $databaseName) = @_;
+
+    my $gusTableWriters = $self->getGUSTableWriters();
+    
+    my @ecNumbers = split(/\+/, $keggEnzyme);
+    shift @ecNumbers; # remove the first bit which is not an ec number
+
+    foreach my $ec (@ecNumbers) {
+	my $gusEnzymeClassId = $seenEnzymeClasses{$ec};
+	unless($gusEnzymeClassId) {
+	    $gusEnzymeClassId = GUS::SRes::EnzymeClass->new($gusTableWriters, $ec)->getPrimaryKey();
+	}
+
+	GUS::DoTS::AASequenceEnzymeClass->new($gusTableWriters, $gusAASequenceId, $gusEnzymeClassId, $databaseName)->getPrimaryKey();
+    }
+}
+
+
 
 sub parseProteinFeature {
     my ($self, $proteinFeature, $translation, $gusTranslatedAAFeature, $gusTranslatedAASequence, $seenDomains) = @_;
