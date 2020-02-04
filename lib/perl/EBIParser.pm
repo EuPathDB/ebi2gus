@@ -14,6 +14,7 @@ use GUS::SRes::OntologyTerm qw(%seenOntologyTerms);
 use GUS::SRes::ExternalDatabase qw(%seenExternalDatabases);
 use GUS::SRes::ExternalDatabaseRelease qw(%seenExternalDatabaseReleases);
 use GUS::SRes::DbRef qw(%seenDBRefs);
+use GUS::SRes::EnzymeClass qw(%seenEnzymeClasses);
 use GUS::Core::DatabaseInfo qw(%seenDatabases);
 use GUS::Core::TableInfo qw(%seenTables);
 use GUS::DoTS::GOAssociationInstanceLOE qw(%seenGOEvidences);
@@ -58,6 +59,8 @@ sub getTables {
 	     'GUS::DoTS::AAFeatureExon',
 	     'GUS::SRes::Taxon',
 	     'GUS::SRes::OntologyTerm',
+	     'GUS::SRes::EnzymeClass',	
+	     'GUS::DoTS::AASequenceEnzymeClass',
 	     'GUS::ApiDB::AaSequenceAttribute',
 	     'GUS::DoTS::LowComplexityNAFeature',
 	     'GUS::DoTS::TransposableElement',
@@ -570,10 +573,36 @@ sub parseTranslation {
 	
 	my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $primaryId, undef, undef);
 	GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $dbRefId, $gusTranslatedAAFeature->getPrimaryKey());
+
+	if($databaseName eq 'KEGG_Enzyme') {
+	    $self->parseKeggEnzyme($primaryId, $gusTranslatedAASequence->getPrimaryKey(), $databaseName);
+	}
+	
     }
     
     return($gusTranslatedAAFeature, $gusTranslatedAASequence);
 }
+
+
+sub parseKeggEnzyme {
+    my ($self, $keggEnzyme, $gusAASequenceId, $databaseName) = @_;
+
+    my $gusTableWriters = $self->getGUSTableWriters();
+    
+    my @ecNumbers = split(/\+/, $keggEnzyme);
+    shift @ecNumbers; # remove the first bit which is not an ec number
+
+    foreach my $ec (@ecNumbers) {
+	my $gusEnzymeClassId = $seenEnzymeClasses{$ec};
+	unless($gusEnzymeClassId) {
+	    $gusEnzymeClassId = GUS::SRes::EnzymeClass->new($gusTableWriters, $ec)->getPrimaryKey();
+	}
+
+	GUS::DoTS::AASequenceEnzymeClass->new($gusTableWriters, $gusAASequenceId, $gusEnzymeClassId, $databaseName)->getPrimaryKey();
+    }
+}
+
+
 
 sub parseProteinFeature {
     my ($self, $proteinFeature, $translation, $gusTranslatedAAFeature, $gusTranslatedAASequence, $seenDomains) = @_;
