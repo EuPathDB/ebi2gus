@@ -244,30 +244,6 @@ sub ontologyTermForSlice {
     return $self->ontologyTermFromName($name, $gusTableWriters);
 }
 
-
-sub ontologyTermFromBiotypeGeneTranscript {
-    my ($self, $biotype, $gusTableWriters, $geneOrTranscript, $isProteinCoding) = @_;
-
-    if($biotype->name() eq 'pseudogene') {
-	if($geneOrTranscript eq 'gene') {
-	    $biotype->so_acc('SO:0001217'); #protein_coding_gene
-	}
-#	elsif($geneOrTranscript eq 'gene') {
-#	    $biotype->so_acc('SO:0001263'); #ncRNA_gene
-#	}
-	elsif($geneOrTranscript eq 'transcript') {
-	    $biotype->so_acc('SO:0000234'); # mRNA
-	}
-#	elsif($geneOrTranscript eq 'transcript') {
-#	    $biotype->so_acc('SO:0000655'); # ncRNA
-#	}
-	else {
-	    die "geneortranscript must be either gene or transcript";
-	}
-    }
-    return $self->ontologyTermFromBiotype($biotype, $gusTableWriters);
-}
-
 sub ontologyTermFromBiotype {
     my ($self, $biotype, $gusTableWriters) = @_;
 
@@ -428,7 +404,7 @@ sub parseGene {
 	}
     }
     
-    my $geneSequenceOntologyId = $self->ontologyTermFromBiotypeGeneTranscript($gene->get_Biotype(), $gusTableWriters, 'gene', $isProteinCoding);
+    my $geneSequenceOntologyId = $self->ontologyTermFromBiotype($gene->get_Biotype(), $gusTableWriters);
     # TODO: product name
     my $gusGeneFeature = GUS::DoTS::GeneFeature->new($gusTableWriters, $gene, $gusExternalNASequence, $gusExternalDatabaseRelease, $geneSequenceOntologyId);
     my $gusGeneNALocation = GUS::DoTS::NALocation->new($gusTableWriters, $gene, $gusGeneFeature);
@@ -484,7 +460,7 @@ sub parseTranscript {
 
     my $isProteinCoding = $transcript ? 1 : 0;
     
-    my $transcriptSequenceOntologyId = $self->ontologyTermFromBiotypeGeneTranscript($transcript->get_Biotype(), $gusTableWriters, 'transcript', $isProteinCoding);
+    my $transcriptSequenceOntologyId = $self->ontologyTermFromBiotype($transcript->get_Biotype(), $gusTableWriters);
     
     # add Product name
     my $gusTranscript = GUS::DoTS::Transcript->new($gusTableWriters, $transcript, $gusGeneFeature, $gusSplicedNASequence, $gusExternalDatabaseRelease, $transcriptSequenceOntologyId);
