@@ -238,8 +238,7 @@ sub getExternalDatabaseRelease {
 sub ontologyTermForSlice {
     my ($self, $slice, $gusTableWriters) = @_;
 
-    # TODO:  get coord map type (chromosome, scaffold, chunk)
-    my $name = 'chromosome';
+    my $name = $slice->coord_system_name();
 
     return $self->ontologyTermFromName($name, $gusTableWriters);
 }
@@ -320,8 +319,6 @@ sub dumpRepeatMaskedSeq {
 
 sub parseSlice {
     my ($self, $slice, $gusExternalDatabaseRelease, $gusTaxon) = @_;
-
-
 
     my $gusTableWriters = $self->getGUSTableWriters();
 
@@ -483,9 +480,18 @@ sub parseTranscript {
 	GUS::DoTS::RNAFeatureExon->new($gusTableWriters, $gusExonId, $gusTranscript, $exonOrderNum);
 
 	if($translation) {
-	    my $codingRegionStart = $exon->coding_region_start($transcript);
-	    my $codingRegionEnd = $exon->coding_region_end($transcript);
-	    # doesn't make a lot of sense but we add a row here even if the 
+	    my $codingRegionStart;
+	    my $codingRegionEnd;
+	    if($exon->strand() == -1) {
+		$codingRegionStart = $exon->coding_region_end($transcript);
+		$codingRegionEnd = $exon->coding_region_start($transcript);
+	    }
+	    else {
+		$codingRegionStart = $exon->coding_region_start($transcript);
+		$codingRegionEnd = $exon->coding_region_end($transcript);
+	    }
+
+	    # doesn't make a lot of sense but we add a row here even if the cds locations are null
 	    GUS::DoTS::AAFeatureExon->new($gusTableWriters, $gusTranslatedAAFeature, $gusExonId, $codingRegionStart, $codingRegionEnd);		    
 	}
 	$exonOrderNum++;
