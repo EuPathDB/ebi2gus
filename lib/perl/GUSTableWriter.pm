@@ -2,7 +2,9 @@ package GUSTableWriter;
 
 use strict;
 
-use Data::Dumper;
+
+sub skipValidation    { $_[0]->{_skip_validation} }
+sub setSkipValidation { $_[0]->{_skip_validation} = $_[1] }
 
 sub getOutputFile { $_[0]->{_output_file} }
 sub setOutputFile { $_[0]->{_output_file} = $_[1] }
@@ -13,8 +15,6 @@ sub setTableDefinition { $_[0]->{_table_definition} = $_[1] }
 sub writeRow {
     my ($self, $gusRow) = @_;
 
-    # TODO:  what do we need to validate here as compared to when we make the row object?
-    # IF nothing... should remove this if
     if($self->isRowValid($gusRow)) {
 	my $outputFile = $self->getOutputFile();
 
@@ -31,6 +31,9 @@ sub writeRow {
 # rows are always valid for now
 sub  isRowValid {
     my ($self, $row) = @_;
+
+    return 1 if($self->skipValidation());
+
     my $tableName = $self->getTableDefinition()->getName();
     
     my $tableDefinition = $self->getTableDefinition();
@@ -67,12 +70,14 @@ sub  isRowValid {
 
     
 sub new {
-    my ($class, $tableDefinition, $outputFile) = @_;
+    my ($class, $tableDefinition, $outputFile, $skipValidation) = @_;
 
     my $self = bless {}, $class;    
 
     $self->setTableDefinition($tableDefinition);
     $self->setOutputFile($outputFile);
+
+    $self->setSkipValidation($skipValidation);
     
     return $self;
 }

@@ -22,26 +22,40 @@ my $OUTPUT_DIRECTORY = "/tmp";
 
 sub HELP_MESSAGE {
     print STDERR <<"EOM";
-usage : $0 -e ensemble_registry_file \\
-        -t table_definitions_xml_file \\
-	-d genome_database_name \\
-	-v genome_database_version \\
-	-n ncbi_tax_id \\
-	-c chromosome_map_file \\
-	-p project_name \\
-	-r project_release \\
-	-a organism_abbrev \\
-        -o output_directory
+
+USAGE:
+$0 [-w] [-h] -e FILE -t FILE	-d STRING -v STRING -n NUMBER -c FILE -p STRING -r STRING -a STRING -o DIRECTORY
+
+OPTIONS:
+
+-w     skip validation
+-h     print this message
+-e     ensemble_registry_file
+-t     table_definitions_xml_file
+-d     genome_database_name
+-v     genome_database_version 
+-n     ncbi_tax_id 
+-c     chromosome_map_file
+-p     project_name
+-r     project_release
+-a     organism_abbrev
+-o     output_directory
+-g     GO ExternalDatabase Specification (GO_RSRC|someversion)
+-s     SO ExternalDatabase Specification (SO_RSRC|someversion)
+-l     GO Evidence ExternalDatabase Specification (GOevid_RSRC|someversion)
+
 EOM
     exit -1;
 }
-our ($opt_r, $opt_a, $opt_o, $opt_t, $opt_h, $opt_v, $opt_n, $opt_c, $opt_d, $opt_p, $opt_e, $opt_g, $opt_s, $opt_l);
-getopts('l:g:s:p:r:o:t:v:n:c:h:d:a:e:a:') or HELP_MESSAGE();
+our ($opt_r, $opt_a, $opt_o, $opt_t, $opt_h, $opt_v, $opt_n, $opt_c, $opt_d, $opt_p, $opt_e, $opt_g, $opt_s, $opt_l, $opt_w);
+getopts('hwl:g:s:p:r:o:t:v:n:c:d:e:a:') or HELP_MESSAGE();
 
 HELP_MESSAGE() if($opt_h);
 $REGISTRY_CONF_FILE = $opt_e if($opt_e);
 $TABLE_DEFINITIONS_XML_FILE = $opt_t if($opt_t);
 $OUTPUT_DIRECTORY = $opt_o if($opt_o);
+
+my $skipValidation = $opt_w;
 
 my $ncbiTaxId = $opt_n;
 my $genomeDatabaseName = $opt_d;
@@ -81,7 +95,7 @@ my $sliceAdaptor = $registry->get_adaptor('default', 'Core', 'Slice' );
 
 my $topLevelSlices = $sliceAdaptor->fetch_all('toplevel');
 
-my $ebiParser = EBIParser->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec);
+my $ebiParser = EBIParser->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec, $skipValidation);
 $ebiParser->parse();
 # exit;
 

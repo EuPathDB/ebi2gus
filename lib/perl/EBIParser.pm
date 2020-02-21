@@ -127,7 +127,7 @@ sub setRegistry { $_[0]->{_registry} = $_[1] }
 
 sub getGUSTableWriters { $_[0]->{_gus_table_writers} }
 sub setGUSTableWriters { 
-    my ($self, $gusTableDefinitionsParser, $outputDirectory) = @_;
+    my ($self, $gusTableDefinitionsParser, $outputDirectory, $skipValidation) = @_;
 
     my $tables = $self->getTables();
 
@@ -163,7 +163,7 @@ sub setGUSTableWriters {
 	    $outputFiles{$realTableName} = $outputFile;
 	}
 	
-	$gusTableWriters->{$className} = GUSTableWriter->new($gusTableDefinition, $outputFile);
+	$gusTableWriters->{$className} = GUSTableWriter->new($gusTableDefinition, $outputFile, $skipValidation);
     }
 
     foreach my $realTableName (keys %outputFiles) {
@@ -179,13 +179,13 @@ sub setGUSTableWriters {
 }
 
 sub new {
-    my ($class, $slices, $gusTableDefinitions, $outputDirectory, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec) = @_;
+    my ($class, $slices, $gusTableDefinitions, $outputDirectory, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec, $skipValidation) = @_;
     
     my $self = bless {}, $class;
 
     $self->setSlices($slices);
 
-    $self->setGUSTableWriters($gusTableDefinitions, $outputDirectory);
+    $self->setGUSTableWriters($gusTableDefinitions, $outputDirectory, $skipValidation);
     $self->setOrganism($organism);
 
     $self->setProjectName($projectName);
