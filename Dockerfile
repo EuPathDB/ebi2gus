@@ -27,5 +27,6 @@ COPY ./bin/* /usr/local/bin/
 COPY ./conf/ensembl_registry.conf.sample /usr/local/etc/ensembl_registry.conf
 COPY ./conf/chromosomeMap.conf.sample /usr/local/etc/chromosomeMap.conf
 COPY ./lib/xml/gusSchemaDefinitions.xml /usr/local/etc/gusSchemaDefinitions.xml
+COPY ./conf/seq_region_maps /usr/local/etc/seq_region_maps
 
 HEALTHCHECK CMD mysqladmin ping --silent

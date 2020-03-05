@@ -124,6 +124,52 @@ sub setProjectRelease { $_[0]->{_project_release} = $_[1] }
 sub getRegistry { $_[0]->{_registry} }
 sub setRegistry { $_[0]->{_registry} = $_[1] }
 
+sub getGlobalSeqRegionMappings { $_[0]->{_global_seq_region_mappings} }
+sub setGlobalSeqRegionMappings {
+    my ($self) = @_;
+
+    # THIS IS MECHANISM FOR MAPPING SEQ REGION NAMES IS TEMPORARY
+    my $genomeSummary = "Arthropod genome summary.csv";
+
+    my $organismAbbrev = $self->getOrganism()->getOrganismAbbrev();
+    my $seqRegionDirectory = "/usr/local/etc/seq_region_maps";
+
+    my $genomeSummaryFile = $seqRegionDirectory . "/" . $genomeSummary;
+    open(SUMMARY, $genomeSummaryFile) or die "Could not open file $genomeSummaryFile for reading: $!";
+
+    my $rv = {};
+    my $foundRow;
+    <SUMMARY>; 
+    while(<SUMMARY>) {
+	chomp;
+	my ($o, $hasMapping, $fn) = split(/,/, $_);
+
+	if($o eq $organismAbbrev) {
+	    $foundRow = 1;
+
+	    if($hasMapping) {
+		my $fileName = $seqRegionDirectory . "/" . $fn;
+		$fileName =~ s/\.xlsx/.csv/;
+		
+		open(FILE, $fileName) or die "Cannot open file $fileName for reading: $!";
+
+		<FILE>;
+		while(<FILE>) {
+		    chomp;
+		    my ($seqRegionName, $newSeqRegionName) = split(/,/, $_);
+		    $rv->{$seqRegionName} = $newSeqRegionName;
+		}
+		close FILE;
+	    }
+	}
+	last if $foundRow;
+    }
+    close SUMMARY;
+
+    die "no row found in summary file for orgAbbrev $organismAbbrev" unless $foundRow;
+
+    $self->{_global_seq_region_mappings} = $rv;
+}
 
 sub getGUSTableWriters { $_[0]->{_gus_table_writers} }
 sub setGUSTableWriters { 
@@ -204,6 +250,8 @@ sub new {
 					 -format => 'fasta' );
 
     $self->setRepeatMaskedIO($repeatMaskedIO);
+
+    $self->setGlobalSeqRegionMappings();
     
     return $self;
 }
@@ -332,10 +380,10 @@ sub parseSlice {
 	$insdcSynonym = $sliceSynonym->name() if($sliceSynonym->dbname() eq "INSDC");
     }
 
-    my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdcSynonym, $organismAbbrev);
+    my $seqRegionMap = $self->getGlobalSeqRegionMappings();
+    my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdcSynonym, $organismAbbrev, $seqRegionMap);
 
     $self->dumpRepeatMaskedSeq($slice, $gusExternalNASequence);
-
 
     foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
 	my $databaseName = $sliceSynonym->dbname();
