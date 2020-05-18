@@ -166,8 +166,6 @@ sub setGlobalSeqRegionMappings {
     }
     close SUMMARY;
 
-    die "no row found in summary file for orgAbbrev $organismAbbrev" unless $foundRow;
-
     $self->{_global_seq_region_mappings} = $rv;
 }
 
