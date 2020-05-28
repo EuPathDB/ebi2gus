@@ -284,7 +284,13 @@ sub getExternalDatabaseRelease {
 sub ontologyTermForSlice {
     my ($self, $slice, $gusTableWriters) = @_;
 
+    # fallback to coord_system_name
     my $name = $slice->coord_system_name();
+
+    my $coordSystemTags = $slice->get_all_Attributes("coord_system_tag");
+    if($coordSystemTags && scalar @$coordSystemTags == 1) {
+	$name = $coordSystemTags->[0]->value();	
+    }
 
     return $self->ontologyTermFromName($name, $gusTableWriters);
 }
@@ -369,7 +375,7 @@ sub parseSlice {
     my $gusTableWriters = $self->getGUSTableWriters();
 
     my $gusSequenceOntologyId = $self->ontologyTermForSlice($slice, $gusTableWriters);
-
+    
     my $organismAbbrev = $self->getOrganism()->getOrganismAbbrev();
 
     my $insdcSynonym;
