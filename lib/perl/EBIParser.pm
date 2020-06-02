@@ -480,8 +480,10 @@ sub parseGene {
 
     foreach my $xref (@{$gene->get_all_object_xrefs()}) {
 	my $databaseName = $xref->dbname();
-	my $databaseVersion = $xref->analysis()->logic_name();
-
+    my $databaseVersion;	
+    if (defined $xref->analysis()){
+      my $databaseVersion = $xref->analysis()->logic_name();
+    }
 	my $primaryId = $xref->primary_id();
 
 	my @synonyms = @{$xref->get_all_synonyms()};
@@ -556,7 +558,10 @@ sub parseTranscript {
 	    $self->parseGOAssociation($gusTranslatedAASequence, $xref)
 	}
 	else {
-	    my $databaseVersion = $xref->analysis()->logic_name();
+        my $databaseVersion;
+        if (defined $xref->analysis()){
+          my $databaseVersion = $xref->analysis()->logic_name();
+        }
 	    my $primaryId = $xref->primary_id();
 
 	    my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $primaryId, undef, undef);
@@ -623,8 +628,11 @@ sub parseTranslation {
 
     foreach my $xref (@{$translation->get_all_object_xrefs()}) {
 	my $databaseName = $xref->dbname();
-	my $databaseVersion = $xref->analysis()->logic_name();
-
+	
+    my $databaseVersion;
+    if (defined $xref->analysis()){
+      my $databaseVersion = $xref->analysis()->logic_name();
+    }
 	my $primaryId = $xref->primary_id();
 	
 	my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $primaryId, undef, undef);
