@@ -12,7 +12,8 @@ sub init {
             subclass_view => "TranslatedAASequence",
 	    molecular_weight => $translation->get_all_Attributes("MolecularWeight")->[0]->value(),
 	    sequence => $translation->seq(),
-	    source_id => $translation->summary_as_hash->{protein_id}, # can't find the protein id in this object for some reason??
+	    #source_id => $translation->summary_as_hash->{protein_id}, # can't find the protein id in this object for some reason??
+        source_id => $translation->stable_id(),
 	    length => $translation->length(),
 	    taxon_id => $taxonId,
 	    sequence_ontology_id => $translatedAASequenceOntologyId,
