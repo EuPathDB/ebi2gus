@@ -295,6 +295,7 @@ sub ontologyTermForSlice {
     return $self->ontologyTermFromName($name, $gusTableWriters);
 }
 
+
 sub ontologyTermFromBiotype {
     my ($self, $biotype, $gusTableWriters) = @_;
 
@@ -567,6 +568,13 @@ sub parseTranscript {
 	    GUS::DoTS::DbRefNAFeature->new($gusTableWriters, $dbRefId, $gusTranscript->getPrimaryKey());
 	}
     }
+
+
+    foreach my $seqEdit (@{$transcript->get_all_SeqEdits()}) {
+	my $code = $seqEdit->code();
+	my $seqEditOntologyId = $self->ontologyTermFromName($code, $gusTableWriters);	
+	GUS::ApiDB::SeqEdit->new($gusTableWriters, $seqEdit, 'transcript', $seqEditOntologyId, $transcript->stable_id());
+    }
 }
 
 sub parseGOAssociation {
@@ -640,6 +648,12 @@ sub parseTranslation {
 	    $self->parseKeggEnzyme($primaryId, $gusTranslatedAASequence->getPrimaryKey(), $databaseName);
 	}
 	
+    }
+
+    foreach my $seqEdit (@{$translation->get_all_SeqEdits()}) {
+	my $code = $seqEdit->code();
+	my $seqEditOntologyId = $self->ontologyTermFromName($code, $gusTableWriters);	
+	GUS::ApiDB::SeqEdit->new($gusTableWriters, $seqEdit, 'translation', $seqEditOntologyId, $transcript->stable_id());
     }
     
     return($gusTranslatedAAFeature, $gusTranslatedAASequence);

@@ -15,6 +15,12 @@ my %sequenceOntologyMap = (chromosome => 'SO:0000340',
 			   polypeptide => 'SO:0000104',
 			   exon => 'SO:0000147',
 			   mature_transcript => 'SO:0000233',
+			   '_rna_edit' => 'SO:0001059',
+			   'amino_acid_sub' => 'SO:0001059',
+			   'Frameshift' => 'SO:0000865',
+			   '_transl_start' => 'SO:0000323',
+			   '_transl_end' => 'SO:0000327',
+			   '_selenocysteine' => 'SO:0001455',
     );
 
 
