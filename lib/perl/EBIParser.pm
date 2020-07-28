@@ -61,6 +61,7 @@ sub getTables {
 	     'GUS::SRes::OntologyTerm',
 	     'GUS::SRes::EnzymeClass',	
 	     'GUS::DoTS::AASequenceEnzymeClass',
+             'GUS::ApiDB::SeqEdit',
              'GUS::ApiDB::AaSequenceAttribute',
              'GUS::ApiDB::GeneFeatureName',
 	     'GUS::DoTS::LowComplexityNAFeature',
@@ -573,7 +574,7 @@ sub parseTranscript {
     foreach my $seqEdit (@{$transcript->get_all_SeqEdits()}) {
 	my $code = $seqEdit->code();
 	my $seqEditOntologyId = $self->ontologyTermFromName($code, $gusTableWriters);	
-	GUS::ApiDB::SeqEdit->new($gusTableWriters, $seqEdit, 'transcript', $seqEditOntologyId, $transcript->stable_id());
+	GUS::ApiDB::SeqEdit->new($gusTableWriters, $seqEdit, 'transcript', $seqEditOntologyId, $transcript, $transcript->stable_id());
     }
 }
 
@@ -653,7 +654,7 @@ sub parseTranslation {
     foreach my $seqEdit (@{$translation->get_all_SeqEdits()}) {
 	my $code = $seqEdit->code();
 	my $seqEditOntologyId = $self->ontologyTermFromName($code, $gusTableWriters);	
-	GUS::ApiDB::SeqEdit->new($gusTableWriters, $seqEdit, 'translation', $seqEditOntologyId, $transcript->stable_id());
+	GUS::ApiDB::SeqEdit->new($gusTableWriters, $seqEdit, 'translation', $seqEditOntologyId, $transcript, $translation->stable_id());
     }
     
     return($gusTranslatedAAFeature, $gusTranslatedAASequence);
