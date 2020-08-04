@@ -49,6 +49,7 @@ sub getTables {
 	     'GUS::DoTS::ExternalNASequence',
 	     'GUS::DoTS::NALocation',
 	     'GUS::DoTS::Transcript',
+	     'GUS::DoTS::RNAFeature',
 	     'GUS::DoTS::SplicedNASequence',
 	     'GUS::DoTS::ExonFeature',
 	     'GUS::DoTS::RNAFeatureExon',
@@ -382,6 +383,9 @@ sub parseSlice {
 
     my $insdcSynonym;
 
+
+
+
     foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
 	$insdcSynonym = $sliceSynonym->name() if($sliceSynonym->dbname() eq "INSDC");
     }
@@ -389,6 +393,11 @@ sub parseSlice {
     my $seqRegionMap = $self->getGlobalSeqRegionMappings();
     my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdcSynonym, $organismAbbrev, $seqRegionMap);
 
+    # TODO: are there other dna align features we want?
+    foreach my $dnaAlignFeature (@{$slice->get_all_DnaAlignFeatures("trnascan_align")}) {
+	$self->parseTRNAFeature($dnaAlignFeature, $gusExternalNASequence);
+    }
+    
     $self->dumpRepeatMaskedSeq($slice, $gusExternalNASequence);
 
     foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
@@ -414,6 +423,34 @@ sub parseSlice {
     }
 
 }
+
+
+sub parseTRNAFeature {
+    my ($self, $tRNAFeature, $gusExternalNASequence) = @_;
+
+    my $gusTableWriters = $self->getGUSTableWriters();
+    
+    my $tRNASequenceOntologyId = $self->ontologyTermFromName('tRNA', $gusTableWriters);
+
+    my $analysis = $tRNAFeature->analysis();
+    my $externalDatabaseReleaseId = $self->getExternalDatabaseReleaseFromNameVersion($analysis->program(), $analysis->program_version());    
+
+    my $gusTRNAFeature = GUS::DoTS::RNAFeature->new($gusTableWriters, $tRNAFeature, $gusExternalNASequence, $externalDatabaseReleaseId, $tRNASequenceOntologyId);
+
+
+    my $gusTRNANALocation = GUS::DoTS::NALocation->new($gusTableWriters, $tRNAFeature, $gusTRNAFeature);
+
+    my $exonSequenceOntologyId = $self->ontologyTermFromName("exon", $gusTableWriters);
+    my $eCt = 1;
+    foreach my $trnaExon ( $tRNAFeature->ungapped_features() ) {
+	my $trnaExonSourceId = $gusTRNAFeature->getGUSRowAsHash()->{source_id} . ".$eCt";
+	my $gusTRNAExonFeature = GUS::DoTS::ExonFeature->new($gusTableWriters, $trnaExonSourceId, $gusTRNAFeature, $externalDatabaseReleaseId, $exonSequenceOntologyId);
+	my $gusTRNAExonNALocation = GUS::DoTS::NALocation->new($gusTableWriters, $trnaExon, $gusTRNAExonFeature);
+
+	$eCt++;
+    }
+}
+
 
 sub parseRepeatFeature {
     my ($self, $repeatFeature, $gusExternalDatabaseRelease, $gusExternalNASequence) = @_;
@@ -469,7 +506,7 @@ sub parseGene {
     my %exonMap;
     my $exonSequenceOntologyId = $self->ontologyTermFromName("exon", $gusTableWriters);
     foreach my $exon ( @{ $gene->get_all_Exons() } ) {
-	my $gusExonFeature = GUS::DoTS::ExonFeature->new($gusTableWriters, $exon, $gusGeneFeature, $gusExternalDatabaseRelease, $exonSequenceOntologyId);
+	my $gusExonFeature = GUS::DoTS::ExonFeature->new($gusTableWriters, $exon->stable_id(), $gusGeneFeature, $gusExternalDatabaseRelease->getPrimaryKey(), $exonSequenceOntologyId);
 	my $gusExonNALocation = GUS::DoTS::NALocation->new($gusTableWriters, $exon, $gusExonFeature);
 
 	my $exonKey = $exon->start()."-".$exon->end()."-".$exon->strand()."-".$exon->phase()."-".$exon->end_phase();
@@ -766,7 +803,7 @@ sub getDbRefAndExternalDatabaseReleaseIds {
 
     my $gusTableWriters = $self->getGUSTableWriters();
     
-    my $externalDatabaseReleaseId = $self->getExternalDatabaseRelaseFromNameVersion($databaseName, $databaseVersion);    
+    my $externalDatabaseReleaseId = $self->getExternalDatabaseReleaseFromNameVersion($databaseName, $databaseVersion);    
 
     my $dbRefNaturalKey = "$primaryId|$secondaryId|$externalDatabaseReleaseId";
 
@@ -781,7 +818,7 @@ sub getDbRefAndExternalDatabaseReleaseIds {
 }
 
 
-sub getExternalDatabaseRelaseFromNameVersion {
+sub getExternalDatabaseReleaseFromNameVersion {
     my ($self, $name, $version) = @_;
 
     my $gusTableWriters = $self->getGUSTableWriters();
@@ -816,9 +853,9 @@ sub parse {
     my $goEvidSpec = $self->getGOEvidSpec();
     my $soSpec = $self->getSOSpec();
 
-    my $goExtDbRlsId = $self->getExternalDatabaseRelaseFromSpec($goSpec);
-    my $goEvidExtDbRlsId = $self->getExternalDatabaseRelaseFromSpec($goEvidSpec);
-    my $soExtDbRlsId = $self->getExternalDatabaseRelaseFromSpec($soSpec);
+    my $goExtDbRlsId = $self->getExternalDatabaseReleaseFromSpec($goSpec);
+    my $goEvidExtDbRlsId = $self->getExternalDatabaseReleaseFromSpec($goEvidSpec);
+    my $soExtDbRlsId = $self->getExternalDatabaseReleaseFromSpec($soSpec);
 
     $self->setGOExtDbRlsId($goExtDbRlsId);
     $self->setGOEvidExtDbRlsId($goEvidExtDbRlsId);
@@ -836,10 +873,10 @@ sub parse {
     }
 }
 
-sub getExternalDatabaseRelaseFromSpec {
+sub getExternalDatabaseReleaseFromSpec {
     my ($self, $spec) = @_;
     my ($name, $version) = split(/\|/, $spec);
-    return $self->getExternalDatabaseRelaseFromNameVersion($name, $version);
+    return $self->getExternalDatabaseReleaseFromNameVersion($name, $version);
 }
 
 
