@@ -22,6 +22,8 @@ my %sequenceOntologyMap = (chromosome => 'SO:0000340',
 			   '_transl_end' => 'SO:0000327',
 			   '_selenocysteine' => 'SO:0001455',
 			   tRNA => 'SO:0000253',
+                           'initial_met' => 'SO:0001059',
+                           'amino_acid_sub' => 'SO:0001059',
 
     );
 
