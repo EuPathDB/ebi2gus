@@ -3,18 +3,26 @@ use strict;
 use warnings;
 
 use Bio::EnsEMBL::Registry;
-
+use Getopt::Std;
 use Data::Dumper;
 
-my $abbrev = "xxxx";
-my $outputDir = "/tmp/";
-my $fastaFile = $outputDir.$abbrev.".fasta";
-my $ecFile = $outputDir.$abbrev."_ecMapping.txt";
+my $REGISTRY_CONF_FILE = "/usr/local/etc/ensembl_registry.conf";
+my $OUTPUT_DIRECTORY = "/tmp/";
+
+our ($opt_a, $opt_b, $opt_c, $opt_o, $opt_h, $opt_e);
+getopts('ho:e:a:b:c:') or HELP_MESSAGE();
+$OUTPUT_DIRECTORY = $opt_o if($opt_o);
+$REGISTRY_CONF_FILE = $opt_e if($opt_e);
+my $abbrev = $opt_a;
+HELP_MESSAGE() if($opt_h || !-e $REGISTRY_CONF_FILE || !-e $OUTPUT_DIRECTORY || !$abbrev || !$opt_b || $opt_c);
+
+my $proteomeFile = $OUTPUT_DIRECTORY.$opt_b;
+my $ecFile = $OUTPUT_DIRECTORY.$opt_c;
 
 my $registry = 'Bio::EnsEMBL::Registry';
-my $count = $registry->load_all("/usr/local/etc/ensembl_registry.conf", 1);
+my $count = $registry->load_all($REGISTRY_CONF_FILE, 1);
 
-outputProteins($registry,$fastaFile,$abbrev);
+outputProteins($registry,$proteomeFile,$abbrev);
 outputEC($registry,$ecFile,$abbrev);
 
 exit;
@@ -26,8 +34,8 @@ sub outputProteins {
     my $gene_adaptor = $registry->get_adaptor('default','core','gene');
     my $genes = $gene_adaptor->fetch_all_by_biotype('protein_coding');
     my $numberOfGenes = scalar @{$genes};    
-    print STDERR "Getting proteins for '$abbrev' from EBI\n";
-    print STDERR "Total number of genes: $numberOfGenes\n";
+    print "Getting proteins for '$abbrev' from EBI\n";
+    print "Total number of genes: $numberOfGenes\n";
 
     my $numberOfProteins=0;
     open(FASTA,">",$fastaFile) || die "Cannot open $fastaFile for writing.\n";
@@ -45,20 +53,17 @@ sub outputProteins {
 	}
     }
     close(FASTA);
-    print STDERR "Obtained $numberOfProteins protein sequences.\n";
+    print "Obtained $numberOfProteins protein sequences.\n";
 
 }
-
-
-
 
 sub outputEC {
     my ($registry,$ecFile,$abbrev) = @_;
     my $gene_adaptor = $registry->get_adaptor('default','core','gene');
     my $genes = $gene_adaptor->fetch_all_by_biotype('protein_coding');
     my $numberOfGenes = scalar @{$genes};
-    print STDERR "Getting EC numbers for '$abbrev' from EBI\n";
-    print STDERR "Total number of genes: $numberOfGenes\n";
+    print "Getting EC numbers for '$abbrev' from EBI\n";
+    print "Total number of genes: $numberOfGenes\n";
 
     my $numberOfEcNumbers=0;
     open(EC,">",$ecFile) || die "Cannot open $ecFile for writing.\n";
@@ -87,6 +92,24 @@ sub outputEC {
 	
     }
     close(EC);
-    print STDERR "Obtained $numberOfEcNumbers EC numbers.\n";
+    print "Obtained $numberOfEcNumbers EC numbers.\n";
 }
 
+sub HELP_MESSAGE {
+    print STDERR <<"EOM";
+
+USAGE:
+$0 [-h] -e FILE -a STRING -o DIRECTORY -b STRING -c STRING
+
+OPTIONS:
+
+-h     print this message
+-e     ensemble_registry_file
+-a     orthomcl abbrev
+-o     output_directory
+-c     ec_file_name
+-b     proteome_file_name
+
+EOM
+    exit -1;
+}
