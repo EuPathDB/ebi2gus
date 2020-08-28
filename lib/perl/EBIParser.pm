@@ -126,6 +126,24 @@ sub setProjectRelease { $_[0]->{_project_release} = $_[1] }
 sub getRegistry { $_[0]->{_registry} }
 sub setRegistry { $_[0]->{_registry} = $_[1] }
 
+
+sub getPreviousIdentifiersFromPatchBuild { $_[0]->{_previous_identifiers_from_patch_build} }
+sub setPreviousIdentifiersFromPatchBuild {
+    my ($self, $sliceAdaptor) = @_;
+
+    my $dbc = $sliceAdaptor->dbc();
+    my $sth = $dbc->prepare("select old_stable_id,new_stable_id from stable_id_event where type = 'gene' and mapping_session_id in (select max(mapping_session_id) from mapping_session)");
+    $sth->execute();
+    
+    my $rv = {};
+    while(my ($oldStableId, $stableId) = $sth->fetchrow_array()) {
+	push @{$rv->{$stableId}}, $oldStableId if ($stableId && $oldStableId && $stableId ne $oldStableId);
+    }
+    $sth->finish();
+
+    $self->{_previous_identifiers_from_patch_build} = $rv;
+}
+
 sub getGlobalSeqRegionMappings { $_[0]->{_global_seq_region_mappings} }
 sub setGlobalSeqRegionMappings {
     my ($self) = @_;
@@ -225,7 +243,7 @@ sub setGUSTableWriters {
 }
 
 sub new {
-    my ($class, $slices, $gusTableDefinitions, $outputDirectory, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec, $skipValidation) = @_;
+    my ($class, $sliceAdaptor, $slices, $gusTableDefinitions, $outputDirectory, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec, $skipValidation) = @_;
     
     my $self = bless {}, $class;
 
@@ -252,9 +270,16 @@ sub new {
     $self->setRepeatMaskedIO($repeatMaskedIO);
 
     $self->setGlobalSeqRegionMappings();
+
+    $self->setPreviousIdentifiersFromPatchBuild($sliceAdaptor);
+
+
+
     
     return $self;
 }
+
+
 
 sub importTableModules {
     my ($self) = @_;
@@ -422,6 +447,8 @@ sub parseSlice {
 	$self->parseRepeatFeature($repeatFeature, $gusExternalDatabaseRelease, $gusExternalNASequence);
     }
 
+
+
 }
 
 
@@ -533,6 +560,16 @@ sub parseGene {
 	    my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $synOrPrimary, undef, undef);
 	    GUS::DoTS::DbRefNAFeature->new($gusTableWriters, $dbRefId, $gusGeneFeature->getPrimaryKey());
 	}
+    }
+
+    my $geneStableId = $gene->stable_id();
+
+    my $organismAbbrev = $self->getOrganism()->getOrganismAbbrev();	
+    my $databaseName = "${organismAbbrev}_PreviousGeneIDs_aliases";
+    my $databaseVersion = $self->getOrganism()->getGenomeDatabaseVersion();
+    foreach my $previousStableId (@{$self->getPreviousIdentifiersFromPatchBuild()->{$geneStableId}}) {
+	my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $previousStableId, undef, undef, "previous id");
+	GUS::DoTS::DbRefNAFeature->new($gusTableWriters, $dbRefId, $gusGeneFeature->getPrimaryKey());
     }
 }
 
@@ -799,7 +836,7 @@ sub parseInterpro {
 
 
 sub getDbRefAndExternalDatabaseReleaseIds {
-    my ($self, $databaseName, $databaseVersion, $primaryId, $secondaryId, $remark) = @_;
+    my ($self, $databaseName, $databaseVersion, $primaryId, $secondaryId, $remark, $idType) = @_;
 
     my $gusTableWriters = $self->getGUSTableWriters();
     
@@ -819,7 +856,7 @@ sub getDbRefAndExternalDatabaseReleaseIds {
 
 
 sub getExternalDatabaseReleaseFromNameVersion {
-    my ($self, $name, $version) = @_;
+    my ($self, $name, $version, $idType) = @_;
 
     my $gusTableWriters = $self->getGUSTableWriters();
     
@@ -833,7 +870,7 @@ sub getExternalDatabaseReleaseFromNameVersion {
     my $externalDatabaseReleaseId = $seenExternalDatabaseReleases{$extDbRlsSpec};
 
     unless($externalDatabaseReleaseId) {
-	$externalDatabaseReleaseId = GUS::SRes::ExternalDatabaseRelease->new($gusTableWriters, $version, $externalDatabaseId)->getPrimaryKey();
+	$externalDatabaseReleaseId = GUS::SRes::ExternalDatabaseRelease->new($gusTableWriters, $version, $externalDatabaseId, $idType)->getPrimaryKey();
     }
 
     return $externalDatabaseReleaseId;

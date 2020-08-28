@@ -95,7 +95,7 @@ my $sliceAdaptor = $registry->get_adaptor('default', 'Core', 'Slice' );
 
 my $topLevelSlices = $sliceAdaptor->fetch_all('toplevel');
 
-my $ebiParser = EBIParser->new($topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec, $skipValidation);
+my $ebiParser = EBIParser->new($sliceAdaptor, $topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec, $skipValidation);
 $ebiParser->parse();
 # exit;
 
