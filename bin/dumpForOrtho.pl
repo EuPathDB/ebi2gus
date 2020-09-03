@@ -14,7 +14,7 @@ getopts('ho:e:a:b:c:') or HELP_MESSAGE();
 $OUTPUT_DIRECTORY = $opt_o if($opt_o);
 $REGISTRY_CONF_FILE = $opt_e if($opt_e);
 my $abbrev = $opt_a;
-HELP_MESSAGE() if($opt_h || !-e $REGISTRY_CONF_FILE || !-e $OUTPUT_DIRECTORY || !$abbrev || !$opt_b || $opt_c);
+HELP_MESSAGE() if($opt_h || !-e $REGISTRY_CONF_FILE || !-e $OUTPUT_DIRECTORY || ! $abbrev || ! $opt_b || ! $opt_c);
 
 my $proteomeFile = $OUTPUT_DIRECTORY.$opt_b;
 my $ecFile = $OUTPUT_DIRECTORY.$opt_c;
