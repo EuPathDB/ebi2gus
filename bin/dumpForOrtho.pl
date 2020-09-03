@@ -8,6 +8,7 @@ use Data::Dumper;
 
 my $REGISTRY_CONF_FILE = "/usr/local/etc/ensembl_registry.conf";
 my $OUTPUT_DIRECTORY = "/tmp/";
+my $logFile = "log.txt";
 
 our ($opt_a, $opt_b, $opt_c, $opt_o, $opt_h, $opt_e);
 getopts('ho:e:a:b:c:') or HELP_MESSAGE();
@@ -18,24 +19,27 @@ HELP_MESSAGE() if($opt_h || !-e $REGISTRY_CONF_FILE || !-e $OUTPUT_DIRECTORY || 
 
 my $proteomeFile = $OUTPUT_DIRECTORY.$opt_b;
 my $ecFile = $OUTPUT_DIRECTORY.$opt_c;
+open($logFH,">",$OUTPUT_DIRECTORY.$logFile) || die "Cannot open log file '$logFile' for writing, in directory $OUTPUT_DIRECTORY.\n";
 
 my $registry = 'Bio::EnsEMBL::Registry';
 my $count = $registry->load_all($REGISTRY_CONF_FILE, 1);
 
-outputProteins($registry,$proteomeFile,$abbrev);
-outputEC($registry,$ecFile,$abbrev);
+outputProteins($registry,$proteomeFile,$abbrev,$logFH);
+outputEC($registry,$ecFile,$abbrev,$logFH);
+
+close ($logFH);
 
 exit;
 
 
 
 sub outputProteins {
-    my ($registry,$fastaFile,$abbrev) = @_;
+    my ($registry,$fastaFile,$abbrev,$logFH) = @_;
     my $gene_adaptor = $registry->get_adaptor('default','core','gene');
     my $genes = $gene_adaptor->fetch_all_by_biotype('protein_coding');
     my $numberOfGenes = scalar @{$genes};    
-    print "Getting proteins for '$abbrev' from EBI\n";
-    print "Total number of genes: $numberOfGenes\n";
+    print $logFH "Getting proteins for '$abbrev' from EBI\n";
+    print $logFH "Total number of genes: $numberOfGenes\n";
 
     my $numberOfProteins=0;
     open(FASTA,">",$fastaFile) || die "Cannot open $fastaFile for writing.\n";
@@ -53,17 +57,17 @@ sub outputProteins {
 	}
     }
     close(FASTA);
-    print "Obtained $numberOfProteins protein sequences.\n";
+    print $logFH "Obtained $numberOfProteins protein sequences.\n";
 
 }
 
 sub outputEC {
-    my ($registry,$ecFile,$abbrev) = @_;
+    my ($registry,$ecFile,$abbrev,$logFH) = @_;
     my $gene_adaptor = $registry->get_adaptor('default','core','gene');
     my $genes = $gene_adaptor->fetch_all_by_biotype('protein_coding');
     my $numberOfGenes = scalar @{$genes};
-    print "Getting EC numbers for '$abbrev' from EBI\n";
-    print "Total number of genes: $numberOfGenes\n";
+    print $logFH "Getting EC numbers for '$abbrev' from EBI\n";
+    print $logFH "Total number of genes: $numberOfGenes\n";
 
     my $numberOfEcNumbers=0;
     open(EC,">",$ecFile) || die "Cannot open $ecFile for writing.\n";
@@ -92,7 +96,7 @@ sub outputEC {
 	
     }
     close(EC);
-    print "Obtained $numberOfEcNumbers EC numbers.\n";
+    print $logFH "Obtained $numberOfEcNumbers EC numbers.\n";
 }
 
 sub HELP_MESSAGE {
