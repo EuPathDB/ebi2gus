@@ -57,6 +57,7 @@ sub outputProteins {
 	}
     }
     close(FASTA);
+    die "Did not obtain any proteins for orthomcl abbrev $abbrev.\n" if ($numberOfProteins==0);
     print $logFH "Obtained $numberOfProteins protein sequences.\n";
 
 }
