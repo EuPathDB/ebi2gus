@@ -19,7 +19,7 @@ HELP_MESSAGE() if($opt_h || !-e $REGISTRY_CONF_FILE || !-e $OUTPUT_DIRECTORY || 
 
 my $proteomeFile = $OUTPUT_DIRECTORY.$opt_b;
 my $ecFile = $OUTPUT_DIRECTORY.$opt_c;
-open($logFH,">",$OUTPUT_DIRECTORY.$logFile) || die "Cannot open log file '$logFile' for writing, in directory $OUTPUT_DIRECTORY.\n";
+open(my $logFH,">",$OUTPUT_DIRECTORY.$logFile) || die "Cannot open log file '$logFile' for writing, in directory $OUTPUT_DIRECTORY.\n";
 
 my $registry = 'Bio::EnsEMBL::Registry';
 my $count = $registry->load_all($REGISTRY_CONF_FILE, 1);
