@@ -19,7 +19,10 @@ HELP_MESSAGE() if($opt_h || !-e $REGISTRY_CONF_FILE || !-e $OUTPUT_DIRECTORY || 
 
 my $proteomeFile = $OUTPUT_DIRECTORY.$opt_b;
 my $ecFile = $OUTPUT_DIRECTORY.$opt_c;
+
 open(my $logFH,">",$OUTPUT_DIRECTORY.$logFile) || die "Cannot open log file '$logFile' for writing, in directory $OUTPUT_DIRECTORY.\n";
+print $logFH "Proteome file: $proteomeFile\n";
+print $logFH "EC file: $ecFile\n";
 
 my $registry = 'Bio::EnsEMBL::Registry';
 my $count = $registry->load_all($REGISTRY_CONF_FILE, 1);
@@ -57,7 +60,10 @@ sub outputProteins {
 	}
     }
     close(FASTA);
-    die "Did not obtain any proteins for orthomcl abbrev $abbrev.\n" if ($numberOfProteins==0);
+    if ($numberOfProteins==0) {
+	print $logFH  "Did not obtain any proteins for orthomcl abbrev $abbrev. Exiting.\n" ;
+	die;
+    }
     print $logFH "Obtained $numberOfProteins protein sequences.\n";
 
 }
