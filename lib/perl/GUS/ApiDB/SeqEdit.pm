@@ -20,7 +20,7 @@ sub init {
 	$coord = $coords[0];
     }
     else {
-	die "only transcript or translation seqedit types are supported";
+	die "only transcript or translation seqedit types are supported: found $sequenceType";
     }
 
     my $originalSequence = $self->getInitialSequence($seqEdit, $transcript, $sequenceType);
@@ -48,11 +48,11 @@ sub getInitialSequence {
     if($sequenceType eq 'translation') {
 	$sequence = $transcript->translate()->seq();
     }
-    elsif($sequenceType eq 'translation') {
+    elsif($sequenceType eq 'transcript') {
 	$sequence = $transcript->spliced_seq();
     }
     else {
-	die "only transcript or translation seqedit types are supported";
+	die "only transcript or translation seqedit types are supported: found $sequenceType";
     }
 
     my $len = $seqEdit->end() - $seqEdit->start() + 1;
