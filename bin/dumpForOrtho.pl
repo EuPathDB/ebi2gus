@@ -76,15 +76,17 @@ sub outputProteins {
 	    my $translation = $transcript->translation();
 	    if (! $translation) {
 		print $logFH "Cannot get translation of transcript '$transcriptId' of gene '$geneId'\n";
+		next;
+#		die;
+	    } else {
+	      my $seq = $translation->seq();
+	      if (! $seq) {
+		print $logFH "Cannot get sequence of translation '$translation' of transcript '$transcriptId' of gene '$gene'\n";
 		die;
+	      }
+	      print FASTA ">$abbrev|$transcriptId gene=$geneId product=$product\n$seq\n";
+	      $numberOfProteins++;
 	    }
-	    my $seq = $translation->seq();
-	    if (! $seq) {
-		print $logFH "Cannot get sequence of translation '$translation' of gene '$gene'\n";
-		die;
-	    }
-	    print FASTA ">$abbrev|$transcriptId gene=$geneId product=$product\n$seq\n";
-	    $numberOfProteins++;
 	}
     }
     close(FASTA);
