@@ -47,18 +47,42 @@ sub outputProteins {
     my $numberOfProteins=0;
     open(FASTA,">",$fastaFile) || die "Cannot open $fastaFile for writing.\n";
     foreach my $gene (@{$genes}) {
+	if (! $gene) {
+	    print $logFH "Cannot get gene '$gene'\n";
+	    die;
+	}
 	my $geneId = $gene->stable_id();
+	if (! $geneId) {
+	    print $logFH "Cannot get gene Id '$geneId' of gene '$gene'\n";
+	    die;
+	}
 	my $product = $gene->description();
 	$product = "unknown" if (! $product);
 	my $transcripts = $gene->get_all_Transcripts();
+	if (! $transcripts) {
+	    print $logFH "Cannot get transcripts '$transcripts' of gene '$geneId'\n";
+	    die;
+	}
 	foreach my $transcript (@{$transcripts}) {
+	    if (! $transcript) {
+		print $logFH "Cannot get transcript '$transcript' of gene '$gene'\n";
+		die;
+	    }
 	    my $transcriptId = $transcript->stable_id();
+	    if (! $transcriptId) {
+		print $logFH "Cannot get transcript Id '$transcriptId' of gene '$gene'\n";
+		die;
+	    }
 	    my $translation = $transcript->translation();
 	    if (! $translation) {
-		print $logFH "Cannot get translation of transcript '$transcriptId' of gene '$geneId'\n";
+		print $logFH "Cannot get translation of transcript '$transcript' of gene '$gene'\n";
 		die;
 	    }
 	    my $seq = $translation->seq();
+	    if (! $seq) {
+		print $logFH "Cannot get sequence of translation '$translation' of gene '$gene'\n";
+		die;
+	    }
 	    print FASTA ">$abbrev|$transcriptId gene=$geneId product=$product\n$seq\n";
 	    $numberOfProteins++;
 	}
