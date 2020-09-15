@@ -70,12 +70,12 @@ sub outputProteins {
 	    }
 	    my $transcriptId = $transcript->stable_id();
 	    if (! $transcriptId) {
-		print $logFH "Cannot get transcript Id '$transcriptId' of gene '$gene'\n";
+		print $logFH "Cannot get transcript Id '$transcriptId' of gene '$geneId'\n";
 		die;
 	    }
 	    my $translation = $transcript->translation();
 	    if (! $translation) {
-		print $logFH "Cannot get translation of transcript '$transcript' of gene '$gene'\n";
+		print $logFH "Cannot get translation of transcript '$transcriptId' of gene '$geneId'\n";
 		die;
 	    }
 	    my $seq = $translation->seq();
