@@ -54,6 +54,10 @@ sub outputProteins {
 	foreach my $transcript (@{$transcripts}) {
 	    my $transcriptId = $transcript->stable_id();
 	    my $translation = $transcript->translation();
+	    if (! $translation) {
+		print $logFH "Cannot get translation of transcript '$transcriptId' of gene '$geneId'\n";
+		die;
+	    }
 	    my $seq = $translation->seq();
 	    print FASTA ">$abbrev|$transcriptId gene=$geneId product=$product\n$seq\n";
 	    $numberOfProteins++;
@@ -61,7 +65,7 @@ sub outputProteins {
     }
     close(FASTA);
     if ($numberOfProteins==0) {
-	print $logFH  "Did not obtain any proteins for orthomcl abbrev $abbrev. Exiting.\n" ;
+	print $logFH  "Did not obtain any proteins for orthomcl abbrev '$abbrev'. Exiting.\n" ;
 	die;
     }
     print $logFH "Obtained $numberOfProteins protein sequences.\n";
