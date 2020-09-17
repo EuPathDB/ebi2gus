@@ -84,7 +84,7 @@ sub outputProteins {
 		print $logFH "Cannot get sequence of translation '$translation' of transcript '$transcriptId' of gene '$gene'\n";
 		die;
 	      }
-	      print FASTA ">$abbrev|$transcriptId gene=$geneId product=$product\n$seq\n";
+	      print FASTA ">$transcriptId gene=$geneId product=$product\n$seq\n";
 	      $numberOfProteins++;
 	    }
 	}
