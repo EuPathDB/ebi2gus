@@ -8,9 +8,17 @@ use Bio::PrimarySeq;
 
 
 sub init {
-    my ($self, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdc, $organismAbbrev) = @_;
+    my ($self, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdc, $organismAbbrev, $seqRegionMap) = @_;
 
-    my $sequenceSourceId = $slice->seq_region_name();
+    my $seqRegionName = $slice->seq_region_name();
+    my $secondaryIdentifier;
+    
+    # THIS MAPPING IS TEMPORARY
+    my $sequenceSourceId = $seqRegionName;
+    if($seqRegionMap->{$seqRegionName}) {
+	$sequenceSourceId = $seqRegionMap->{$seqRegionName};
+	$secondaryIdentifier = $seqRegionName;
+    }
     
     my $organism = $gusTaxon->getOrganism();
     my $chromosomeMap = $organism->getChromosomeMap();
@@ -37,7 +45,8 @@ sub init {
 	    t_count => $monomersHash->{T},
 	    g_count => $monomersHash->{G},
 	    other_count => $otherCount,
-	    source_id => $organismAbbrev . "_" . $sequenceSourceId,
+	    source_id => $sequenceSourceId,
+	    secondary_identifier => $secondaryIdentifier,
 	    name => $insdc,
 	    taxon_id => $gusTaxon->getPrimaryKey(),
 	    external_database_release_id => $gusExternalDatabaseRelease->getPrimaryKey(),

@@ -49,6 +49,7 @@ sub getTables {
 	     'GUS::DoTS::ExternalNASequence',
 	     'GUS::DoTS::NALocation',
 	     'GUS::DoTS::Transcript',
+	     'GUS::DoTS::RNAFeature',
 	     'GUS::DoTS::SplicedNASequence',
 	     'GUS::DoTS::ExonFeature',
 	     'GUS::DoTS::RNAFeatureExon',
@@ -61,6 +62,7 @@ sub getTables {
 	     'GUS::SRes::OntologyTerm',
 	     'GUS::SRes::EnzymeClass',	
 	     'GUS::DoTS::AASequenceEnzymeClass',
+             'GUS::ApiDB::SeqEdit',
              'GUS::ApiDB::AaSequenceAttribute',
              'GUS::ApiDB::GeneFeatureName',
 	     'GUS::DoTS::LowComplexityNAFeature',
@@ -169,6 +171,68 @@ sub setRegistry { $_[0]->{_registry} = $_[1] }
 #     $self->{_global_seq_region_mappings} = $rv;
 # }
 
+sub getPreviousIdentifiersFromPatchBuild { $_[0]->{_previous_identifiers_from_patch_build} }
+sub setPreviousIdentifiersFromPatchBuild {
+    my ($self, $sliceAdaptor) = @_;
+
+    my $dbc = $sliceAdaptor->dbc();
+    my $sth = $dbc->prepare("select old_stable_id,new_stable_id from stable_id_event where type = 'gene' and mapping_session_id in (select max(mapping_session_id) from mapping_session)");
+    $sth->execute();
+    
+    my $rv = {};
+    while(my ($oldStableId, $stableId) = $sth->fetchrow_array()) {
+	push @{$rv->{$stableId}}, $oldStableId if ($stableId && $oldStableId && $stableId ne $oldStableId);
+    }
+    $sth->finish();
+
+    $self->{_previous_identifiers_from_patch_build} = $rv;
+}
+
+sub getGlobalSeqRegionMappings { $_[0]->{_global_seq_region_mappings} }
+sub setGlobalSeqRegionMappings {
+    my ($self) = @_;
+
+    # THIS IS MECHANISM FOR MAPPING SEQ REGION NAMES IS TEMPORARY
+    my $genomeSummary = "Arthropod genome summary.csv";
+
+    my $organismAbbrev = $self->getOrganism()->getOrganismAbbrev();
+    my $seqRegionDirectory = "/usr/local/etc/seq_region_maps";
+
+    my $genomeSummaryFile = $seqRegionDirectory . "/" . $genomeSummary;
+    open(SUMMARY, $genomeSummaryFile) or die "Could not open file $genomeSummaryFile for reading: $!";
+
+    my $rv = {};
+    my $foundRow;
+    <SUMMARY>; 
+    while(<SUMMARY>) {
+	chomp;
+	my ($o, $hasMapping, $fn) = split(/,/, $_);
+
+	if($o eq $organismAbbrev) {
+	    $foundRow = 1;
+
+	    if($hasMapping) {
+		my $fileName = $seqRegionDirectory . "/" . $fn;
+		$fileName =~ s/\.xlsx/.csv/;
+		
+		open(FILE, $fileName) or die "Cannot open file $fileName for reading: $!";
+
+		<FILE>;
+		while(<FILE>) {
+		    chomp;
+		    my ($seqRegionName, $newSeqRegionName) = split(/,/, $_);
+		    $rv->{$seqRegionName} = $newSeqRegionName;
+		}
+		close FILE;
+	    }
+	}
+	last if $foundRow;
+    }
+    close SUMMARY;
+
+    $self->{_global_seq_region_mappings} = $rv;
+}
+
 sub getGUSTableWriters { $_[0]->{_gus_table_writers} }
 sub setGUSTableWriters { 
     my ($self, $gusTableDefinitionsParser, $outputDirectory, $skipValidation) = @_;
@@ -223,7 +287,7 @@ sub setGUSTableWriters {
 }
 
 sub new {
-    my ($class, $slices, $gusTableDefinitions, $outputDirectory, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec, $skipValidation) = @_;
+    my ($class, $sliceAdaptor, $slices, $gusTableDefinitions, $outputDirectory, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec, $skipValidation) = @_;
     
     my $self = bless {}, $class;
 
@@ -249,10 +313,14 @@ sub new {
 
     $self->setRepeatMaskedIO($repeatMaskedIO);
 
-#    $self->setGlobalSeqRegionMappings();
-    
+    $self->setGlobalSeqRegionMappings();
+
+    $self->setPreviousIdentifiersFromPatchBuild($sliceAdaptor);
+
     return $self;
 }
+
+
 
 sub importTableModules {
     my ($self) = @_;
@@ -381,14 +449,21 @@ sub parseSlice {
 
     my $insdcSynonym;
 
+
+
+
     foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
 	$insdcSynonym = $sliceSynonym->name() if($sliceSynonym->dbname() eq "INSDC");
     }
 
-#    my $seqRegionMap = $self->getGlobalSeqRegionMappings();
-    #    my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdcSynonym, $organismAbbrev, $seqRegionMap);
-        my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdcSynonym, $organismAbbrev);
+    my $seqRegionMap = $self->getGlobalSeqRegionMappings();
+    my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdcSynonym, $organismAbbrev, $seqRegionMap);
 
+    # TODO: are there other dna align features we want?
+    foreach my $dnaAlignFeature (@{$slice->get_all_DnaAlignFeatures("trnascan_align")}) {
+	$self->parseTRNAFeature($dnaAlignFeature, $gusExternalNASequence);
+    }
+    
     $self->dumpRepeatMaskedSeq($slice, $gusExternalNASequence);
 
     foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
@@ -413,7 +488,37 @@ sub parseSlice {
 	$self->parseRepeatFeature($repeatFeature, $gusExternalDatabaseRelease, $gusExternalNASequence);
     }
 
+
+
 }
+
+
+sub parseTRNAFeature {
+    my ($self, $tRNAFeature, $gusExternalNASequence) = @_;
+
+    my $gusTableWriters = $self->getGUSTableWriters();
+    
+    my $tRNASequenceOntologyId = $self->ontologyTermFromName('tRNA', $gusTableWriters);
+
+    my $analysis = $tRNAFeature->analysis();
+    my $externalDatabaseReleaseId = $self->getExternalDatabaseReleaseFromNameVersion($analysis->program(), $analysis->program_version());    
+
+    my $gusTRNAFeature = GUS::DoTS::RNAFeature->new($gusTableWriters, $tRNAFeature, $gusExternalNASequence, $externalDatabaseReleaseId, $tRNASequenceOntologyId);
+
+
+    my $gusTRNANALocation = GUS::DoTS::NALocation->new($gusTableWriters, $tRNAFeature, $gusTRNAFeature);
+
+    my $exonSequenceOntologyId = $self->ontologyTermFromName("exon", $gusTableWriters);
+    my $eCt = 1;
+    foreach my $trnaExon ( $tRNAFeature->ungapped_features() ) {
+	my $trnaExonSourceId = $gusTRNAFeature->getGUSRowAsHash()->{source_id} . ".$eCt";
+	my $gusTRNAExonFeature = GUS::DoTS::ExonFeature->new($gusTableWriters, $trnaExonSourceId, $gusTRNAFeature, $externalDatabaseReleaseId, $exonSequenceOntologyId);
+	my $gusTRNAExonNALocation = GUS::DoTS::NALocation->new($gusTableWriters, $trnaExon, $gusTRNAExonFeature);
+
+	$eCt++;
+    }
+}
+
 
 sub parseRepeatFeature {
     my ($self, $repeatFeature, $gusExternalDatabaseRelease, $gusExternalNASequence) = @_;
@@ -469,7 +574,7 @@ sub parseGene {
     my %exonMap;
     my $exonSequenceOntologyId = $self->ontologyTermFromName("exon", $gusTableWriters);
     foreach my $exon ( @{ $gene->get_all_Exons() } ) {
-	my $gusExonFeature = GUS::DoTS::ExonFeature->new($gusTableWriters, $exon, $gusGeneFeature, $gusExternalDatabaseRelease, $exonSequenceOntologyId);
+	my $gusExonFeature = GUS::DoTS::ExonFeature->new($gusTableWriters, $exon->stable_id(), $gusGeneFeature, $gusExternalDatabaseRelease->getPrimaryKey(), $exonSequenceOntologyId);
 	my $gusExonNALocation = GUS::DoTS::NALocation->new($gusTableWriters, $exon, $gusExonFeature);
 
 	my $exonKey = $exon->start()."-".$exon->end()."-".$exon->strand()."-".$exon->phase()."-".$exon->end_phase();
@@ -496,6 +601,16 @@ sub parseGene {
 	    my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $synOrPrimary, undef, undef);
 	    GUS::DoTS::DbRefNAFeature->new($gusTableWriters, $dbRefId, $gusGeneFeature->getPrimaryKey());
 	}
+    }
+
+    my $geneStableId = $gene->stable_id();
+
+    my $organismAbbrev = $self->getOrganism()->getOrganismAbbrev();	
+    my $databaseName = "${organismAbbrev}_PreviousGeneIDs_aliases";
+    my $databaseVersion = $self->getOrganism()->getGenomeDatabaseVersion();
+    foreach my $previousStableId (@{$self->getPreviousIdentifiersFromPatchBuild()->{$geneStableId}}) {
+	my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $previousStableId, undef, undef, "previous id");
+	GUS::DoTS::DbRefNAFeature->new($gusTableWriters, $dbRefId, $gusGeneFeature->getPrimaryKey());
     }
 }
 
@@ -574,7 +689,7 @@ sub parseTranscript {
     foreach my $seqEdit (@{$transcript->get_all_SeqEdits()}) {
 	my $code = $seqEdit->code();
 	my $seqEditOntologyId = $self->ontologyTermFromName($code, $gusTableWriters);	
-	GUS::ApiDB::SeqEdit->new($gusTableWriters, $seqEdit, 'transcript', $seqEditOntologyId, $transcript->stable_id());
+	GUS::ApiDB::SeqEdit->new($gusTableWriters, $seqEdit, 'transcript', $seqEditOntologyId, $transcript, $transcript->stable_id());
     }
 }
 
@@ -654,7 +769,7 @@ sub parseTranslation {
     foreach my $seqEdit (@{$translation->get_all_SeqEdits()}) {
 	my $code = $seqEdit->code();
 	my $seqEditOntologyId = $self->ontologyTermFromName($code, $gusTableWriters);	
-	GUS::ApiDB::SeqEdit->new($gusTableWriters, $seqEdit, 'translation', $seqEditOntologyId, $transcript->stable_id());
+	GUS::ApiDB::SeqEdit->new($gusTableWriters, $seqEdit, 'translation', $seqEditOntologyId, $transcript, $translation->stable_id());
     }
     
     return($gusTranslatedAAFeature, $gusTranslatedAASequence);
@@ -762,11 +877,11 @@ sub parseInterpro {
 
 
 sub getDbRefAndExternalDatabaseReleaseIds {
-    my ($self, $databaseName, $databaseVersion, $primaryId, $secondaryId, $remark) = @_;
+    my ($self, $databaseName, $databaseVersion, $primaryId, $secondaryId, $remark, $idType) = @_;
 
     my $gusTableWriters = $self->getGUSTableWriters();
     
-    my $externalDatabaseReleaseId = $self->getExternalDatabaseRelaseFromNameVersion($databaseName, $databaseVersion);    
+    my $externalDatabaseReleaseId = $self->getExternalDatabaseReleaseFromNameVersion($databaseName, $databaseVersion);    
 
     my $dbRefNaturalKey = "$primaryId|$secondaryId|$externalDatabaseReleaseId";
 
@@ -781,8 +896,8 @@ sub getDbRefAndExternalDatabaseReleaseIds {
 }
 
 
-sub getExternalDatabaseRelaseFromNameVersion {
-    my ($self, $name, $version) = @_;
+sub getExternalDatabaseReleaseFromNameVersion {
+    my ($self, $name, $version, $idType) = @_;
 
     my $gusTableWriters = $self->getGUSTableWriters();
     
@@ -796,7 +911,7 @@ sub getExternalDatabaseRelaseFromNameVersion {
     my $externalDatabaseReleaseId = $seenExternalDatabaseReleases{$extDbRlsSpec};
 
     unless($externalDatabaseReleaseId) {
-	$externalDatabaseReleaseId = GUS::SRes::ExternalDatabaseRelease->new($gusTableWriters, $version, $externalDatabaseId)->getPrimaryKey();
+	$externalDatabaseReleaseId = GUS::SRes::ExternalDatabaseRelease->new($gusTableWriters, $version, $externalDatabaseId, $idType)->getPrimaryKey();
     }
 
     return $externalDatabaseReleaseId;
@@ -816,9 +931,9 @@ sub parse {
     my $goEvidSpec = $self->getGOEvidSpec();
     my $soSpec = $self->getSOSpec();
 
-    my $goExtDbRlsId = $self->getExternalDatabaseRelaseFromSpec($goSpec);
-    my $goEvidExtDbRlsId = $self->getExternalDatabaseRelaseFromSpec($goEvidSpec);
-    my $soExtDbRlsId = $self->getExternalDatabaseRelaseFromSpec($soSpec);
+    my $goExtDbRlsId = $self->getExternalDatabaseReleaseFromSpec($goSpec);
+    my $goEvidExtDbRlsId = $self->getExternalDatabaseReleaseFromSpec($goEvidSpec);
+    my $soExtDbRlsId = $self->getExternalDatabaseReleaseFromSpec($soSpec);
 
     $self->setGOExtDbRlsId($goExtDbRlsId);
     $self->setGOEvidExtDbRlsId($goEvidExtDbRlsId);
@@ -836,10 +951,10 @@ sub parse {
     }
 }
 
-sub getExternalDatabaseRelaseFromSpec {
+sub getExternalDatabaseReleaseFromSpec {
     my ($self, $spec) = @_;
     my ($name, $version) = split(/\|/, $spec);
-    return $self->getExternalDatabaseRelaseFromNameVersion($name, $version);
+    return $self->getExternalDatabaseReleaseFromNameVersion($name, $version);
 }
 
 

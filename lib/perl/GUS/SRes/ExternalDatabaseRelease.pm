@@ -21,13 +21,14 @@ sub new {
 
 
 sub init {
-    my ($self, $version, $externalDatabaseId) = @_;
+    my ($self, $version, $externalDatabaseId, $idType) = @_;
 
     my $naturalKey = "$externalDatabaseId|$version";
     $self->setNaturalKey($naturalKey);
     
     return {external_database_id => $externalDatabaseId,
-	    version => $version
+	    version => $version,
+	    id_type => $idType,
     };
 }
 
