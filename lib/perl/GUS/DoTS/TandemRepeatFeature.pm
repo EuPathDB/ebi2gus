@@ -10,7 +10,7 @@ sub init {
 	    subclass_view => 'TandemRepeatFeature',
 	    name => $repeat->analysis()->logic_name(),
 	    external_database_release_id => $gusExternalDatabaseRelease->getPrimaryKey(),
-	    source_id => $gusExternalNASequence->{source_id},
+	    source_id => $gusExternalNASequence->getGUSRowAsHash()->{source_id},
     };
 }
 
