@@ -23,6 +23,8 @@ my %sequenceOntologyMap = (chromosome => 'SO:0000340',
 			   '_selenocysteine' => 'SO:0001455',
 			   tRNA => 'SO:0000253',
                            'initial_met' => 'SO:0001059',
+                           'apicoplast_chromosome' => 'SO:0001259',
+                           'mitochondrial_chromosome' => 'SO:0000819',
     );
 
 
