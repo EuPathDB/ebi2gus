@@ -366,7 +366,6 @@ sub ontologyTermForSlice {
         $name = $coordSystemTags->[0]->value();
      }
     }
-print STDERR "$name\n";
     return $self->ontologyTermFromName($name, $gusTableWriters);
 }
 
