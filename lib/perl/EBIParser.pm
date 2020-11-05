@@ -314,9 +314,16 @@ sub ontologyTermForSlice {
     # fallback to coord_system_name
     my $name = $slice->coord_system_name();
 
-    my $coordSystemTags = $slice->get_all_Attributes("coord_system_tag");
-    if($coordSystemTags && scalar @$coordSystemTags == 1) {
-	$name = $coordSystemTags->[0]->value();	
+    # location contains an SO term if the sequence is not nuclear e.g. "apicoplast_chromosome", "mitochondrial_chromosome"
+    my $location = $slice->get_all_Attributes('sequence_location');
+    if ($location && scalar @$location == 1) {
+      $name = $location->[0]->value();
+    }else{
+     # location would be undef for nuclear sequences. 
+     my $coordSystemTags = $slice->get_all_Attributes("coord_system_tag");
+     if($coordSystemTags && scalar @$coordSystemTags == 1) {
+        $name = $coordSystemTags->[0]->value();
+     }
     }
 
     return $self->ontologyTermFromName($name, $gusTableWriters);
