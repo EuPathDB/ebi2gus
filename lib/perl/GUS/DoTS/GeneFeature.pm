@@ -6,7 +6,7 @@ use strict;
 sub init {
     my ($self, $gene, $gusExternalNASequence, $gusExternalDatabaseRelease, $geneSequenceOntologyId) = @_;
 
-    my $isPseudo = $gene->get_Biotype()->name() eq 'pseudogene' ? 1 : 0;
+    my $isPseudo = $gene->get_Biotype()->name() =~ /pseudogene/ ? 1 : 0;
     
     return {na_sequence_id => $gusExternalNASequence->getPrimaryKey(),
 	    subclass_view => 'GeneFeature',
