@@ -8,7 +8,7 @@ sub init {
               
     my $naSequenceId = $gusSplicedNASequence->getPrimaryKey();
 
-    my $isPseudo = $transcript->get_Biotype()->name() eq 'pseudogene' ? 1 : 0;
+    my $isPseudo = $transcript->get_Biotype()->name() =~ /pseudogen/ ? 1 : 0;
     
     return {subclass_view => "Transcript",
 	    na_sequence_id => $gusSplicedNASequence->getPrimaryKey(),
