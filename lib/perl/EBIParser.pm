@@ -84,7 +84,8 @@ sub getTables {
 	     'GUS::DoTS::GOAssociation',
 	     'GUS::DoTS::GOAssociationInstance',
 	     'GUS::DoTS::GOAssociationInstanceLOE',
-	     'GUS::DoTS::GOAssocInstEvidCode',
+             'GUS::DoTS::GOAssocInstEvidCode',
+	     'GUS::DoTS::Miscellaneous',
 #	     'GUS::DoTS::NAComment',
 	    ]);
 }
@@ -454,9 +455,6 @@ sub parseSlice {
 
     my $insdcSynonym;
 
-
-
-
     foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
 	$insdcSynonym = $sliceSynonym->name() if($sliceSynonym->dbname() eq "INSDC");
     }
@@ -493,8 +491,27 @@ sub parseSlice {
 	$self->parseRepeatFeature($repeatFeature, $gusExternalDatabaseRelease, $gusExternalNASequence);
     }
 
+    my $registry = $self->getRegistry();
+    my $karyAdaptor = $registry->get_adaptor('default', 'Core', 'KaryotypeBand' );
+    
+    foreach my $band ( @{ $karyAdaptor->fetch_all_by_Slice($slice) } ) {
+	if($band->stain() eq 'ACEN') {
+	    $self->parseCentromere($band, $gusExternalNASequence, $gusExternalDatabaseRelease);
+	}
+    }
+}
 
+sub parseCentromere {
+    my ($self, $band, $gusExternalNASequence, $gusExternalDatabaseRelease) = @_;
 
+    my $gusTableWriters = $self->getGUSTableWriters();
+
+    my $centromereSequenceOntologyId = $self->ontologyTermFromName('centromere', $gusTableWriters);
+    
+    my $name = $band->name();
+
+    my $feature = GUS::DoTS::Miscellaneous->new($gusTableWriters, $name, $gusExternalNASequence, $gusExternalDatabaseRelease, $centromereSequenceOntologyId);
+    my $gusCentromereLocation = GUS::DoTS::NALocation->new($gusTableWriters, $band, $feature);
 }
 
 

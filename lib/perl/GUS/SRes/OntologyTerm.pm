@@ -7,6 +7,9 @@ our @EXPORT = qw(%seenOntologyTerms);
 
 our %seenOntologyTerms;
 
+
+
+
 my %sequenceOntologyMap = (chromosome => 'SO:0000340',
 			   chunk => 'SO:0000149',
 			   contig => 'SO:0000149',
@@ -22,10 +25,11 @@ my %sequenceOntologyMap = (chromosome => 'SO:0000340',
 			   '_transl_end' => 'SO:0000327',
 			   '_selenocysteine' => 'SO:0001455',
 			   tRNA => 'SO:0000253',
-               'initial_met' => 'SO:0001059',
-               'apicoplast_chromosome' => 'SO:0001259',
-               'mitochondrial_chromosome' => 'SO:0000819',
-               'nuclear_chromosome' => 'SO:0000340',
+			   'initial_met' => 'SO:0001059',
+			   'apicoplast_chromosome' => 'SO:0001259',
+			   'mitochondrial_chromosome' => 'SO:0000819',
+			   'nuclear_chromosome' => 'SO:0000340',
+			   centromere => 'SO:0000577',
     );
 
 
