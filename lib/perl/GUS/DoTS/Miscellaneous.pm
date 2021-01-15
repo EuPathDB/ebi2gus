@@ -11,7 +11,7 @@ sub init {
     
     return {na_sequence_id => $gusExternalNASequence->getPrimaryKey(),
 	    subclass_view => 'Miscellaneous',
-	    name => $name,
+	    name => 'centromere',
 	    source_id => $name,
 	    sequence_ontology_id => $sequenceOntologyId,
 	    external_database_release_id => $gusExternalDatabaseRelease->getPrimaryKey(),
