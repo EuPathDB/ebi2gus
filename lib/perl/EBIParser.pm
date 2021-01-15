@@ -510,7 +510,7 @@ sub parseCentromere {
     
     my $name = $band->name();
 
-    my $feature = GUS::DoTS::Miscellaneous->new($gusTableWriters, $name, $gusExternalNASequence, $gusExternalDatabaseRelease, $centromereSequenceOntologyId);
+    my $feature = GUS::DoTS::Miscellaneous->new($gusTableWriters, $name, $gusExternalNASequence, $gusExternalDatabaseRelease, $centromereSequenceOntologyId, 'centromere');
     my $gusCentromereLocation = GUS::DoTS::NALocation->new($gusTableWriters, $band, $feature);
 }
 
