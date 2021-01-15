@@ -8,10 +8,9 @@ sub init {
     my ($self, $name, $gusExternalNASequence, $gusExternalDatabaseRelease, $sequenceOntologyId) = @_;
 
     print "IN INIT\n";
-    
     return {na_sequence_id => $gusExternalNASequence->getPrimaryKey(),
 	    subclass_view => 'Miscellaneous',
-	    name => 'centromere',
+	    name => $sequenceOntologyId->getName(),
 	    source_id => $name,
 	    sequence_ontology_id => $sequenceOntologyId,
 	    external_database_release_id => $gusExternalDatabaseRelease->getPrimaryKey(),
