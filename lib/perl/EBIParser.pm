@@ -484,7 +484,13 @@ sub parseSlice {
     my %translationXrefsLogics;    
 
     foreach my $gene (@{$slice->get_all_Genes()}) {
-	$self->parseGene($gene, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence);
+	if($gene->get_Biotype()->name() eq 'transposable_element') {
+	    my $te = GUS::DoTS::TransposableElement->new($gusTableWriters, $gene, $gusExternalNASequence, $gusExternalDatabaseRelease);
+	    GUS::DoTS::NALocation->new($gusTableWriters, $gene, $te);
+	}
+	else {
+	    $self->parseGene($gene, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence);
+	}
     }
 
     foreach my $repeatFeature (@{$slice->get_all_RepeatFeatures()} ) {
