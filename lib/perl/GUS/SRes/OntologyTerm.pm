@@ -30,6 +30,7 @@ my %sequenceOntologyMap = (chromosome => 'SO:0000340',
 			   'mitochondrial_chromosome' => 'SO:0000819',
 			   'nuclear_chromosome' => 'SO:0000340',
 			   centromere => 'SO:0000577',
+               'maxicircle' => 'SO:0000742',
     );
 
 
