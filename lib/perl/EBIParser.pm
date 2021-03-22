@@ -127,50 +127,6 @@ sub setProjectRelease { $_[0]->{_project_release} = $_[1] }
 sub getRegistry { $_[0]->{_registry} }
 sub setRegistry { $_[0]->{_registry} = $_[1] }
 
-# sub getGlobalSeqRegionMappings { $_[0]->{_global_seq_region_mappings} }
-# sub setGlobalSeqRegionMappings {
-#     my ($self) = @_;
-
-#     # THIS IS MECHANISM FOR MAPPING SEQ REGION NAMES IS TEMPORARY
-#     my $genomeSummary = "Arthropod genome summary.csv";
-
-#     my $organismAbbrev = $self->getOrganism()->getOrganismAbbrev();
-#     my $seqRegionDirectory = "/usr/local/etc/seq_region_maps";
-
-#     my $genomeSummaryFile = $seqRegionDirectory . "/" . $genomeSummary;
-#     open(SUMMARY, $genomeSummaryFile) or die "Could not open file $genomeSummaryFile for reading: $!";
-
-#     my $rv = {};
-#     my $foundRow;
-#     <SUMMARY>; 
-#     while(<SUMMARY>) {
-# 	chomp;
-# 	my ($o, $hasMapping, $fn) = split(/,/, $_);
-
-# 	if($o eq $organismAbbrev) {
-# 	    $foundRow = 1;
-
-# 	    if($hasMapping) {
-# 		my $fileName = $seqRegionDirectory . "/" . $fn;
-# 		$fileName =~ s/\.xlsx/.csv/;
-		
-# 		open(FILE, $fileName) or die "Cannot open file $fileName for reading: $!";
-
-# 		<FILE>;
-# 		while(<FILE>) {
-# 		    chomp;
-# 		    my ($seqRegionName, $newSeqRegionName) = split(/,/, $_);
-# 		    $rv->{$seqRegionName} = $newSeqRegionName;
-# 		}
-# 		close FILE;
-# 	    }
-# 	}
-# 	last if $foundRow;
-#     }
-#     close SUMMARY;
-
-#     $self->{_global_seq_region_mappings} = $rv;
-# }
 
 sub getPreviousIdentifiersFromPatchBuild { $_[0]->{_previous_identifiers_from_patch_build} }
 sub setPreviousIdentifiersFromPatchBuild {
@@ -189,50 +145,6 @@ sub setPreviousIdentifiersFromPatchBuild {
     $self->{_previous_identifiers_from_patch_build} = $rv;
 }
 
-sub getGlobalSeqRegionMappings { $_[0]->{_global_seq_region_mappings} }
-sub setGlobalSeqRegionMappings {
-    my ($self) = @_;
-
-    # THIS IS MECHANISM FOR MAPPING SEQ REGION NAMES IS TEMPORARY
-    my $genomeSummary = "Arthropod genome summary.csv";
-
-    my $organismAbbrev = $self->getOrganism()->getOrganismAbbrev();
-    my $seqRegionDirectory = "/usr/local/etc/seq_region_maps";
-
-    my $genomeSummaryFile = $seqRegionDirectory . "/" . $genomeSummary;
-    open(SUMMARY, $genomeSummaryFile) or die "Could not open file $genomeSummaryFile for reading: $!";
-
-    my $rv = {};
-    my $foundRow;
-    <SUMMARY>; 
-    while(<SUMMARY>) {
-	chomp;
-	my ($o, $hasMapping, $fn) = split(/,/, $_);
-
-	if($o eq $organismAbbrev) {
-	    $foundRow = 1;
-
-	    if($hasMapping) {
-		my $fileName = $seqRegionDirectory . "/" . $fn;
-		$fileName =~ s/\.xlsx/.csv/;
-		
-		open(FILE, $fileName) or die "Cannot open file $fileName for reading: $!";
-
-		<FILE>;
-		while(<FILE>) {
-		    chomp;
-		    my ($seqRegionName, $newSeqRegionName) = split(/,/, $_);
-		    $rv->{$seqRegionName} = $newSeqRegionName;
-		}
-		close FILE;
-	    }
-	}
-	last if $foundRow;
-    }
-    close SUMMARY;
-
-    $self->{_global_seq_region_mappings} = $rv;
-}
 
 sub getGUSTableWriters { $_[0]->{_gus_table_writers} }
 sub setGUSTableWriters { 
@@ -267,8 +179,12 @@ sub setGUSTableWriters {
 	}
 	else {
 #	    my $headerFields = $gusTableDefinition->getFields();
-
+	    # if($realTableName eq 'DOTS.NASEQUENCEIMP') {
+	    # 	$outputFile = OutputFile::NASequenceImp->new($realTableName, $outputDirectory);
+	    # }
+	    # else {
 	    $outputFile = OutputFile->new($realTableName, $outputDirectory);
+	    #}
 	    $outputFiles{$realTableName} = $outputFile;
 	}
 	
@@ -309,12 +225,12 @@ sub new {
     $self->setSOSpec($soSpec);
 
     my $repeatMaskedFile = "$outputDirectory/blocked.seq";
-    my $repeatMaskedIO = Bio::SeqIO->new(-file   => ">$repeatMaskedFile",
-					 -format => 'fasta' );
+    my $repeatMaskedIO;
+    open($repeatMaskedIO, ">$repeatMaskedFile") or die "Cannot open repeat mask file for writing: $!";
+    #    my $repeatMaskedIO = Bio::SeqIO->new(-file   => ">$repeatMaskedFile",
+#					 -format => 'fasta' );
 
     $self->setRepeatMaskedIO($repeatMaskedIO);
-
-    $self->setGlobalSeqRegionMappings();
 
     $self->setPreviousIdentifiersFromPatchBuild($sliceAdaptor);
 
@@ -431,16 +347,19 @@ sub dumpRepeatMaskedSeq {
     my $io = $self->getRepeatMaskedIO();
 
     my $sequenceSourceId = $externalNaSeq->getGUSRowAsHash()->{source_id};
-
-    my $repeatMaskedSlice = $slice->get_repeatmasked_seq();
-    $repeatMaskedSlice->soft_mask(1);
-
-    my $repeatMaskedSeq = $repeatMaskedSlice->seq();
-
-    my $seq = Bio::Seq->new(-display_id => $sequenceSourceId,
-			    -seq => $repeatMaskedSeq);
     
-    $io->write_seq($seq);
+    print $io ">$sequenceSourceId\n";
+    
+    my $i = $slice->sub_Slice_Iterator(60000); 
+    while($i->has_next()) {
+	my $chunk = $i->next();
+	my $repeatMaskedSlice = $chunk->get_repeatmasked_seq();
+	$repeatMaskedSlice->soft_mask(1);
+	my $repeatMaskedSeq = $repeatMaskedSlice->seq();
+	foreach(unpack("(a60)*", $repeatMaskedSeq)) {
+	    print $io $_ . "\n";
+	}
+    }
 }
 
 
@@ -456,11 +375,12 @@ sub parseSlice {
     my $insdcSynonym;
 
     foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
-	$insdcSynonym = $sliceSynonym->name() if($sliceSynonym->dbname() eq "INSDC");
+     	$insdcSynonym = $sliceSynonym->name() if($sliceSynonym->dbname() eq "INSDC");
     }
 
-    my $seqRegionMap = $self->getGlobalSeqRegionMappings();
-    my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdcSynonym, $organismAbbrev, $seqRegionMap);
+    my $registry = $self->getRegistry();
+    
+    my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdcSynonym, $organismAbbrev, $registry);
 
     # TODO: are there other dna align features we want?
     foreach my $dnaAlignFeature (@{$slice->get_all_DnaAlignFeatures("trnascan_align")}) {
