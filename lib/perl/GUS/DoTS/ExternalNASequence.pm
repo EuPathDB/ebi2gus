@@ -6,17 +6,23 @@ use strict;
 use Bio::Tools::SeqStats;
 use Bio::PrimarySeq;
 
+use Data::Dumper;
+
 
 sub init {
-    my ($self, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdc, $organismAbbrev, $seqRegionMap) = @_;
+    my ($self, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdc, $organismAbbrev, $registry) = @_;
 
     my $seqRegionName = $slice->seq_region_name();
     my $secondaryIdentifier;
-    
-    # THIS MAPPING IS TEMPORARY
     my $sequenceSourceId = $seqRegionName;
-    if($seqRegionMap->{$seqRegionName}) {
-	$sequenceSourceId = $seqRegionMap->{$seqRegionName};
+
+    my $dbAdaptor = $registry->get_DBAdaptor('default', 'Core');
+    my $attribute_adaptor = $dbAdaptor->get_AttributeAdaptor();
+    my $attributes = $attribute_adaptor->fetch_all_by_Slice($slice);
+    my ($brcSeqRegionAttribute)=  grep { $_->{name} eq 'BRC4_seq_region_name' } @$attributes;
+
+    if($brcSeqRegionAttribute) {
+	$sequenceSourceId = $brcSeqRegionAttribute->{value};
 	$secondaryIdentifier = $seqRegionName;
     }
     
@@ -24,8 +30,10 @@ sub init {
     my $chromosomeMap = $organism->getChromosomeMap();
     
     my $seq = $slice->seq();
+
     my $primarySeq = Bio::PrimarySeq->new(-seq=>$seq,
 					  -alphabet=>'dna');
+
 
     my $seqStats  =  Bio::Tools::SeqStats->new(-seq=>$primarySeq);
     my $monomersHash = $seqStats->count_monomers();
