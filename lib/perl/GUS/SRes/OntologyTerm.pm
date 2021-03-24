@@ -31,7 +31,8 @@ my %sequenceOntologyMap = (chromosome => 'SO:0000340',
 			   'nuclear_chromosome' => 'SO:0000340',
 			   centromere => 'SO:0000577',
                            'maxicircle' => 'SO:0000742',
-                           'TEC' => 'NCIT_C30083',
+                           'TEC' => 'NCIT_C24850',
+                           'bidirectional_promoter_lncRNA' => 'SO:0000655',
     );
 
 
