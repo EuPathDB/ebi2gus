@@ -619,8 +619,12 @@ sub parseTranscript {
 
     foreach my $xref(@{$transcript->get_all_object_xrefs()}) {
 	my $databaseName = $xref->dbname();
-	if($databaseName eq "GO") {
-	    $self->parseGOAssociation($gusTranslatedAASequence, $xref)
+	if($databaseName eq "GO" && $translation) {
+	    $self->parseGOAssociation($gusTranslatedAASequence, $xref, "TranslatedAASequence")
+	}
+	elsif($databaseName eq "GO") {
+	    # Some host core dbs have GO on nc transcripts;  should not be common
+	    $self->parseGOAssociation($gusTranscript, $xref, "Transcript")
 	}
 	else {
         next unless (defined $xref->analysis()); 
@@ -642,27 +646,25 @@ sub parseTranscript {
 }
 
 sub parseGOAssociation {
-    my ($self, $gusTranslatedAASequence, $xref) = @_;
+    my ($self, $gusObj, $xref, $tableName) = @_;
 
-    my $proteinDatabaseName = "DoTS";
-    my $proteinTableName = "TranslatedAASequence";
+    my $databaseName = "DoTS";
     
     my $gusTableWriters = $self->getGUSTableWriters();
 
-    my $proteinDatabaseId = $seenDatabases{$proteinDatabaseName} ? $seenDatabases{$proteinDatabaseName} : GUS::Core::DatabaseInfo->new($gusTableWriters, $proteinDatabaseName)->getPrimaryKey();
+    my $databaseId = $seenDatabases{$databaseName} ? $seenDatabases{$databaseName} : GUS::Core::DatabaseInfo->new($gusTableWriters, $databaseName)->getPrimaryKey();
 
-    my $proteinTableKey = "$proteinTableName|$proteinDatabaseId";
-    my $proteinTableId = $seenTables{$proteinTableKey} ? $seenTables{$proteinTableKey} : GUS::Core::TableInfo->new($gusTableWriters, $proteinTableName, $proteinDatabaseId)->getPrimaryKey();
+    my $tableKey = "$tableName|$databaseId";
+    my $tableId = $seenTables{$tableKey} ? $seenTables{$tableKey} : GUS::Core::TableInfo->new($gusTableWriters, $tableName, $databaseId)->getPrimaryKey();
     
     my $goId = $xref->display_id();
     my $gusGOTermId = $self->ontologyTermFromGOTerm($goId, $gusTableWriters);
 
-    my $goAssociationKey = $proteinTableId . "|" . $gusTranslatedAASequence->getPrimaryKey() . "|" . $gusGOTermId;
+    my $goAssociationKey = $tableId . "|" . $gusObj->getPrimaryKey() . "|" . $gusGOTermId;
     my $goAssociationId = $seenGOAssociations{$goAssociationKey};
     unless($goAssociationId) {
-	$goAssociationId = GUS::DoTS::GOAssociation->new($gusTableWriters, $proteinTableId, $gusTranslatedAASequence->getPrimaryKey(), $gusGOTermId)->getPrimaryKey();
+	$goAssociationId = GUS::DoTS::GOAssociation->new($gusTableWriters, $tableId, $gusObj->getPrimaryKey(), $gusGOTermId)->getPrimaryKey();
     }
-
 
     my $loeName = ref($xref) eq 'Bio::EnsEMBL::OntologyXref' ? $xref->analysis()->logic_name() : $xref->db();
     my $goEvidenceLoeId = $seenGOEvidences{$loeName};
