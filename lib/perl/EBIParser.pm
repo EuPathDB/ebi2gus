@@ -38,6 +38,7 @@ my %SKIP_LOGICS = ('mobidblite' => 1,
 		   'ncoils' => 1,
 		   'blastprodom' => 1,
 		   'gene3d' => 1,
+		   'sifts_import' => 1,
     );
 
 
