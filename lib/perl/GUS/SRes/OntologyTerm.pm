@@ -34,6 +34,7 @@ my %sequenceOntologyMap = (chromosome => 'SO:0000340',
                            'TEC' => 'NCIT_C24850',
                            'bidirectional_promoter_lncRNA' => 'SO:0000655',
                            '_stop_codon_rt' => 'SO:1001267',
+                           '3prime_overlapping_ncRNA' => 'SO:0000655',
     );
 
 
