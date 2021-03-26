@@ -93,9 +93,18 @@ my $count = $registry->load_all($REGISTRY_CONF_FILE, 1);
 
 my $sliceAdaptor = $registry->get_adaptor('default', 'Core', 'Slice' );
 
-my $topLevelSlices = $sliceAdaptor->fetch_all('toplevel');
+my (@slices, %seenSeqRegions);
+foreach my $topLevelSlice (@{$sliceAdaptor->fetch_all('toplevel')}) {
+    my $seqRegionName = $topLevelSlice->seq_region_name();
+    
+    unless($seenSeqRegions{$seqRegionName}) {
+	push @slices, $sliceAdaptor->fetch_by_region('toplevel', $seqRegionName);
+    }
+    $seenSeqRegions{$seqRegionName}++;
+}
 
-my $ebiParser = EBIParser->new($sliceAdaptor, $topLevelSlices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec, $skipValidation);
+
+my $ebiParser = EBIParser->new($sliceAdaptor, \@slices, $gusTableDefinitions, $OUTPUT_DIRECTORY, $organism, $registry, $projectName, $projectRelease, $goSpec, $soSpec, $goEvidSpec, $skipValidation);
 $ebiParser->parse();
 # exit;
 
