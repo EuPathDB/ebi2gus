@@ -366,7 +366,7 @@ sub dumpRepeatMaskedSeq {
 
 sub parseSlice {
     my ($self, $slice, $gusExternalDatabaseRelease, $gusTaxon) = @_;
-
+    
     my $gusTableWriters = $self->getGUSTableWriters();
 
     my $gusSequenceOntologyId = $self->ontologyTermForSlice($slice, $gusTableWriters);
@@ -375,35 +375,58 @@ sub parseSlice {
 
     my $insdcSynonym;
 
-    foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
-     	$insdcSynonym = $sliceSynonym->name() if($sliceSynonym->dbname() eq "INSDC");
-    }
+   foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
+    	$insdcSynonym = $sliceSynonym->name() if($sliceSynonym->dbname() eq "INSDC");
+   }
 
     my $registry = $self->getRegistry();
     
     my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdcSynonym, $organismAbbrev, $registry);
+
+    $self->dumpRepeatMaskedSeq($slice, $gusExternalNASequence);
+
+    foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
+    	my $databaseName = $sliceSynonym->dbname();
+	next unless($databaseName); # Rare case where some sequence aliases don't have this but is required.  impossible to determine what they are
+
+	my $databaseVersion = 1;
+    	my $primaryId = $sliceSynonym->name();
+	
+    	my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $primaryId, undef, undef);
+
+    	GUS::DoTS::DbRefNASequence->new($gusTableWriters, $dbRefId, $gusExternalNASequence->getPrimaryKey());
+    }
+
+    my $karyAdaptor = $registry->get_adaptor('default', 'Core', 'KaryotypeBand' );
+    
+    foreach my $band ( @{ $karyAdaptor->fetch_all_by_Slice($slice) } ) {
+    	if($band->stain() eq 'ACEN') {
+    	    $self->parseCentromere($band, $gusExternalNASequence, $gusExternalDatabaseRelease);
+    	}
+    }
+
+    my @uniqueSlices = grep { $_->seq_region_name() eq $slice->seq_region_name() } @{$slice->adaptor()->fetch_all('toplevel')}; 
+    foreach my $uSlice (@uniqueSlices) {
+	$self->parseSliceFeatures($uSlice, $gusExternalNASequence, $gusExternalDatabaseRelease, $gusTaxon);
+    }
+
+}
+
+sub parseSliceFeatures {
+    my ($self, $slice, $gusExternalNASequence, $gusExternalDatabaseRelease, $gusTaxon) = @_;
+
+    my $gusTableWriters = $self->getGUSTableWriters();
+    
+    my %transcriptXrefsLogics;
+    my %geneXrefsLogics;
+    my %translationXrefsLogics;    
+
 
     # TODO: are there other dna align features we want?
     foreach my $dnaAlignFeature (@{$slice->get_all_DnaAlignFeatures("trnascan_align")}) {
 	$self->parseTRNAFeature($dnaAlignFeature, $gusExternalNASequence);
     }
     
-    $self->dumpRepeatMaskedSeq($slice, $gusExternalNASequence);
-
-    foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
-	my $databaseName = $sliceSynonym->dbname();
-	my $databaseVersion = 1;
-	my $primaryId = $sliceSynonym->name();
-
-	my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $primaryId, undef, undef);
-
-	GUS::DoTS::DbRefNASequence->new($gusTableWriters, $dbRefId, $gusExternalNASequence->getPrimaryKey());
-    }
-
-    my %transcriptXrefsLogics;
-    my %geneXrefsLogics;
-    my %translationXrefsLogics;    
-
     foreach my $gene (@{$slice->get_all_Genes()}) {
 	if($gene->get_Biotype()->name() eq 'transposable_element') {
 	    my $te = GUS::DoTS::TransposableElement->new($gusTableWriters, $gene, $gusExternalNASequence, $gusExternalDatabaseRelease);
@@ -418,15 +441,8 @@ sub parseSlice {
 	$self->parseRepeatFeature($repeatFeature, $gusExternalDatabaseRelease, $gusExternalNASequence);
     }
 
-    my $registry = $self->getRegistry();
-    my $karyAdaptor = $registry->get_adaptor('default', 'Core', 'KaryotypeBand' );
-    
-    foreach my $band ( @{ $karyAdaptor->fetch_all_by_Slice($slice) } ) {
-	if($band->stain() eq 'ACEN') {
-	    $self->parseCentromere($band, $gusExternalNASequence, $gusExternalDatabaseRelease);
-	}
-    }
 }
+
 
 sub parseCentromere {
     my ($self, $band, $gusExternalNASequence, $gusExternalDatabaseRelease) = @_;
@@ -536,7 +552,7 @@ sub parseGene {
 
     foreach my $xref (@{$gene->get_all_object_xrefs()}) {
 	my $databaseName = $xref->dbname();
-  	
+
     next unless (defined $xref->analysis());
     my $databaseVersion = $xref->analysis()->logic_name();
  
@@ -707,7 +723,7 @@ sub parseTranslation {
     my $databaseVersion = $xref->analysis()->logic_name();
     
 	my $primaryId = $xref->primary_id();
-	
+
 	my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $primaryId, undef, undef);
 	GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $dbRefId, $gusTranslatedAAFeature->getPrimaryKey());
 
