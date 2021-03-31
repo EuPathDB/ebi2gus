@@ -387,7 +387,7 @@ sub parseSlice {
 
     foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
     	my $databaseName = $sliceSynonym->dbname();
-	next unless($databaseName); # Rare case where some sequence aliases don't have this but is required.  impossible to determine what they are
+	$databaseName = "Sequence Synonym" unless($databaseName); # Rare case where some sequence aliases don't have this but is required.  impossible to determine what they are
 
 	my $databaseVersion = 1;
     	my $primaryId = $sliceSynonym->name();
