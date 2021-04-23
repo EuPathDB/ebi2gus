@@ -9,11 +9,11 @@ sub init {
     my ($self, $feature, $gusParentFeature) = @_;
 
     return {na_feature_id => $gusParentFeature->getPrimaryKey(),
-	    start_min => $feature->start(),
-	    start_max => $feature->start(),
-	    end_min => $feature->end(),
-	    end_max => $feature->end(),
-	    is_reversed => $feature->strand() == -1 ? 1 : 0,
+	    start_min => $feature->seq_region_start(),
+	    start_max => $feature->seq_region_start(),
+	    end_min => $feature->seq_region_end(),
+	    end_max => $feature->seq_region_end(),
+	    is_reversed => $feature->seq_region_strand() == -1 ? 1 : 0,
     };
 }
 
