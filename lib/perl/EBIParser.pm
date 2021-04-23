@@ -387,9 +387,9 @@ sub parseSlice {
 
     foreach my $sliceSynonym (@{$slice->get_all_synonyms()}) {
     	my $databaseName = $sliceSynonym->dbname();
-	$databaseName = "Sequence Synonym" unless($databaseName); # Rare case where some sequence aliases don't have this but is required.  impossible to determine what they are
+    	$databaseName = "Sequence Synonym" unless($databaseName); # Rare case where some sequence aliases don't have this but is required.  impossible to determine what they are
 
-	my $databaseVersion = 1;
+    	my $databaseVersion = 1;
     	my $primaryId = $sliceSynonym->name();
 	
     	my ($dbRefId, $externalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($databaseName, $databaseVersion, $primaryId, undef, undef);
@@ -406,6 +406,7 @@ sub parseSlice {
     }
 
     my @uniqueSlices = grep { $_->seq_region_name() eq $slice->seq_region_name() } @{$slice->adaptor()->fetch_all('toplevel')}; 
+
     foreach my $uSlice (@uniqueSlices) {
 	$self->parseSliceFeatures($uSlice, $gusExternalNASequence, $gusExternalDatabaseRelease, $gusTaxon);
     }
@@ -542,7 +543,7 @@ sub parseGene {
 	my $gusExonFeature = GUS::DoTS::ExonFeature->new($gusTableWriters, $exon->stable_id(), $gusGeneFeature, $gusExternalDatabaseRelease->getPrimaryKey(), $exonSequenceOntologyId);
 	my $gusExonNALocation = GUS::DoTS::NALocation->new($gusTableWriters, $exon, $gusExonFeature);
 
-	my $exonKey = $exon->start()."-".$exon->end()."-".$exon->strand()."-".$exon->phase()."-".$exon->end_phase();
+	my $exonKey = $exon->seq_region_start()."-".$exon->seq_region_end() ."-".$exon->seq_region_strand()."-".$exon->phase()."-".$exon->end_phase();
 	$exonMap{$exonKey} = $gusExonFeature->getPrimaryKey();
     }
     
@@ -609,7 +610,7 @@ sub parseTranscript {
 
     my $exonOrderNum = 1;
     foreach my $exon ( @{ $transcript->get_all_Exons() } ) {
-	my $exonKey = $exon->start()."-".$exon->end()."-".$exon->strand()."-".$exon->phase()."-".$exon->end_phase();
+	my $exonKey = $exon->seq_region_start()."-".$exon->seq_region_end()."-".$exon->seq_region_strand()."-".$exon->phase()."-".$exon->end_phase();
 	
 	my $gusExonId = $exonMap->{$exonKey};
 	    
