@@ -408,13 +408,13 @@ sub parseSlice {
     my @uniqueSlices = grep { $_->seq_region_name() eq $slice->seq_region_name() } @{$slice->adaptor()->fetch_all('toplevel')}; 
 
     foreach my $uSlice (@uniqueSlices) {
-	$self->parseSliceFeatures($uSlice, $gusExternalNASequence, $gusExternalDatabaseRelease, $gusTaxon);
+	$self->parseSliceFeatures($uSlice, $gusExternalNASequence, $gusExternalDatabaseRelease, $gusTaxon, $slice);
     }
 
 }
 
 sub parseSliceFeatures {
-    my ($self, $slice, $gusExternalNASequence, $gusExternalDatabaseRelease, $gusTaxon) = @_;
+    my ($self, $slice, $gusExternalNASequence, $gusExternalDatabaseRelease, $gusTaxon, $seqRegionSlice) = @_;
 
     my $gusTableWriters = $self->getGUSTableWriters();
     
@@ -434,7 +434,9 @@ sub parseSliceFeatures {
 	    GUS::DoTS::NALocation->new($gusTableWriters, $gene, $te);
 	}
 	else {
-	    $self->parseGene($gene, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence);
+	    my $geneOnSeqRegion = $gene->transfer($seqRegionSlice);
+	    die "Error transferring gene from top level slice to seq region slice" . $gene->stable_id() unless $geneOnSeqRegion;
+	    $self->parseGene($geneOnSeqRegion, $gusExternalDatabaseRelease, $gusTaxon, $gusExternalNASequence);
 	}
     }
 
