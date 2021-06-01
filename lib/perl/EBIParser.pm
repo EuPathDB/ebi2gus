@@ -31,10 +31,10 @@ my %INTERPRO_LOGICS = ('pfam' => 1,
 		       'smart' => 1,
 		       'superfamily' => 1,
 		       'tigrfam' => 1,
+		       'pfscan' => 1,
     );
 
 my %SKIP_LOGICS = ('mobidblite' => 1,
-		   'pfscan' => 1,
 		   'ncoils' => 1,
 		   'blastprodom' => 1,
 		   'gene3d' => 1,
