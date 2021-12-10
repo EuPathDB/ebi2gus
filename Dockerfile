@@ -1,6 +1,6 @@
 FROM mariadb
 
-ENV APIVER 102
+ENV APIVER 103
 ENV BIOPERLVER release-1-6-924
 
 RUN  apt-get update \
