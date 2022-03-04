@@ -282,6 +282,15 @@ sub ontologyTermForSlice {
      my $coordSystemTags = $slice->get_all_Attributes("coord_system_tag");
      if($coordSystemTags && scalar @$coordSystemTags == 1) {
         $name = $coordSystemTags->[0]->value();
+     }else{
+     # Ensembl cores do not have any coord_system_tag attrib_type to distinguish top levels. If the seq_region has a karyotype_rank attrib_type, then it is a chromosome. If not then it is a scaffold.
+      my $karyotypeRankTags = $slice->get_all_Attributes("karyotype_rank");
+
+      if($karyotypeRankTags && scalar @$karyotypeRankTags == 1) {
+         $name = "chromosome";
+      }else{
+         $name ="scaffold";
+      }
      }
     }
     return $self->ontologyTermFromName($name, $gusTableWriters);
