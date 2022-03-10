@@ -272,10 +272,9 @@ sub ontologyTermForSlice {
 print Dumper $slice;
     # fallback to coord_system_name
     my $name = $slice->coord_system_name();
-print STDERR "coord_system_name is $name\n";
     # location contains an SO term if the sequence is not nuclear e.g. "apicoplast_chromosome", "mitochondrial_chromosome"
     my $seq_region_name = $slice->get_all_Attributes('seq_region_name');
-if ($seq_region_name && scalar @$location == 1) {
+if ($seq_region_name && scalar @$seq_region_name == 1) {
       $name = $seq_region_name->[0]->value();
 print STDERR "seq_region_name Attribute name is $name\n";
 print Dumper $seq_region_name;
