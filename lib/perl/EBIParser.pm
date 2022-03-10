@@ -269,7 +269,7 @@ sub getExternalDatabaseRelease {
 
 sub ontologyTermForSlice {
     my ($self, $slice, $gusTableWriters) = @_;
-
+print Dumper $slice;
     # fallback to coord_system_name
     my $name = $slice->coord_system_name();
 print STDERR "coord_system_name is $name\n";
