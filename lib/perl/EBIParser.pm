@@ -296,7 +296,6 @@ sub ontologyTermForSlice {
       }
      }
     }
-print STDERR "name is $name\n------------------------------------------------------\n";
     return $self->ontologyTermFromName($name, $gusTableWriters);
 }
 
