@@ -1,4 +1,4 @@
-FROM mariadb:10.8.3-jammy
+FROM mariadb:10.7.4-focal
 
 ENV APIVER 106
 ENV BIOPERLVER release-1-6-924
