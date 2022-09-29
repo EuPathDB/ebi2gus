@@ -273,25 +273,35 @@ sub ontologyTermForSlice {
     # fallback to coord_system_name
     my $name = $slice->coord_system_name();
 
-    # location contains an SO term if the sequence is not nuclear e.g. "apicoplast_chromosome", "mitochondrial_chromosome"
-    my $location = $slice->get_all_Attributes('sequence_location');
-    if ($location && scalar @$location == 1) {
-      $name = $location->[0]->value(); 
-    }else{
-     # location would be undef for nuclear sequences. 
-     my $coordSystemTags = $slice->get_all_Attributes("coord_system_tag");
-     if($coordSystemTags && scalar @$coordSystemTags == 1) {
-        $name = $coordSystemTags->[0]->value();
-     }else{
-     # Ensembl cores do not have any coord_system_tag attrib_type to distinguish top levels. If the seq_region has a karyotype_rank attrib_type, then it is a chromosome. If not then it is a scaffold.
-      my $karyotypeRankTags = $slice->get_all_Attributes("karyotype_rank");
+    # location would be undef for nuclear sequences.
+    my $coordSystemTags = $slice->get_all_Attributes("coord_system_tag");
+    if($coordSystemTags && scalar @$coordSystemTags == 1) {
+      $name = $coordSystemTags->[0]->value();
 
-      if($karyotypeRankTags && scalar @$karyotypeRankTags == 1) {
-         $name = "chromosome";
-      }else{
-         $name ="scaffold";
+      ## for some "apicoplast_chromosome", "mitochondrial_chromosome",
+      ## they have coord_system_tag=chromosome, and sequence_location=mitochondrial_chromosome or apicoplast_chromosome
+      my $location = $slice->get_all_Attributes('sequence_location');
+      if ($location && scalar @$location == 1 ) {
+	$name = $location->[0]->value() if ($location->[0]->value() =~ /^mito/i || $location->[0]->value() =~ /^api/i);
       }
-     }
+
+    }else{
+
+      # location contains an SO term if the sequence is not nuclear e.g. "apicoplast_chromosome", "mitochondrial_chromosome"
+      my $location = $slice->get_all_Attributes('sequence_location');
+      if ($location && scalar @$location == 1) {
+	$name = $location->[0]->value();
+      }else{
+
+	# Ensembl cores do not have any coord_system_tag attrib_type to distinguish top levels.
+	# If the seq_region has a karyotype_rank attrib_type, then it is a chromosome. If not then it is a scaffold.
+	my $karyotypeRankTags = $slice->get_all_Attributes("karyotype_rank");
+	if($karyotypeRankTags && scalar @$karyotypeRankTags == 1) {
+	  $name = "chromosome";
+	}else{
+	  $name ="scaffold";
+	}
+      }
     }
     return $self->ontologyTermFromName($name, $gusTableWriters);
 }
