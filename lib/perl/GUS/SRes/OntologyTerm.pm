@@ -36,6 +36,7 @@ my %sequenceOntologyMap = (chromosome => 'SO:0000340',
                            '_stop_codon_rt' => 'SO:1001267',
                            '3prime_overlapping_ncRNA' => 'SO:0000655',
                'plasmid' => 'SO:0000155',
+               'linkage_group' => 'SO:0000018',
     );
 
 
