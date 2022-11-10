@@ -27,6 +27,7 @@ my %sequenceOntologyMap = (chromosome => 'SO:0000340',
                'mitochondrial_chromosome' => 'SO:0000819',
                'nuclear_chromosome' => 'SO:0000340',
                'plasmid' => 'SO:0000155',
+               'linkage_group' => 'SO:0000018',
     );
 
 
