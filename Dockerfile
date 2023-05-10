@@ -1,6 +1,6 @@
 FROM mariadb:jammy
 
-ENV APIVER 108
+ENV APIVER 109
 ENV BIOPERLVER release-1-6-924
 
 RUN  apt-get update \
