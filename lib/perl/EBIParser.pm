@@ -31,7 +31,8 @@ my %INTERPRO_LOGICS = ('pfam' => 1,
 		       'smart' => 1,
 		       'superfamily' => 1,
 		       'tigrfam' => 1,
-		       'pfscan' => 1,
+               'pfscan' => 1,
+		       'ncbifam' => 1,
     );
 
 my %SKIP_LOGICS = ('mobidblite' => 1,
