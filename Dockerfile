@@ -4,7 +4,7 @@ ENV APIVER 109
 ENV BIOPERLVER release-1-6-924
 
 RUN  apt update  \
-     && apt -y install git libdbd-mysql-perl libtry-tiny-perl libxml-simple-perl mysql-server-core-8.0 \
+     && apt -y install git libdbd-mysql-perl libtry-tiny-perl libxml-simple-perl mariadb-server-core-10.6 \
      && cd /usr/local/src \
      && git clone https://github.com/Ensembl/ensembl-git-tools.git \
      && export PATH=/usr/local/src/ensembl-git-tools/bin:$PATH \
@@ -22,11 +22,13 @@ ENV PERL5LIB=${PERL5LIB}:/usr/local/lib/ebi2gus
 
 COPY ./lib/perl /usr/local/lib/ebi2gus
 COPY ./bin/* /usr/local/bin/
+COPY ./bin/my_print_defaults /usr/bin/
 COPY ./conf/ensembl_registry.conf.sample /usr/local/etc/ensembl_registry.conf
 COPY ./conf/chromosomeMap.conf.sample /usr/local/etc/chromosomeMap.conf
 COPY ./lib/xml/gusSchemaDefinitions.xml /usr/local/etc/gusSchemaDefinitions.xml
 COPY ./conf/seq_region_maps /usr/local/etc/seq_region_maps
 
 RUN ls /usr/bin/my_print_defaults
+RUN which mariadb-install-db
 
 HEALTHCHECK CMD mysqladmin ping --silent
