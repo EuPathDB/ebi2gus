@@ -4,7 +4,7 @@ ENV APIVER 109
 ENV BIOPERLVER release-1-6-924
 
 RUN  apt update  \
-     && apt -y install git libdbd-mysql-perl libtry-tiny-perl libxml-simple-perl mariadb-server-core-10.6 \
+     && apt -y install git libdbd-mysql-perl libtry-tiny-perl libxml-simple-perl mysql-server-core-8.0 \
      && cd /usr/local/src \
      && git clone https://github.com/Ensembl/ensembl-git-tools.git \
      && export PATH=/usr/local/src/ensembl-git-tools/bin:$PATH \
@@ -26,5 +26,7 @@ COPY ./conf/ensembl_registry.conf.sample /usr/local/etc/ensembl_registry.conf
 COPY ./conf/chromosomeMap.conf.sample /usr/local/etc/chromosomeMap.conf
 COPY ./lib/xml/gusSchemaDefinitions.xml /usr/local/etc/gusSchemaDefinitions.xml
 COPY ./conf/seq_region_maps /usr/local/etc/seq_region_maps
+
+RUN ls /usr/bin/my_print_defaults
 
 HEALTHCHECK CMD mysqladmin ping --silent
