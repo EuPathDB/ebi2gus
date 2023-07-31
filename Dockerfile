@@ -1,10 +1,10 @@
-FROM mariadb:jammy
+FROM mariadb:10.11.4-jammy
 
 ENV APIVER 109
 ENV BIOPERLVER release-1-6-924
 
 RUN  apt update  \
-     && apt -y install git libdbd-mysql-perl libtry-tiny-perl libxml-simple-perl mysql-server-core-8.0 \
+     && apt -y install git libdbd-mysql-perl libtry-tiny-perl libxml-simple-perl \
      && cd /usr/local/src \
      && git clone https://github.com/Ensembl/ensembl-git-tools.git \
      && export PATH=/usr/local/src/ensembl-git-tools/bin:$PATH \
