@@ -847,8 +847,8 @@ sub parseInterpro {
     my $evalue = $interproFeature->p_value(); # documentation says e value is gotten from p_value methohd
 
     my $analysis = $interproFeature->analysis();
+    my $name = $analysis->display_label() ? $analysis->display_label() : $analysis->logic_name();
 
-    my $name =  $analysis->display_label();
     my $version = $analysis->db_version();
 
     my $interproName = $analysis->program();
