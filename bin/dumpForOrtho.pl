@@ -19,25 +19,49 @@ HELP_MESSAGE() if($opt_h || !-e $REGISTRY_CONF_FILE || !-e $OUTPUT_DIRECTORY || 
 
 my $proteomeFile = $OUTPUT_DIRECTORY.$opt_b;
 my $ecFile = $OUTPUT_DIRECTORY.$opt_c;
+my $interproFile = $OUTPUT_DIRECTORY."interproResults.tsv";
 
 open(my $logFH,">",$OUTPUT_DIRECTORY.$logFile) || die "Cannot open log file '$logFile' for writing, in directory $OUTPUT_DIRECTORY.\n";
 print $logFH "Proteome file: $proteomeFile\n";
 print $logFH "EC file: $ecFile\n";
 
+open(my $iprFH,">>",$interproFile) || die "Cannot open interpro file $interproFile\n";
+
 my $registry = 'Bio::EnsEMBL::Registry';
 my $count = $registry->load_all($REGISTRY_CONF_FILE, 1);
 
-outputProteins($registry,$proteomeFile,$abbrev,$logFH);
+outputProteins($registry,$proteomeFile,$abbrev,$logFH, $iprFH);
 outputEC($registry,$ecFile,$abbrev,$logFH);
 
+close ($interproFile);
 close ($logFH);
 
 exit;
 
+sub parseProteinFeature {
+    my ($proteinFeature, $translation, $geneId, $transcriptId, $abbrev, $iprFH) = @_;
 
+    my $proteinId = $proteinFeature->display_id();
+
+    &parseInterpro($proteinFeature, $geneId, $proteinId, $transcriptId, $abbrev, $iprFH);
+    
+}
+
+sub parseInterpro {
+    my ($interproFeature, $geneId, $proteinId, $transcriptId, $abbrev, $iprFH) = @_;
+    my $interproSecondaryId = $interproFeature->ilabel();
+    my $interproPrimaryId = $interproFeature->interpro_ac();
+    my $remark = $interproFeature->idesc(); #this is the interpro description used as the dbref remark for both
+    my $analysis = $interproFeature->analysis();
+    my $name = $analysis->display_label() ? $analysis->display_label() : $analysis->logic_name();
+    my $interproName = $analysis->program();
+    my $interproStart = $interproFeature->start();
+    my $interproEnd = $interproFeature->end();
+    print $iprFH "$transcriptId\t$proteinId\t$geneId\tOrthoMCL\t$abbrev\t$name\t$interproPrimaryId\t$interproSecondaryId\t$remark\t$interproStart\t$interproEnd\n";
+}
 
 sub outputProteins {
-    my ($registry,$fastaFile,$abbrev,$logFH) = @_;
+    my ($registry,$fastaFile,$abbrev,$logFH,$iprFH) = @_;
     my $gene_adaptor = $registry->get_adaptor('default','core','gene');
     my $genes = $gene_adaptor->fetch_all_by_biotype('protein_coding');
     my $numberOfGenes = scalar @{$genes};    
@@ -79,6 +103,9 @@ sub outputProteins {
 		next;
 #		die;
 	    } else {
+	      foreach my $proteinFeature (@{$translation->get_all_ProteinFeatures()}) {
+                  &parseProteinFeature($proteinFeature, $translation, $geneId, $transcriptId, $abbrev, $iprFH);
+              }
 	      my $seq = $translation->seq();
 	      if (! $seq) {
 		print $logFH "Cannot get sequence of translation '$translation' of transcript '$transcriptId' of gene '$gene'\n";

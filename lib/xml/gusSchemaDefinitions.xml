@@ -1,6 +1,7 @@
 <tables>
 
 <!-- subclass views -->
+ 
 <table name="DoTS.AAFeature" impTable="DoTS.AAFeatureImp" primaryKey="AA_FEATURE_ID">
   <column name="AA_FEATURE_ID" type="NUMBER" length="10" nullable="N" />
   <column name="AA_SEQUENCE_ID" type="NUMBER" length="10" nullable="N" parent="DOTS.AASEQUENCEIMP.AA_SEQUENCE_ID" />
@@ -20,7 +21,7 @@
   <column name="REVIEW_STATUS_ID" type="NUMBER" length="10" nullable="Y" parent="SRES.ONTOLOGYTERM.ONTOLOGY_TERM_ID" />
   <column name="ROW_PROJECT_ID" type="NUMBER" length="4" nullable="N" />
 </table>
-
+ 
 <table name="DoTS.AAOrthologExperiment" impTable="DoTS.AASeqGroupExperimentImp" primaryKey="AA_SEQ_GROUP_EXPERIMENT_ID">
   <column name="AA_SEQ_GROUP_EXPERIMENT_ID" type="NUMBER" length="12" nullable="N" />
   <column name="SUBCLASS_VIEW" type="VARCHAR2" length="30" nullable="N" />
@@ -1782,6 +1783,22 @@
 </table>
 
 <!-- non-view tables -->
+<table name="ApiDB.InterProResults" primaryKey="INTERPRO_RESULT_ID">
+  <column name="INTERPRO_RESULT_ID" type="NUMBER" length="10" nullable="N" />
+  <column name="TRANSCRIPT_SOURCE_ID" type="VARCHAR2" length="10" nullable="Y" />
+  <column name="PROTEIN_SOURCE_ID" type="VARCHAR2" length="10" nullable="Y" />
+  <column name="GENE_SOURCE_ID" type="VARCHAR2" length="10" nullable="Y" />
+  <column name="PROJECT_ID" type="VARCHAR2" length="10" nullable="Y" />
+  <column name="ORGANISM_ABBREV" type="VARCHAR2" length="30" nullable="Y" />
+  <column name="NCBI_TAX_ID" type="NUMBER" length="10" nullable="Y" />
+  <column name="INTERPRO_DB_NAME" type="VARCHAR2" length="400" nullable="Y" />
+  <column name="INTERPRO_PRIMARY_ID" type="VARCHAR2" length="10" nullable="Y" />
+  <column name="INTERPRO_SECONDARY_ID" type="VARCHAR2" length="10" nullable="Y" />
+  <column name="INTERPRO_DESC" type="VARCHAR2" length="20" nullable="Y" />
+  <column name="INTERPRO_START_MIN" type="NUMBER" length="10" nullable="Y" />
+  <column name="INTERPRO_END_MIN" type="NUMBER" length="10" nullable="Y" />
+</table>
+
 <table name="ApiDB.AaSequenceAttribute" primaryKey="AA_SEQUENCE_ATTRIBUTE_ID">
   <column name="AA_SEQUENCE_ATTRIBUTE_ID" type="NUMBER" length="10" nullable="N" />
   <column name="AA_SEQUENCE_ID" type="NUMBER" length="10" nullable="Y" parent="DOTS.AASEQUENCEIMP.AA_SEQUENCE_ID" />

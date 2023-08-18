@@ -89,6 +89,7 @@ sub getTables {
 	     'GUS::DoTS::GOAssociationInstanceLOE',
              'GUS::DoTS::GOAssocInstEvidCode',
 	     'GUS::DoTS::Miscellaneous',
+	     'GUS::ApiDB::InterProResults',
 #	     'GUS::DoTS::NAComment',
 	    ]);
 }
@@ -608,6 +609,9 @@ sub parseGene {
 sub parseTranscript {
     my ($self, $transcript, $gene, $gusGeneFeature, $taxonId, $exonMap, $gusExternalDatabaseRelease) = @_;
 
+    my $geneId = $gene->display_id();
+    my $transcriptId = $transcript->display_id();
+
     my $gusTableWriters = $self->getGUSTableWriters();
 
     my $splicedNASequenceOntologyId = $self->ontologyTermFromName("mature_transcript", $gusTableWriters);
@@ -628,7 +632,7 @@ sub parseTranscript {
     my ($gusTranslatedAAFeature, $gusTranslatedAASequence);
 
     if($translation) {
-	($gusTranslatedAAFeature, $gusTranslatedAASequence) = $self->parseTranslation($translation, $transcript, $gusTranscript, $taxonId, $gusExternalDatabaseRelease);
+	($gusTranslatedAAFeature, $gusTranslatedAASequence) = $self->parseTranslation($translation, $transcript, $gusTranscript, $taxonId, $gusExternalDatabaseRelease, $geneId, $transcriptId);
     }
 
     my $exonOrderNum = 1;
@@ -723,8 +727,7 @@ sub parseGOAssociation {
 
 
 sub parseTranslation {
-    my ($self, $translation, $transcript, $gusTranscript, $taxonId, $gusExternalDatabaseRelease) = @_;
-
+    my ($self, $translation, $transcript, $gusTranscript, $taxonId, $gusExternalDatabaseRelease, $geneId, $transcriptId) = @_;
     
     my $gusTableWriters = $self->getGUSTableWriters();
     
@@ -737,7 +740,7 @@ sub parseTranslation {
     
     my %seenDomains;
     foreach my $proteinFeature (@{$translation->get_all_ProteinFeatures()}) {
-	$self->parseProteinFeature($proteinFeature, $translation, $gusTranslatedAAFeature, $gusTranslatedAASequence, \%seenDomains);
+	$self->parseProteinFeature($proteinFeature, $translation, $gusTranslatedAAFeature, $gusTranslatedAASequence, $geneId, $taxonId, $transcriptId, \%seenDomains);
     }
 
     foreach my $xref (@{$translation->get_all_object_xrefs()}) {
@@ -788,12 +791,14 @@ sub parseKeggEnzyme {
 
 
 sub parseProteinFeature {
-    my ($self, $proteinFeature, $translation, $gusTranslatedAAFeature, $gusTranslatedAASequence, $seenDomains) = @_;
+    my ($self, $proteinFeature, $translation, $gusTranslatedAAFeature, $gusTranslatedAASequence, $geneId, $taxonId, $transcriptId, $seenDomains) = @_;
 
     my $gusTableWriters = $self->getGUSTableWriters();
     my $logicName = $proteinFeature->analysis()->logic_name();
 
     my @gusFeatures;
+
+    my $proteinId = $proteinFeature->display_id();
 
     if($logicName eq 'signalp') {
 	my $f = GUS::DoTS::SignalPeptideFeature->new($gusTableWriters, $gusTranslatedAASequence);
@@ -816,7 +821,7 @@ sub parseProteinFeature {
 	    return; # seen before
 	}
 	$seenDomains->{$id} = 1;
-	my @f = $self->parseInterpro($proteinFeature, $gusTranslatedAASequence, $gusTranslatedAAFeature);
+	my @f = $self->parseInterpro($proteinFeature, $gusTranslatedAASequence, $gusTranslatedAAFeature, $geneId, $taxonId, $proteinId, $transcriptId);
 	push @gusFeatures, @f; 
     }
     elsif($SKIP_LOGICS{$logicName}) { }
@@ -831,7 +836,7 @@ sub parseProteinFeature {
 }
 
 sub parseInterpro {
-    my ($self, $interproFeature, $gusTranslatedAASequence, $gusTranslatedAAFeature) = @_;
+    my ($self, $interproFeature, $gusTranslatedAASequence, $gusTranslatedAAFeature, $geneId, $taxonId, $proteinId, $transcriptId) = @_;
 
     my $gusTableWriters = $self->getGUSTableWriters();
 
@@ -863,6 +868,17 @@ sub parseInterpro {
     GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $interproDbRefId, $interproDomainFeature->getPrimaryKey());
     GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $domainDbRefId, $domainFeature->getPrimaryKey());    
 
+    #my $interproDbName = $interproFeature->db_display_name();
+    my $projectName = $self->getProjectName();
+    my $organismAbbrev = $self->getOrganism()->getOrganismAbbrev();
+    #my $interpro_seq_region_start = $interproFeature->seq_region_start();
+    #my $interpro_seq_region_end = $interproFeature->seq_region_end();
+    my $interpro_seq_region_start = $interproFeature->start();
+    my $interpro_seq_region_end = $interproFeature->end();
+    #my $interpro_db_name = $interproFeature->dbname();
+
+    GUS::ApiDB::InterProResults->new($gusTableWriters, $transcriptId, $proteinId, $geneId, $projectName, $organismAbbrev, $taxonId, $name, $interproPrimaryId,$interproSecondaryId,$remark, $interpro_seq_region_start, $interpro_seq_region_end);
+ 
     return($interproDomainFeature, $domainFeature);
 }
 
