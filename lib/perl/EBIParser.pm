@@ -322,6 +322,19 @@ sub ontologyTermFromBiotype {
     return GUS::SRes::OntologyTerm->new($gusTableWriters, $sourceId, $name, $soExtDbRlsId)->getPrimaryKey();
 }
 
+# this is to fix where ebi assigns the incorrect SO ID for misc_RNAs
+sub ontologyTermFromTranscriptBiotype {
+    my ($self, $biotype, $gusTableWriters) = @_;
+
+    my $name = $biotype->name();
+
+    if($name = 'misc_RNA') {
+        $biotype->so_acc("SO:0000673");
+    }
+
+    return $self->ontologyTermFromBiotype($biotype, $gusTableWriters);
+}
+
 sub ontologyTermFromName {
     my ($self, $name, $gusTableWriters) = @_;
 
@@ -617,7 +630,7 @@ sub parseTranscript {
 
     my $isProteinCoding = $transcript ? 1 : 0;
     
-    my $transcriptSequenceOntologyId = $self->ontologyTermFromBiotype($transcript->get_Biotype(), $gusTableWriters);
+    my $transcriptSequenceOntologyId = $self->ontologyTermFromTranscriptBiotype($transcript->get_Biotype(), $gusTableWriters);
     
     # add Product name
     my $gusTranscript = GUS::DoTS::Transcript->new($gusTableWriters, $transcript, $gusGeneFeature, $gusSplicedNASequence, $gusExternalDatabaseRelease, $transcriptSequenceOntologyId);
