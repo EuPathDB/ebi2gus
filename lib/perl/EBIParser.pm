@@ -750,7 +750,7 @@ sub parseTranslation {
 	GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $dbRefId, $gusTranslatedAAFeature->getPrimaryKey());
 
 	if($databaseName eq 'KEGG_Enzyme') {
-	    $self->parseKeggEnzyme($primaryId, $gusTranslatedAASequence->getPrimaryKey(), $databaseName);
+	    $self->parseKeggEnzyme($primaryId, $gusTranslatedAASequence->getPrimaryKey(), $databaseName, $externalDatabaseReleaseId);
 	}
 	
     }
@@ -766,7 +766,7 @@ sub parseTranslation {
 
 
 sub parseKeggEnzyme {
-    my ($self, $keggEnzyme, $gusAASequenceId, $databaseName) = @_;
+    my ($self, $keggEnzyme, $gusAASequenceId, $databaseName, $externalDatabaseReleaseId) = @_;
 
     my $gusTableWriters = $self->getGUSTableWriters();
     
@@ -776,7 +776,7 @@ sub parseKeggEnzyme {
     foreach my $ec (@ecNumbers) {
 	my $gusEnzymeClassId = $seenEnzymeClasses{$ec};
 	unless($gusEnzymeClassId) {
-	    $gusEnzymeClassId = GUS::SRes::EnzymeClass->new($gusTableWriters, $ec)->getPrimaryKey();
+	    $gusEnzymeClassId = GUS::SRes::EnzymeClass->new($gusTableWriters, $ec, $externalDatabaseReleaseId)->getPrimaryKey();
 	}
 
 	GUS::DoTS::AASequenceEnzymeClass->new($gusTableWriters, $gusAASequenceId, $gusEnzymeClassId, $databaseName)->getPrimaryKey();
