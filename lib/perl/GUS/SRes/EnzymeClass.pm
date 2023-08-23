@@ -21,10 +21,10 @@ sub new {
 
 
 sub init {
-    my ($self, $ecNumber) = @_;
+    my ($self, $ecNumber, $externalDatabaseReleaseId) = @_;
     $self->setNaturalKey($ecNumber);
     return {ec_number => $ecNumber,
-	    external_database_release_id => 0, # we don't care about this here
+	    external_database_release_id => $externalDatabaseReleaseId,
 	    depth => 0 # we don't care about this here 		
     };
 }
