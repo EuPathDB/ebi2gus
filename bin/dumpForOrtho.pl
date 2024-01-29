@@ -58,10 +58,6 @@ sub outputProteins {
 	    print $logFH "Cannot get gene Id '$geneId' of gene '$gene'\n";
 	    die;
 	}
-	my $product = $gene->description();
-	print $logFH "Product: $product\n";
-	print $logFH Dumper($product);
-	$product = "unknown" if (! $product);
 	my $transcripts = $gene->get_all_Transcripts();
 	if (! $transcripts) {
 	    print $logFH "Cannot get transcripts '$transcripts' of gene '$geneId'\n";
@@ -77,9 +73,10 @@ sub outputProteins {
 		print $logFH "Cannot get transcript Id '$transcriptId' of gene '$geneId'\n";
 		die;
 	    }
-	    my $transcriptProduct = $transcript->description();
-	    print $logFH Dumper $transcriptProduct;
-	    print $logFH "transcriptProduct: $transcriptProduct\n";
+	    my $product = $transcript->description();
+	    print $logFH Dumper $product;
+	    print $logFH "product: $product\n";
+            $product = "unknown" if (! $product);
 	    my $translation = $transcript->translation();
 	    if (! $translation) {
 		print $logFH "Cannot get translation of transcript '$transcriptId' of gene '$geneId'\n";
