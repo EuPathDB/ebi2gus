@@ -76,6 +76,8 @@ sub outputProteins {
 		print $logFH "Cannot get transcript Id '$transcriptId' of gene '$geneId'\n";
 		die;
 	    }
+	    my $transcriptProduct = $transcript->description();
+	    print Dumper $logFH "transcriptProduct: $transcriptProduct\n";
 	    my $translation = $transcript->translation();
 	    if (! $translation) {
 		print $logFH "Cannot get translation of transcript '$transcriptId' of gene '$geneId'\n";
