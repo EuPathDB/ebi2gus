@@ -47,16 +47,19 @@ sub outputProteins {
     my $numberOfProteins=0;
     open(FASTA,">",$fastaFile) || die "Cannot open $fastaFile for writing.\n";
     foreach my $gene (@{$genes}) {
+	print $logFH "Gene: $gene\n";
 	if (! $gene) {
 	    print $logFH "Cannot get gene '$gene'\n";
 	    die;
 	}
 	my $geneId = $gene->stable_id();
+	print $logFH "GeneId: $geneId\n";
 	if (! $geneId) {
 	    print $logFH "Cannot get gene Id '$geneId' of gene '$gene'\n";
 	    die;
 	}
 	my $product = $gene->description();
+	print Dumper $logFH "Product: $product\n";
 	$product = "unknown" if (! $product);
 	my $transcripts = $gene->get_all_Transcripts();
 	if (! $transcripts) {
