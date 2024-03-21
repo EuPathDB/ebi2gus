@@ -51,6 +51,7 @@ sub parseInterpro {
     my ($interproFeature, $geneId, $proteinId, $transcriptId, $abbrev, $iprFH) = @_;
     my $interproPrimaryId = $interproFeature->interpro_ac();
     my $interproSecondaryId = $interproFeature->ilabel();
+    my $analysis = $interproFeature->analysis();
     my $interproName = $analysis->program();
     my $interproVersion = $analysis->program_version();
     my $interproStart = $interproFeature->start();
@@ -59,7 +60,6 @@ sub parseInterpro {
     my $remark = $interproFeature->idesc(); #this is the interpro description used as the dbref remark for both
     my $domainPrimaryId = $interproFeature->display_id();    
     my $domainSecondaryId = $interproFeature->hdescription();
-    my $analysis = $interproFeature->analysis();
     my $name = $analysis->display_label() ? $analysis->display_label() : $analysis->logic_name();
     my $version = $analysis->db_version();
     print $iprFH "$transcriptId\t$proteinId\t$geneId\tOrthoMCL\t$abbrev\t$name\t$interproPrimaryId\t$interproSecondaryId\t$interproName\t$interproVersion\t$interproStart\t$interproEnd\t$domainPrimaryId\t$domainSecondaryId\t$version\t$analysis\t$remark\t$evalue\n";
