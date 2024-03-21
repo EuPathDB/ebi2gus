@@ -62,7 +62,7 @@ sub parseInterpro {
     my $domainSecondaryId = $interproFeature->hdescription();
     my $name = $analysis->display_label() ? $analysis->display_label() : $analysis->logic_name();
     my $version = $analysis->db_version();
-    print $iprFH "$transcriptId\t$proteinId\t$geneId\tOrthoMCL\t$abbrev\t$name\t$interproPrimaryId\t$interproSecondaryId\t$interproName\t$interproVersion\t$interproStart\t$interproEnd\t$domainPrimaryId\t$domainSecondaryId\t$version\t$analysis\t$remark\t$evalue\n";
+    print $iprFH "$transcriptId\t$proteinId\t$geneId\tOrthoMCL\t$abbrev\t$name\t$interproPrimaryId\t$interproSecondaryId\t$interproName\t$interproVersion\t$interproStart\t$interproEnd\t$domainPrimaryId\t$domainSecondaryId\t$version\t$remark\t$evalue\n";
 }
 
 sub outputProteins {
