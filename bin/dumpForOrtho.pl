@@ -18,23 +18,21 @@ my $abbrev = $opt_a;
 HELP_MESSAGE() if($opt_h || !-e $REGISTRY_CONF_FILE || !-e $OUTPUT_DIRECTORY || ! $abbrev || ! $opt_b || ! $opt_c);
 
 my $proteomeFile = $OUTPUT_DIRECTORY.$opt_b;
-my $ecFile = $OUTPUT_DIRECTORY.$opt_c;
+my $uniprotIDFile = $OUTPUT_DIRECTORY.$opt_c;
 
 open(my $logFH,">",$OUTPUT_DIRECTORY.$logFile) || die "Cannot open log file '$logFile' for writing, in directory $OUTPUT_DIRECTORY.\n";
 print $logFH "Proteome file: $proteomeFile\n";
-print $logFH "EC file: $ecFile\n";
+print $logFH "UniprotID file: $uniprotIDFile\n";
 
 my $registry = 'Bio::EnsEMBL::Registry';
 my $count = $registry->load_all($REGISTRY_CONF_FILE, 1);
 
 outputProteins($registry,$proteomeFile,$abbrev,$logFH);
-outputEC($registry,$ecFile,$abbrev,$logFH);
+outputUniprotIDs($registry,$uniprotIDFile,$abbrev,$logFH);
 
 close ($logFH);
 
 exit;
-
-
 
 sub outputProteins {
     my ($registry,$fastaFile,$abbrev,$logFH) = @_;
@@ -47,13 +45,11 @@ sub outputProteins {
     my $numberOfProteins=0;
     open(FASTA,">",$fastaFile) || die "Cannot open $fastaFile for writing.\n";
     foreach my $gene (@{$genes}) {
-	print $logFH "Gene: $gene\n";
 	if (! $gene) {
 	    print $logFH "Cannot get gene '$gene'\n";
 	    die;
 	}
 	my $geneId = $gene->stable_id();
-	print $logFH "GeneId: $geneId\n";
 	if (! $geneId) {
 	    print $logFH "Cannot get gene Id '$geneId' of gene '$gene'\n";
 	    die;
@@ -73,10 +69,8 @@ sub outputProteins {
 		print $logFH "Cannot get transcript Id '$transcriptId' of gene '$geneId'\n";
 		die;
 	    }
-	    my $product = $transcript->description();
-	    print $logFH Dumper $product;
-	    print $logFH "product: $product\n";
-            $product = "unknown" if (! $product);
+            my $product = $transcript->description();
+	    $product = "unknown" if (! $product);
 	    my $translation = $transcript->translation();
 	    if (! $translation) {
 		print $logFH "Cannot get translation of transcript '$transcriptId' of gene '$geneId'\n";
@@ -102,42 +96,27 @@ sub outputProteins {
 
 }
 
-sub outputEC {
-    my ($registry,$ecFile,$abbrev,$logFH) = @_;
+sub outputUniprotIDs {
+    my ($registry,$uniprotIDFile,$abbrev,$logFH) = @_;
     my $gene_adaptor = $registry->get_adaptor('default','core','gene');
     my $genes = $gene_adaptor->fetch_all_by_biotype('protein_coding');
     my $numberOfGenes = scalar @{$genes};
-    print $logFH "Getting EC numbers for '$abbrev' from EBI\n";
+
     print $logFH "Total number of genes: $numberOfGenes\n";
 
-    my $numberOfEcNumbers=0;
-    open(EC,">",$ecFile) || die "Cannot open $ecFile for writing.\n";
+    open(UNI,">",$uniprotIDFile) || die "Cannot open $uniprotIDFile for writing.\n";
     foreach my $gene (@{$genes}) {
 	my $geneId = $gene->stable_id();
-	my %currentGeneEc;
-	
 	my $xrefs = $gene->get_all_xrefs();
 	foreach my $xref (@{$xrefs}) {
-	    my $db = $xref->database();
-	    if ($db eq "KEGG_Enzyme") {
+            my $db = $xref->database();
+	    if ($db =~ "^Uniprot") {
 		my $primary = $xref->primary_id();
-		my @ecs = split('\+',$primary);
-		foreach my $ec (@ecs) {
-		    if ($ec =~ /^[0-9]+\.[0-9\-]+\.[0-9\-]+\.[0-9\-]+$/) {
-			$currentGeneEc{$ec}=1;
-		    }
-		}
+                print UNI "$abbrev|$geneId\t$primary\n";
 	    }
 	}
-
-	foreach my $uniqueEc (keys %currentGeneEc) {
-	    print EC "$abbrev|$geneId\t$uniqueEc\n";
-	    $numberOfEcNumbers++;
-	}
-	
     }
-    close(EC);
-    print $logFH "Obtained $numberOfEcNumbers EC numbers.\n";
+    close(UNI);
 }
 
 sub HELP_MESSAGE {
@@ -152,7 +131,7 @@ OPTIONS:
 -e     ensemble_registry_file
 -a     orthomcl abbrev
 -o     output_directory
--c     ec_file_name
+-c     uniprotID_file_name
 -b     proteome_file_name
 
 EOM
