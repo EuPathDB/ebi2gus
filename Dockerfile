@@ -4,7 +4,7 @@ ENV APIVER 99
 ENV BIOPERLVER release-1-6-924
 
 RUN  apt update  \
-     && apt -y install git libdbd-mysql-perl libtry-tiny-perl libxml-simple-perl \
+     && apt -y install git libdbd-mysql-perl libtry-tiny-perl libxml-simple-perl tabix \
      && cd /usr/local/src \
      && git clone https://github.com/Ensembl/ensembl-git-tools.git \
      && export PATH=/usr/local/src/ensembl-git-tools/bin:$PATH \
