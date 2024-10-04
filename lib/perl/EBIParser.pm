@@ -90,9 +90,43 @@ sub getTables {
 	    ]);
 }
 
+#-----------------------------------------------------------
+#
 sub getRepeatMaskedIO { $_[0]->{_repeat_masked_io} }
 sub setRepeatMaskedIO { $_[0]->{_repeat_masked_io} = $_[1] }
-    
+
+sub getRepeatsIO { $_[0]->{_repeats_io} }
+sub setRepeatsIO { $_[0]->{_repeats_io} = $_[1] }
+
+sub getTrfIO { $_[0]->{_trf_io} }
+sub setTrfIO { $_[0]->{_trf_io} = $_[1] }
+
+sub getDustIO { $_[0]->{_dust_io} }
+sub setDustIO { $_[0]->{_dust_io} = $_[1] }
+
+sub getSegIO { $_[0]->{_seg_io} }
+sub setSegIO { $_[0]->{_seg_io} = $_[1] }
+
+
+sub getRepeatMaskedFile { $_[0]->{_repeat_masked_file} }
+sub setRepeatMaskedFile { $_[0]->{_repeat_masked_file} = $_[1] }
+
+sub getRepeatsFile { $_[0]->{_repeats_file} }
+sub setRepeatsFile { $_[0]->{_repeats_file} = $_[1] }
+
+sub getTrfFile { $_[0]->{_trf_file} }
+sub setTrfFile { $_[0]->{_trf_file} = $_[1] }
+
+sub getDustFile { $_[0]->{_dust_file} }
+sub setDustFile { $_[0]->{_dust_file} = $_[1] }
+
+sub getSegFile { $_[0]->{_seg_file} }
+sub setSegFile { $_[0]->{_seg_file} = $_[1] }
+
+
+
+#-----------------------------------------------------------
+
 sub getSlices { $_[0]->{_slices} }
 sub setSlices { $_[0]->{_slices} = $_[1] }
 
@@ -171,6 +205,59 @@ sub setRegistry { $_[0]->{_registry} = $_[1] }
 
 #     $self->{_global_seq_region_mappings} = $rv;
 # }
+
+sub addRowToGenomicBedFile {
+    my ($self, $sequenceSourceId, $feature, $fh) = @_;
+
+    print $fh ($sequenceSourceId,
+              "\t", $feature->seq_region_start(),
+              "\t", $feature->seq_region_end(),
+              "\n");
+}
+
+sub addRowToProteinBedFile {
+    my ($self, $sequenceSourceId, $feature, $fh) = @_;
+
+    print $fh ($sequenceSourceId,
+              "\t", $feature->start(),
+              "\t", $feature->end(),
+              "\n");
+}
+
+
+sub finishBedFiles {
+    my ($self) = @_;
+
+    foreach($self->getRepeatsIO(),
+            $self->getTrfIO(),
+            $self->getDustIO(),
+            $self->getSegIO()) {
+        close $_;
+    }
+
+    foreach($self->getRepeatsFile(),
+            $self->getTrfFile(),
+            $self->getDustFile(),
+            $self->getSegFile()) {
+        $self->bgzipAndTabix($_);
+    }
+}
+
+
+sub bgzipAndTabix {
+    my ($self, $file) = @_;
+
+    system("sort -k1,1 -k2,2n $file -o $file") == 0
+        or die "sort failed: $?";
+
+    system("bgzip $file") == 0
+        or die "bgzip failed: $?";
+
+    system("tabix", "-p", "bed", "${file}.gz") == 0
+        or die "tabix failed: $?";
+}
+
+
 
 sub getPreviousIdentifiersFromPatchBuild { $_[0]->{_previous_identifiers_from_patch_build} }
 sub setPreviousIdentifiersFromPatchBuild {
@@ -309,10 +396,34 @@ sub new {
     $self->setSOSpec($soSpec);
 
     my $repeatMaskedFile = "$outputDirectory/blocked.seq";
+
     my $repeatMaskedIO = Bio::SeqIO->new(-file   => ">$repeatMaskedFile",
 					 -format => 'fasta' );
 
-    $self->setRepeatMaskedIO($repeatMaskedIO);
+    my ($repeatsIO, $trfIO, $dustIO, $segIO);
+    my $repeatsFile = "$outputDirectory/repeatmask.bed";
+    my $trfFile = "$outputDirectory/trf.bed";
+    my $dustFile = "$outputDirectory/dust.bed";
+    my $segFile = "$outputDirectory/seg.bed";
+
+    open($repeatsIO, ">$repeatsFile") or die "Cannot open file $repeatsFile for writing: $!";
+    open($trfIO, ">$trfFile") or die "Cannot open file $trfFile for writing: $!";
+    open($dustIO, ">$dustFile") or die "Cannot open file $dustFile for writing: $!";
+    open($segIO, ">$segFile") or die "Cannot open file $segFile for writing: $!";
+
+    $self->setRepeatMaskedIO($repeatMaskedIO); # this one is fasta
+    $self->setRepeatsIO($repeatsIO);
+    $self->setTrfIO($trfIO);
+    $self->setDustIO($dustIO);
+    $self->setSegIO($segIO);
+
+
+    $self->setRepeatMaskedFile($repeatMaskedFile); # this one is fasta
+    $self->setRepeatsFile($repeatsFile);
+    $self->setTrfFile($trfFile);
+    $self->setDustFile($dustFile);
+    $self->setSegFile($segFile);
+
 
     $self->setGlobalSeqRegionMappings();
 
@@ -459,6 +570,7 @@ sub parseSlice {
 	$insdcSynonym = $sliceSynonym->name() if($sliceSynonym->dbname() eq "INSDC");
     }
 
+
     my $seqRegionMap = $self->getGlobalSeqRegionMappings();
     my $gusExternalNASequence = GUS::DoTS::ExternalNASequence->new($gusTableWriters, $slice, $gusTaxon, $gusExternalDatabaseRelease, $gusSequenceOntologyId, $insdcSynonym, $organismAbbrev, $seqRegionMap);
 
@@ -549,24 +661,22 @@ sub parseRepeatFeature {
     my $logicName = $repeatFeature->analysis()->logic_name();
 
     my $gusFeature;
-    
-    if($logicName eq "dust") {
-	$gusFeature = GUS::DoTS::LowComplexityNAFeature->new($gusTableWriters, $repeatFeature, $gusExternalNASequence, $gusExternalDatabaseRelease);
-    }
-    elsif($logicName eq "tefam") {
-	$gusFeature = GUS::DoTS::TransposableElement->new($gusTableWriters, $repeatFeature, $gusExternalNASequence, $gusExternalDatabaseRelease);
-    }
-    elsif($logicName eq "trf") {
-	$gusFeature = GUS::DoTS::TandemRepeatFeature->new($gusTableWriters, $repeatFeature, $gusExternalNASequence, $gusExternalDatabaseRelease);	
-    }
-    elsif($logicName =~ /^repeatmask/) {
-	$gusFeature = GUS::DoTS::Repeats->new($gusTableWriters, $repeatFeature, $gusExternalNASequence, $gusExternalDatabaseRelease);		
-    }
-    else {
-	return;
-    }
 
-    GUS::DoTS::NALocation->new($gusTableWriters, $repeatFeature, $gusFeature);
+    my $sequenceSourceId = $gusExternalNASequence->getGUSRowAsHash()->{source_id};
+
+    if($logicName eq "dust") {
+        $self->addRowToGenomicBedFile($sequenceSourceId, $repeatFeature, $self->getDustIO());
+    }
+    if($logicName eq "tefam") {
+        $gusFeature = GUS::DoTS::TransposableElement->new($gusTableWriters, $repeatFeature, $gusExternalNASequence, $gusExternalDatabaseRelease);
+        GUS::DoTS::NALocation->new($gusTableWriters, $repeatFeature, $gusFeature);
+    }
+    if($logicName eq "trf") {
+        $self->addRowToGenomicBedFile($sequenceSourceId, $repeatFeature, $self->getTrfIO());
+    }
+    if($logicName =~ /^repeatmask/) {
+        $self->addRowToGenomicBedFile($sequenceSourceId, $repeatFeature, $self->getRepeatsIO());
+    }
 }
 
 sub parseGene {
@@ -824,78 +934,80 @@ sub parseProteinFeature {
     my $gusTableWriters = $self->getGUSTableWriters();
     my $logicName = $proteinFeature->analysis()->logic_name();
 
-    my @gusFeatures;
-
-    if($logicName eq 'signalp') {
-	my $f = GUS::DoTS::SignalPeptideFeature->new($gusTableWriters, $gusTranslatedAASequence);
-	push @gusFeatures, $f;
-    }
-    elsif($logicName eq 'tmhmm') {
-	my $f = GUS::DoTS::TransMembraneAAFeature->new($gusTableWriters, $gusTranslatedAASequence);
-	push @gusFeatures, $f;
-    }
-    elsif($logicName eq 'seg') {
-	my $f = GUS::DoTS::LowComplexityAAFeature->new($gusTableWriters, $gusTranslatedAASequence);
-	push @gusFeatures, $f;
-    }
-    elsif($logicName =~ /^ms_/) {
-	# TODO: mass spec peptides
-    }
-    elsif($INTERPRO_LOGICS{$logicName}) {
-	my $id = $proteinFeature->display_id();
-	if($seenDomains->{$id}) {
-	    return; # seen before
-	}
-	$seenDomains->{$id} = 1;
-	my @f = $self->parseInterpro($proteinFeature, $gusTranslatedAASequence, $gusTranslatedAAFeature);
-	push @gusFeatures, @f; 
-    }
-    elsif($SKIP_LOGICS{$logicName}) { }
-    else {
-	die "unrecognized logic $logicName";
+    if($logicName eq 'seg') {
+        my $proteinSourceId = $gusTranslatedAASequence->getGUSRowAsHash()->{source_id};
+        $self->addRowToProteinBedFile($proteinSourceId, $proteinFeature, $self->getSegIO());
     }
 
-    foreach my $gusFeature (@gusFeatures) {
-	GUS::DoTS::AALocation->new($gusTableWriters, $proteinFeature, $gusFeature);
-    }
-    
+    # NOTE:  we won't take interpro,signalp or tmhmm from here
+
+    #     my @gusFeatures;
+#     if($logicName eq 'signalp') {
+# #	my $f = GUS::DoTS::SignalPeptideFeature->new($gusTableWriters, $gusTranslatedAASequence);
+# #	push @gusFeatures, $f;
+#     }
+#     elsif($logicName eq 'tmhmm') {
+# #	my $f = GUS::DoTS::TransMembraneAAFeature->new($gusTableWriters, $gusTranslatedAASequence);
+# #	push @gusFeatures, $f;
+#     }
+#     elsif($logicName =~ /^ms_/) {
+# 	# TODO: mass spec peptides
+#     }
+#     elsif($INTERPRO_LOGICS{$logicName}) {
+# 	# my $id = $proteinFeature->display_id();
+# 	# if($seenDomains->{$id}) {
+# 	#     return; # seen before
+# 	# }
+# 	# $seenDomains->{$id} = 1;
+# 	# my @f = $self->parseInterpro($proteinFeature, $gusTranslatedAASequence, $gusTranslatedAAFeature);
+# 	# push @gusFeatures, @f;
+#     }
+#     elsif($SKIP_LOGICS{$logicName}) { }
+#     else {
+# 	die "unrecognized logic $logicName";
+#     }
+
+#     foreach my $gusFeature (@gusFeatures) {
+# 	GUS::DoTS::AALocation->new($gusTableWriters, $proteinFeature, $gusFeature);
+#     }
+
 }
 
-sub parseInterpro {
-    my ($self, $interproFeature, $gusTranslatedAASequence, $gusTranslatedAAFeature) = @_;
+# sub parseInterpro {
+#     my ($self, $interproFeature, $gusTranslatedAASequence, $gusTranslatedAAFeature) = @_;
 
-    my $gusTableWriters = $self->getGUSTableWriters();
+#     my $gusTableWriters = $self->getGUSTableWriters();
 
-    # first make the interpro rows in dbref and domainfeature
-    my $interproSecondaryId = $interproFeature->ilabel();
-    my $interproPrimaryId = $interproFeature->interpro_ac();
+#     # first make the interpro rows in dbref and domainfeature
+#     my $interproSecondaryId = $interproFeature->ilabel();
+#     my $interproPrimaryId = $interproFeature->interpro_ac();
 
-    my $remark = $interproFeature->idesc(); #this is the interpro description used as the dbref remark for both
+#     my $remark = $interproFeature->idesc(); #this is the interpro description used as the dbref remark for both
 
-    # next make the rows in dbref and domain feature for the domaindb
-    my $domainPrimaryId = $interproFeature->display_id();
-    my $domainSecondaryId = $interproFeature->hdescription();
-    my $evalue = $interproFeature->p_value(); # documentation says e value is gotten from p_value methohd
+#     # next make the rows in dbref and domain feature for the domaindb
+#     my $domainPrimaryId = $interproFeature->display_id();
+#     my $domainSecondaryId = $interproFeature->hdescription();
+#     my $evalue = $interproFeature->p_value(); # documentation says e value is gotten from p_value methohd
 
-    my $analysis = $interproFeature->analysis();
+#     my $analysis = $interproFeature->analysis();
+#     my $name = $analysis->display_label() ? $analysis->display_label() : $analysis->logic_name();
 
-    my $name =  $analysis->display_label();
-    my $version = $analysis->db_version();
+#     my $version = $analysis->db_version();
 
-    my $interproName = $analysis->program();
-    my $interproVersion = $analysis->program_version();
+#     my $interproName = $analysis->program();
+#     my $interproVersion = $analysis->program_version();
 
-    my ($interproDbRefId, $interproExternalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($interproName, $interproVersion, $interproPrimaryId, $interproSecondaryId, $remark);
-    my ($domainDbRefId, $domainExternalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($name, $version, $domainPrimaryId, $domainSecondaryId, $remark);
+#     my ($interproDbRefId, $interproExternalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($interproName, $interproVersion, $interproPrimaryId, $interproSecondaryId, $remark);
+#     my ($domainDbRefId, $domainExternalDatabaseReleaseId) = $self->getDbRefAndExternalDatabaseReleaseIds($name, $version, $domainPrimaryId, $domainSecondaryId, $remark);
 
-    my $interproDomainFeature = GUS::DoTS::DomainFeature->new($gusTableWriters, $gusTranslatedAASequence, undef, $interproExternalDatabaseReleaseId, $interproPrimaryId, undef);
-    my $domainFeature = GUS::DoTS::DomainFeature->new($gusTableWriters, $gusTranslatedAASequence, $interproDomainFeature, $domainExternalDatabaseReleaseId, $domainPrimaryId, $evalue);
+#     my $interproDomainFeature = GUS::DoTS::DomainFeature->new($gusTableWriters, $gusTranslatedAASequence, undef, $interproExternalDatabaseReleaseId, $interproPrimaryId, undef);
+#     my $domainFeature = GUS::DoTS::DomainFeature->new($gusTableWriters, $gusTranslatedAASequence, $interproDomainFeature, $domainExternalDatabaseReleaseId, $domainPrimaryId, $evalue);
 
-    GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $interproDbRefId, $interproDomainFeature->getPrimaryKey());
-    GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $domainDbRefId, $domainFeature->getPrimaryKey());    
+#     GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $interproDbRefId, $interproDomainFeature->getPrimaryKey());
+#     GUS::DoTS::DbRefAAFeature->new($gusTableWriters, $domainDbRefId, $domainFeature->getPrimaryKey());
 
-    return($interproDomainFeature, $domainFeature);
-}
+#     return($interproDomainFeature, $domainFeature);
+# }
 
 
 sub getDbRefAndExternalDatabaseReleaseIds {
@@ -971,6 +1083,8 @@ sub parse {
     foreach my $slice (@$topLevelSlices) {
 	$self->parseSlice($slice, $gusExternalDatabaseRelease, $gusTaxon);
     }
+
+    $self->finishBedFiles();
 }
 
 sub getExternalDatabaseReleaseFromSpec {
