@@ -40,6 +40,7 @@ my %SKIP_LOGICS = ('mobidblite' => 1,
 		   'gene3d' => 1,
     );
 
+my $INTERPRO2GO_LOGIC = "interpro2go";
 
 # these are required objects
 # a gus table definition object will be made for each of them
@@ -828,9 +829,15 @@ sub parseTranscript {
 sub parseGOAssociation {
     my ($self, $gusTranslatedAASequence, $xref) = @_;
 
+
     my $proteinDatabaseName = "DoTS";
     my $proteinTableName = "TranslatedAASequence";
-    
+
+    my $loeName = ref($xref) eq 'Bio::EnsEMBL::OntologyXref' ? $xref->analysis()->logic_name() : $xref->db();
+
+    # NOTE:  We now skip interpro go associations
+    return if($loeName eq $INTERPRO2GO_LOGIC);
+
     my $gusTableWriters = $self->getGUSTableWriters();
 
     my $proteinDatabaseId = $seenDatabases{$proteinDatabaseName} ? $seenDatabases{$proteinDatabaseName} : GUS::Core::DatabaseInfo->new($gusTableWriters, $proteinDatabaseName)->getPrimaryKey();
@@ -847,8 +854,6 @@ sub parseGOAssociation {
 	$goAssociationId = GUS::DoTS::GOAssociation->new($gusTableWriters, $proteinTableId, $gusTranslatedAASequence->getPrimaryKey(), $gusGOTermId)->getPrimaryKey();
     }
 
-
-    my $loeName = ref($xref) eq 'Bio::EnsEMBL::OntologyXref' ? $xref->analysis()->logic_name() : $xref->db();
     my $goEvidenceLoeId = $seenGOEvidences{$loeName};
     unless($goEvidenceLoeId) {
 	$goEvidenceLoeId = GUS::DoTS::GOAssociationInstanceLOE->new($gusTableWriters, $loeName)->getPrimaryKey();
