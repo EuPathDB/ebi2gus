@@ -41,6 +41,7 @@ my %SKIP_LOGICS = ('mobidblite' => 1,
 		   'sifts_import' => 1,
     );
 
+my $INTERPRO2GO_LOGIC = "interpro2go";
 
 # these are required objects
 # a gus table definition object will be made for each of them
@@ -787,6 +788,11 @@ sub parseTranscript {
 sub parseGOAssociation {
     my ($self, $gusObj, $xref, $tableName) = @_;
 
+    my $loeName = ref($xref) eq 'Bio::EnsEMBL::OntologyXref' ? $xref->analysis()->logic_name() : $xref->db();
+
+    # NOTE:  We now skip interpro go associations
+    return if($loeName eq $INTERPRO2GO_LOGIC);
+
     my $databaseName = "DoTS";
     
     my $gusTableWriters = $self->getGUSTableWriters();
@@ -805,7 +811,7 @@ sub parseGOAssociation {
 	$goAssociationId = GUS::DoTS::GOAssociation->new($gusTableWriters, $tableId, $gusObj->getPrimaryKey(), $gusGOTermId)->getPrimaryKey();
     }
 
-    my $loeName = ref($xref) eq 'Bio::EnsEMBL::OntologyXref' ? $xref->analysis()->logic_name() : $xref->db();
+
     my $goEvidenceLoeId = $seenGOEvidences{$loeName};
     unless($goEvidenceLoeId) {
 	$goEvidenceLoeId = GUS::DoTS::GOAssociationInstanceLOE->new($gusTableWriters, $loeName)->getPrimaryKey();

@@ -7,7 +7,6 @@ use strict;
 sub init {
     my ($self, $name, $gusExternalNASequence, $gusExternalDatabaseRelease, $sequenceOntologyId, $seqOntologyName) = @_;
 
-    print "IN INIT\n";
     return {na_sequence_id => $gusExternalNASequence->getPrimaryKey(),
 	    subclass_view => 'Miscellaneous',
 	    name => $seqOntologyName,
