@@ -8,7 +8,7 @@ node ('centos8') {
   }
 
   stage('checkout') {
-    builder.gitClone()
+    checkout scm
   }
 
   stage('build') {
